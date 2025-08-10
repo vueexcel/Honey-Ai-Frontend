@@ -3,6 +3,7 @@ export interface ResizedImage {
   character_id: string;
   image_url: string;
   type: string;
+  default_url ?: any;
 }
 
 export interface BodyImage {
