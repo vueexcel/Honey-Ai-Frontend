@@ -1,0 +1,106 @@
+@import "tailwindcss";
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --skeleton-bg: #363636;
+  --skeleton-bg-dark: #1d1c1c;
+  --black: #000000;
+  --white: #ffffff;
+  --accent: #ae52e7;
+  --accent-50: rgba(174, 82, 231, 0.5);
+  --accent-hover: #8a30c1;
+  --main: #0c0c0c;
+  --secondary: #0e0e0e;
+  --purple: #1f1625;
+  --purple-900: #2a1338;
+  --gray: #808080;
+  --gray-dark: #181818;
+  --gray-300: #6c6c6c;
+  --gray-400: #414141;
+  --gray-500: #242424;
+  --gray-600: #24162c;
+  --red: #f14848;
+  --pink: #ff44ba;
+  --pink-500: #f8697d;
+  --green: #74ff82;
+  --aqua: #00eca3;
+  --red-hover: #d71e1e;
+  --red-300: #ff556e;
+  --scrollbar: #323232;
+  --svitlo-text: #667085;
+  --spinner: #ffffff;
+  --tertiary: #ffb930;
+  --indigo: #6a38bb;
+  --gradient-main: linear-gradient(91deg, #ff44ba 0%, #8840b5 100%);
+  --gradient-main-hover: linear-gradient(91deg, #ff66c6 0%, #c974fe 100%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4c4c4c;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b6b6b;
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animation utilities */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-1000 {
+  animation-delay: 1000ms;
+}
