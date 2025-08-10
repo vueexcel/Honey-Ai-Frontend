@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Button from "./ui/Button";
 import { CirclePlus } from "lucide-react";
 import { MyAICharacter } from "@/types/my-ai/character.ts";
-import MyAiCharacterCard from "./MyAICharacterCard";
+import MyAiCharacterCard from "./MyAiCharacterCard";
 
 const myCharacters: MyAICharacter[] = [
   {

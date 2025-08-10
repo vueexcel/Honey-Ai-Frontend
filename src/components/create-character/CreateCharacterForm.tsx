@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { createCharacterSteps } from "@/constants/createCharacterSteps";
 import Stepper from "./Stepper";
 import ImageSelector from "./ImageSelector";
-import OptionSelector from "./optionSelector";
+import OptionSelector from "./OptionSelector";
 import Button from "../ui/Button";
 import { ArrowRightIcon } from "lucide-react";
 import VoiceSelector from "./VoiceSelector";
