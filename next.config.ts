@@ -1,12 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+   images: {
+    domains: ['get-honey.ai'],
+  },
   typescript: {
-    // ✅ Skip build if there are TS errors
     ignoreBuildErrors: true,
   },
   eslint: {
-    // ✅ Skip build if there are ESLint errors
     ignoreDuringBuilds: true,
   },
 };

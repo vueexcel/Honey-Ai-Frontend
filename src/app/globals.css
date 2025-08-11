@@ -51,7 +51,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -103,4 +102,29 @@ html {
 
 .delay-1000 {
   animation-delay: 1000ms;
+}
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation-name: scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 20s;
+}
+
+.scroll-wrapper:hover .animate-scroll {
+  animation-play-state: paused;
+}
+
+.scroll-wrapper {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
