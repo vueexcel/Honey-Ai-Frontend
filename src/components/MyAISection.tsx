@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Settings, Edit, Trash2, Crown, Heart, MessageCircle, Camera } from "lucide-react";
 import { motion } from "framer-motion";
-import Button from "./ui/Button";
-import { CirclePlus } from "lucide-react";
 import { MyAICharacter } from "@/types/my-ai/character.ts";
 import MyAiCharacterCard from "./MyAiCharacterCard";
 

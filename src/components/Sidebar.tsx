@@ -1,26 +1,23 @@
 "use client";
 
-import {
-  Image,
-  Crown,
-  CompassIcon,
-  MessagesSquare,
-  Venus,
-  Wand,
-  CrownIcon,
-} from "lucide-react";
+import CompassIcon from "./icons/CompassIcon";
+import MessageSquare from "./icons/MessageSqure";
+import Crown from "./icons/Crown";
 import Button from "./ui/Button";
 import { useSidebar } from "../context/SidebarProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
+import WandIcon from "./icons/WandIcon";
+import Gallary from "./icons/Galleryicon";
+import MyAI from "./icons/MyAI";
 
 const sidebarItems = [
   { icon: CompassIcon, notification: false, href: "/", text: "Explore" },
-  { icon: MessagesSquare, notification: false, href: "/chat", text: "Chat" },
-  { icon: Image, notification: false, href: "/gallery", text: "Gallery" },
-  { icon: Venus, notification: true, href: "/my-ai", text: "MY AI" },
-  { icon: CrownIcon, notification: true, href: "/pricing", text: "Pricing" },
+  { icon: MessageSquare, notification: false, href: "/chat", text: "Chat" },
+  { icon: Gallary, notification: false, href: "/gallery", text: "Gallery" },
+  { icon: MyAI, notification: true, href: "/my-ai", text: "MY AI" },
+  { icon: Crown, notification: true, href: "/pricing", text: "Pricing" },
 ];
 
 export default function Sidebar() {
@@ -43,7 +40,7 @@ export default function Sidebar() {
             className="w-full h-10 rounded-xl flex items-center justify-center text-xs font-bold shadow-lg gap-2"
             onClick={() => router.push("/create-character")}
           >
-            <Wand size={22} />
+            <WandIcon size={22} />
             Create Character
           </Button>
         ) : (
@@ -51,7 +48,7 @@ export default function Sidebar() {
             variant="gradient"
             className="w-11.5 h-11.5 rounded-xl flex items-center justify-center shadow-lg"
           >
-            <Wand size={22} />
+            <WandIcon size={22} />
           </Button>
         )}
 

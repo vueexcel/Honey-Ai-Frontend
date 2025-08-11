@@ -1,6 +1,5 @@
 "use client";
-
-import { Crown } from "lucide-react";
+import Crown from "./icons/Crown";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 

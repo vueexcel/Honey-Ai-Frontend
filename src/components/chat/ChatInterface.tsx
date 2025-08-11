@@ -19,6 +19,7 @@ import PremiumButton from "../ui/PremiumBtn";
 import Button from "../ui/Button";
 import ResizeIcon from "../icons/ResizeIcon";
 import useChatStreaming from "@/hooks/useChatStreaming";
+import WandIcon from "../icons/WandIcon";
 
 const chatUsers = [
   {
@@ -474,7 +475,7 @@ const ProfileSidebar = () => (
           className="w-full h-12 rounded-xl flex items-center justify-center text-base font-bold shadow-lg gap-2"
           // onClick={() => router.push("/create-character")}
         >
-          <Wand size={22} />
+          <WandIcon size={22} />
           Create Your Own Character
         </Button>
         <button className="w-full text-[18px] text-white hover:bg-linear-[91deg,_rgb(101,_223,_113),_rgb(68,_144,_76)] bg-linear-[91deg,_rgb(116,_255,_130),_rgb(81,_165,_90)] font-semibold py-3 rounded-lg transition-colors flex justify-center items-center gap-2 cursor-pointer">

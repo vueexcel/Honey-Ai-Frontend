@@ -1,8 +1,6 @@
 "use client";
 
-import { Crown, Wand } from "lucide-react";
 import { motion } from "framer-motion";
-import { useRef } from "react";
 import { MyAICharacter } from "@/types/my-ai/character";
 import Button from "./ui/Button";
 

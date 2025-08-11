@@ -1,6 +1,7 @@
 "use client";
 
-import { Crown, User, Sparkles } from "lucide-react";
+import Crown from "./icons/Crown";
+import { User, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface CharacterFilterProps {

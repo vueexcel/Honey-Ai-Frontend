@@ -3,6 +3,7 @@
 import { Wand } from "lucide-react";
 import { useState } from "react";
 import Button from "./ui/Button";
+import WandIcon from "./icons/WandIcon";
 
 export default function Banner() {
   const [visible, setVisible] = useState(true);
@@ -22,7 +23,7 @@ export default function Banner() {
             variant="gradient"
             className="w-full h-12 rounded-xl flex items-center justify-center text-base font-bold shadow-lg gap-2 "
           >
-            <Wand size={22} />
+            <WandIcon size={22} />
             Create Character
           </Button>
         </div>
