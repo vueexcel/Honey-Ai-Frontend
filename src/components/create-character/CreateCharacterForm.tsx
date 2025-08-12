@@ -75,8 +75,8 @@ export default function CreateCharacterForm() {
 
   if (!mode) {
     return (
-      <div className="bg-black p-6">
-        <div className="max-w-[1060px] flex flex-col items-center justify-center mx-auto text-white">
+      <div className="h-full bg-black p-6">
+        <div className="max-w-[600px] xl:max-w-[1060px] flex flex-col items-center justify-center mx-auto text-white">
           <div className="w-full">
             <Stepper
               onBack={() => handleBack()}

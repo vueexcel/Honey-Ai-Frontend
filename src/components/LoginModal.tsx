@@ -12,7 +12,7 @@ type LoginModalProps = {
 };
 
 export default function LoginModal({ isOpen = true, onClose = () => {} }: LoginModalProps) {
-  const { login } = useAuth(); // from AuthContext
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -41,10 +41,6 @@ export default function LoginModal({ isOpen = true, onClose = () => {} }: LoginM
   const handleSignupClick = () => {
     setShowSignupModal(true);
   };
-
-  // const handleMagicLinkClick = () => {
-  //   setShowSignupModal(true);
-  // };
 
   return (
     <>

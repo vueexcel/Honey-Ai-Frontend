@@ -39,14 +39,14 @@ export default function CharacterCarousel() {
   });
 
   return (
-    <section className="px-3 py-0 lg:px-6 lg:py-4 bg-white dark:bg-[#0c0c0c] transition-colors duration-300">
+    <section className="px-3 py-0 xl:px-6 xl:py-4 bg-white dark:bg-[#0c0c0c] transition-colors duration-300">
       <div className="max-w-9xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0 hidden lg:block"
+            className="text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0 hidden xl:block"
           >
             <span className="text-[#ae52e7]">Explore </span>
             <span>AI Characters</span>
@@ -74,6 +74,7 @@ export default function CharacterCarousel() {
               transition={{ duration: 0.6, delay: 0.1 * index }}
             >
               <CharacterCard
+                id={character.id}
                 name={character.first_name}
                 age={character.age}
                 description={character.description}

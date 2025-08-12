@@ -48,9 +48,9 @@ const FAQSection = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-stretch">
+        <div className="flex flex-col xl:flex-row gap-8 xl:gap-12 items-start xl:items-stretch">
           {/* Left Side - FAQ List - 50% width on desktop */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-between">
+          <div className="w-full xl:w-1/2 flex flex-col justify-between">
             <div className="space-y-4 flex-1 flex flex-col justify-center gap-6">
               {faqs.map((faq, index) => (
                 <div
@@ -86,8 +86,8 @@ const FAQSection = () => {
           </div>
 
           {/* Right Side - Image - 50% width on desktop, on top on mobile */}
-          <div className="w-full lg:w-1/2 order-first lg:order-last flex justify-center lg:justify-end">
-            <div className="rounded-2xl overflow-hidden shadow-2xl w-full max-w-md lg:max-w-none">
+          <div className="w-full xl:w-1/2 order-first xl:order-last flex justify-center xl:justify-end">
+            <div className="rounded-2xl overflow-hidden shadow-2xl w-full max-w-md xl:max-w-none">
               <img
                 src="https://get-honey.ai/assets/faq-sfw-W5NuF4Qf.avif"
                 alt="AI Girl"
@@ -173,9 +173,9 @@ export default FAQSection
 //         </div>
 
 //         {/* Main Content */}
-//         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-stretch">
+//         <div className="flex flex-col xl:flex-row gap-8 xl:gap-12 items-start xl:items-stretch">
 //           {/* Left Side - FAQ List */}
-//           <div className="w-full lg:w-1/2 flex flex-col justify-between">
+//           <div className="w-full xl:w-1/2 flex flex-col justify-between">
 //             <div className="space-y-4 flex-1 flex flex-col justify-center">
 //               {faqs.map((faq, index) => (
 //                 <div
@@ -213,7 +213,7 @@ export default FAQSection
 //           </div>
 
 //           {/* Right Side - Image */}
-//           <div className="w-full lg:w-1/2 order-first lg:order-last flex justify-center lg:justify-end">
+//           <div className="w-full xl:w-1/2 order-first xl:order-last flex justify-center xl:justify-end">
 //             <div className="rounded-2xl overflow-hidden shadow-2xl w-full h-full">
 //               <img
 //                 src="https://get-honey.ai/assets/faq-sfw-W5NuF4Qf.avif"

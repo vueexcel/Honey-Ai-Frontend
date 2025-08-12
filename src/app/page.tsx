@@ -1,22 +1,21 @@
 import Layout from "../components/Layout";
 import HeroSection from "../components/HeroSection";
 import CharacterCarousel from "../components/CharacterCarousel";
-import Features from "../components/Features";
 import Footer from "../components/Footer";
 import AddBanner from "@/components/AddBanner";
-// import Banner from "../components/Banner";
+import { ChatStreamingProvider } from "@/context/ChatStreamingContext";
 
 export default function Home() {
   return (
-    <Layout>
-      <div className="block lg:hidden">
-      <AddBanner />
-      </div>
-      <HeroSection />
-      <CharacterCarousel />
-      {/* <Banner /> */}
-      {/* <Features /> */}
-      <Footer />
-    </Layout>
+    <ChatStreamingProvider>
+      <Layout>
+        <div className="block xl:hidden relative">
+          <AddBanner />
+        </div>
+        <HeroSection />
+        <CharacterCarousel />
+        <Footer />
+      </Layout>
+    </ChatStreamingProvider>
   );
 }

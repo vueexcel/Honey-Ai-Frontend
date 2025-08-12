@@ -20,7 +20,7 @@ export default function MyAiCharacterCard({
       whileTap={{ scale: 0.98 }}
       className="relative bg-white/70 dark:bg-gray-800/50 rounded-[21px] overflow-hidden transition-all duration-300 cursor-pointer group shadow-md"
     >
-      <div className="relative h-[440px] bg-gradient-to-br from-purple-400/20 to-pink-400/20 dark:from-purple-400/10 dark:to-pink-400/10">
+      <div className="relative h-[300px] xl:h-[440px] bg-gradient-to-br from-purple-400/20 to-pink-400/20 dark:from-purple-400/10 dark:to-pink-400/10">
         {/* Image (always shown) */}
         {isLocked ? (
           <img src={blurredImageUrl} alt={firstName} className="w-full h-full object-cover" />

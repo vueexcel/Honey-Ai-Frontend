@@ -1,13 +1,10 @@
 "use client";
 
-import { X, Wand } from "lucide-react";
-import { useState } from "react";
-import Button from "./ui/Button";
 import PremiumButton from "./ui/PremiumBtn";
 
 export default function AddBanner() {
   return (
-    <div className="sticky h-[66px] top-16 py-2 px-3 gap-4 bg-[#181818e6] backdrop-blur-sm z-10 flex items-center w-full">
+    <div className="fixed h-[66px] top-16 left-0 py-2 px-3 gap-4 bg-[#181818e6] backdrop-blur-sm z-10 flex items-center w-full">
       <PremiumButton className="w-full h-fit" />
       <div className="flex justify-center items-center gap-0.5 px-4">
         <svg

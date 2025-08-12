@@ -16,7 +16,8 @@ export const authService = {
 
     if (data.access_token) {
       localStorage.setItem("authToken", data.access_token);
-      localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem("refresh_token", data.refresh_token);
+      localStorage.setItem("user", JSON.stringify(data.user));
     }
 
     return data;
@@ -24,7 +25,8 @@ export const authService = {
 
   logout: () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem('user');
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
     return Promise.resolve();
   },
 

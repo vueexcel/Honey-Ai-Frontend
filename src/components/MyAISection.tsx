@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { MyAICharacter } from "@/types/my-ai/character.ts";
 import MyAiCharacterCard from "./MyAiCharacterCard";
+import { useRouter } from "next/navigation";
 
 const myCharacters: MyAICharacter[] = [
   {
@@ -23,24 +24,28 @@ const myCharacters: MyAICharacter[] = [
 
 export default function MyAISection() {
   const [activeTab, setActiveTab] = useState<"all" | "active" | "premium">("all");
+  const router = useRouter();
 
   return (
     <div className="h-full p-6">
-      <div className="px-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 xl:px-8">
         <h1 className="flex items-center justify-center text-[32px] font-bold mb-12">
           <span>My&nbsp;</span>
           <span className="text-[#ae52e7]">AI</span>
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:[grid-template-columns:repeat(4,minmax(220px,300px))] gap-6 justify-center">
-          <div className="rounded-[21px] h-[440px] gap-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] cursor-pointer flex flex-col justify-center items-center text-white font-medium">
+        <div className="grid [grid-template-columns:repeat(2,minmax(150px,180px))] xl:[grid-template-columns:repeat(4,minmax(220px,300px))] gap-6 justify-center">
+          <div
+            className="rounded-[21px] h-[300px] xl:h-[440px] gap-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] cursor-pointer flex flex-col justify-center items-center text-white font-medium"
+            onClick={() => router.push("/create-character")}
+          >
             <div className="text-[var(--accent)]">
-            <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect y="0.5" width="56" height="56" rx="28" fill="white"></rect>
-              <path
-                d="M37.3327 29.8307H29.3327V37.8307H26.666V29.8307H18.666V27.1641H26.666V19.1641H29.3327V27.1641H37.3327V29.8307Z"
-                fill="currentColor"
-              ></path>
-            </svg>
+              <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect y="0.5" width="56" height="56" rx="28" fill="white"></rect>
+                <path
+                  d="M37.3327 29.8307H29.3327V37.8307H26.666V29.8307H18.666V27.1641H26.666V19.1641H29.3327V27.1641H37.3327V29.8307Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
             </div>
             <span>Create New AI</span>
           </div>

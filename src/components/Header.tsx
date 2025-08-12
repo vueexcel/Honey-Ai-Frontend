@@ -5,7 +5,6 @@ import { useAuth } from "@/context/AuthContextProvider";
 import CompassIcon from "./icons/CompassIcon";
 import MessageSquare from "./icons/MessageSqure";
 import MyAI from "./icons/MyAI";
-import Gallary from "./icons/Galleryicon";
 import Crown from "./icons/Crown";
 import { Menu, X, Clock, Sun, Moon, Venus, CrownIcon, Wand, Settings, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,7 +24,7 @@ import WandIcon from "./icons/WandIcon";
 const sidebarItems = [
   { icon: CompassIcon, notification: false, href: "/", text: "Explore" },
   { icon: MessageSquare, notification: false, href: "/chat", text: "Chat" },
-  { icon: Gallary, notification: false, href: "/gallery", text: "Gallery" },
+  // { icon: Gallary, notification: false, href: "/gallery", text: "Gallery" },
   { icon: MyAI, notification: true, href: "/my-ai", text: "MY AI" },
   { icon: Crown, notification: true, href: "/pricing", text: "Pricing" },
 ];
@@ -67,11 +66,11 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#0c0c0ce6] backdrop-blur  dark:border-gray-800 shadow-sm">
       <div className="px-4.5">
         <div className="flex items-center justify-between h-16 relative">
-          <div className="flex items-center flex-1 min-w-0 lg:hidden">
+          <div className="flex items-center flex-1 min-w-0 xl:hidden">
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="xl:hidden"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Open menu"
             >
@@ -81,12 +80,12 @@ export default function Header() {
                 <Menu size={36} strokeWidth={1} color="white" />
               )}
             </Button>
-            <div className="lg:hidden flex items-center ml-3">
+            <div className="xl:hidden flex items-center ml-3">
               <BrandLogo />
             </div>
           </div>
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden xl:flex items-center">
             <div className="flex items-center space-x-2 gap-12">
               <Button className="mx-2" variant="ghost" size="icon" aria-label="Open menu" onClick={toggleSidebar}>
                 {isSidebarOpen ? <X size={48} strokeWidth={1} /> : <Menu size={48} strokeWidth={1} />}
@@ -98,11 +97,11 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 flex-1 justify-end">
-            <div className="hidden lg:block">
+          <div className="flex items-center space-x-2 sm:space-x-3 xl:space-x-4 flex-1 justify-end">
+            <div className="hidden xl:block">
               <PremiumBtn />
             </div>
-            <div className="hidden lg:flex items-center space-x-2 text-gray-700 dark:text-white text-sm">
+            <div className="hidden xl:flex items-center space-x-2 text-gray-700 dark:text-white text-sm">
               <Clock size={16} />
               <span>Offer expires in 09:46</span>
             </div>

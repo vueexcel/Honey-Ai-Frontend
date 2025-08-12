@@ -14,7 +14,7 @@ interface ImageSelectorProps {
 
 export default function ImageSelector({ options, selectedValue, onSelect }: ImageSelectorProps) {
   return (
-    <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
       {options.map((option) => {
         const isSelected = selectedValue === option.value;
         console.log(isSelected, selectedValue, "selected");
