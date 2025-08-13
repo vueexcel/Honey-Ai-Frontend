@@ -66,37 +66,40 @@ export default function useChatStreaming(characterId?: string) {
     };
   }, [isLoggedIn]);
 
-  const sendMessage = useCallback(async (prompt: string, charId: string) => {
-    if (!isLoggedIn) {
-      alert("Login To Start Conversation");
-      return false;
-    }
-    if (balance <= 0) {
-      alert("Credits Not Sufficient");
-      return false;
-    }
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: "temp-user-msg-" + Date.now(),
-        sender_type: "user",
-        message_type: "text",
-        content: prompt,
-        created_at: new Date().toISOString(),
-      },
-      {
-        id: "temp-char-msg-" + Date.now(),
-        sender_type: "character",
-        message_type: "text",
-        content: "",
-        created_at: new Date().toISOString(),
-      },
-    ]);
-    setError(null);
-    setIsStreaming(true);
-    await startChatStreaming(prompt, charId);
-    return true;
-  }, []);
+  const sendMessage = useCallback(
+    async (prompt: string, charId: string) => {
+      if (!isLoggedIn) {
+        alert("Login To Start Conversation");
+        return false;
+      }
+      if (balance <= 0) {
+        alert("Credits Not Sufficient");
+        return false;
+      }
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: "temp-user-msg-" + Date.now(),
+          sender_type: "user",
+          message_type: "text",
+          content: prompt,
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: "temp-char-msg-" + Date.now(),
+          sender_type: "character",
+          message_type: "text",
+          content: "",
+          created_at: new Date().toISOString(),
+        },
+      ]);
+      setError(null);
+      setIsStreaming(true);
+      await startChatStreaming(prompt, charId);
+      return true;
+    },
+    [isLoggedIn, balance]
+  );
 
   return {
     messages,
