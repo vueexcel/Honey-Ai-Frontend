@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useChatStreaming } from "@/context/ChatStreamingContext";
+import { getCharacterHistory } from "@/utils/api";
 
 interface CharacterCardProps {
   id: string;
@@ -42,10 +43,19 @@ export default function CharacterCard({
   };
 
   const handleNavigation = async () => {
-    const success = await sendMessage("How are you?", id);
-  if (success) {
-    router.push(`/chat/${id}`);
-  }
+    try {
+      const history = await getCharacterHistory(id);
+      if (!history?.history.length) {
+        const success = await sendMessage("How are you?", id);
+        if (success) {
+          router.push(`/chat/${id}`);
+        }
+      } else {
+        router.push(`/chat/${id}`);
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
