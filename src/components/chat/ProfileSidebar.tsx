@@ -1,7 +1,7 @@
 import { Character } from "@/types/character";
 import Button from "../ui/Button";
 import WandIcon from "../icons/WandIcon";
-import { Camera, Phone } from "lucide-react";
+import { ArrowBigLeft, ArrowLeft, Camera, MoveLeft, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 const sarahMitchellProfile = {
   personality: [
@@ -19,6 +19,7 @@ const sarahMitchellProfile = {
 interface ProfileSidebarProps {
   characterId: string;
   activeCharacter: Character;
+  toggleProfileSideBar: () => void;
 }
 
 const AttributeItem = ({ title, value }) => (
@@ -31,11 +32,18 @@ const AttributeItem = ({ title, value }) => (
   </li>
 );
 
-export default function ProfileSidebar({ characterId, activeCharacter }: ProfileSidebarProps) {
+export default function ProfileSidebar({ characterId, activeCharacter, toggleProfileSideBar }: ProfileSidebarProps) {
   const router = useRouter();
   return (
-    <aside className="w-[368px] bg-[#1A1A1A] flex flex-col border-l border-gray-700 space-y-6 overflow-y-auto">
-      <div className="max-h-[400px]">
+    <aside className="w-full h-full xl:w-[368px] bg-[var(--secondary)] flex flex-col xl:border-l xl:border-gray-700 xl:space-y-6 overflow-y-auto z-30">
+      <button
+        className="flex xl:hidden py-3 px-6  items-center bg-transparent cursor-pointer text-white gap-2"
+        onClick={toggleProfileSideBar}
+      >
+        <ArrowLeft size={24} />
+        Back
+      </button>
+      <div className="max-w-[425px] max-h-[470px] xl:max-h-[400px] xl:max-w-full self-center">
         <img className="" src={activeCharacter?.resized_images[0].default_url} alt="Profile" />
       </div>
       <div className="-top-8 bg-[var(--main)] p-6 rounded-t-4xl">

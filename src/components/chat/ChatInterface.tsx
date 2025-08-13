@@ -9,12 +9,14 @@ import ResizeIcon from "../icons/ResizeIcon";
 import { getConversationCharacter } from "@/utils/api";
 import type { Character } from "@/types/character";
 import { Message } from "@/types/message";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function ChatInterface() {
   const params = useParams();
   const characterId = params.characterId?.[0] as string | undefined;
 
   const [chatPanelWidth, setChatPanelWidth] = useState<number>(440);
+  const [isProfileSidebarVisible, setIsProfileSidebar] = useState<Boolean>(true);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [error, setError] = useState("");
@@ -57,9 +59,12 @@ export default function ChatInterface() {
     isResizing.current = true;
     document.body.style.cursor = "ew-resize";
   };
+  const toggleProfileSideBar = () => {
+    setIsProfileSidebar((prev) => !prev);
+  };
 
   return (
-    <div className="bg-[#121212] text-white flex h-[calc(100dvh-132px)]  xl:h-[calc(100dvh-64px)] font-sans overflow-hidden">
+    <div className="bg-[#121212] text-white flex h-[calc(100dvh-132px)] xl:h-[calc(100dvh-64px)] font-sans overflow-hidden">
       <div className={`${characterId ? "hidden xl:flex" : "flex w-full xl:w-auto"}`}>
         <ChatListPanel width={chatPanelWidth} activeCharacterId={characterId} characters={characters} />
       </div>
@@ -74,11 +79,31 @@ export default function ChatInterface() {
         </div>
       )}
       {characterId ? (
-        <div className="flex flex-1 min-w-0">
-          <ChatWindow characterId={characterId} chatHistory={chatHistory} activeCharacter={activeCharacter} />
-          <div className="hidden xl:flex">
-            <ProfileSidebar characterId={characterId} activeCharacter={activeCharacter} />
-          </div>
+        <div className="flex flex-1 min-w-0 relative">
+          <ChatWindow
+            characterId={characterId}
+            chatHistory={chatHistory}
+            activeCharacter={activeCharacter}
+            toggleProfileSideBar={toggleProfileSideBar}
+          />
+          {isProfileSidebarVisible && (
+            <AnimatePresence>
+              <motion.div
+                key="profile-sidebar"
+                initial={{ x: 300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 300, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="absolute top-0 right-0 xl:flex xl:relative h-full"
+              >
+                <ProfileSidebar
+                  characterId={characterId}
+                  activeCharacter={activeCharacter}
+                  toggleProfileSideBar={toggleProfileSideBar}
+                />
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
       ) : (
         <div className="hidden xl:flex flex-1 items-center justify-center bg-[#121212]">

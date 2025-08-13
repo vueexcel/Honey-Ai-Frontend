@@ -12,9 +12,15 @@ interface ChatWindowProps {
   characterId: string;
   chatHistory: any;
   activeCharacter: Character;
+  toggleProfileSideBar: () => void;
 }
 
-export default function ChatWindow({ characterId, chatHistory, activeCharacter }: ChatWindowProps) {
+export default function ChatWindow({
+  characterId,
+  chatHistory,
+  activeCharacter,
+  toggleProfileSideBar,
+}: ChatWindowProps) {
   const params = useParams();
   const [prompt, setPrompt] = useState("");
   const { messages, balance, isStreaming, error, sendMessage } = useChatStreaming();
@@ -75,7 +81,7 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
               <Phone size={24} fill="var(--green)" color="" />
               <div className="absolute rounded-full h-2.5 w-2.5 top-0 -right-1 bg-[var(--pink)]"></div>
             </button>
-            <button className="py-3">
+            <button className="py-3" onClick={toggleProfileSideBar}>
               <User size={24} color="var(--accent) " />
             </button>
             <button className="py-3">
@@ -108,7 +114,7 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
         </div>
 
         <div className="text-[var(--gray)] absolute w-full justify-center -bottom-12 left-0 flex items-center">
-          <div className="flex items-center justify-center rounded-xl text-base px-4 py-2 bg-[rgba(24,_24,_24,_0.8)] z-20 backdrop:sm">
+          <div className="flex items-center justify-center rounded-xl text-base px-4 py-2 bg-[rgba(24,_24,_24,_0.8)] z-10 backdrop:sm">
             <span className=" text-center">August 4</span>
           </div>
         </div>

@@ -26,7 +26,7 @@ export async function apiFetch(endpoint: string, options?: RequestInit) {
     }
     if (res.status === 401) {
       try {
-        const newToken = await refreshAccessToken();
+        await refreshAccessToken();
         return apiFetch(endpoint, options);
       } catch (refreshError) {
         authService.logout();
