@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-  useCallback,
-} from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { authService } from "@/services/authServices";
 
 interface AuthContextType {
@@ -31,9 +24,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
     authService.logout();
     setUser(null);
+    await refreshUser();
   }, []);
 
   const refreshUser = useCallback(async () => {
@@ -68,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return () => {
-      window.fetch = originalFetch; // cleanup
+      window.fetch = originalFetch;
     };
   }, [refreshUser, logout]);
 

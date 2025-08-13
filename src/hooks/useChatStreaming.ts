@@ -2,8 +2,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { initSocket } from "@/lib/socket";
 import { startChatStreaming, getCredits, getCharacterHistory } from "@/utils/api";
 import { Message } from "@/types/message";
+import { useAuth } from "@/context/AuthContextProvider";
 
 export default function useChatStreaming(characterId?: string) {
+  const { isLoggedIn } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [balance, setBalance] = useState<number>(0);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -62,7 +64,7 @@ export default function useChatStreaming(characterId?: string) {
       socket.off("done");
       socket.off("error");
     };
-  }, []);
+  }, [isLoggedIn]);
 
   const sendMessage = useCallback(async (prompt: string, charId: string) => {
     if (balance <= 0) {

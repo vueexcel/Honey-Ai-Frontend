@@ -19,7 +19,6 @@ export const authService = {
       localStorage.setItem("refresh_token", data.refresh_token);
       localStorage.setItem("user", JSON.stringify(data.user));
     }
-
     return data;
   },
 
