@@ -38,7 +38,7 @@ export default function ChatInterface() {
     fetchData();
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing.current) return;
-      const maxWidth = window.innerWidth - 1000;
+      const maxWidth = window.innerWidth - 900;
       const newWidth = Math.max(440, Math.min(e.clientX, maxWidth));
       setChatPanelWidth(newWidth);
     };

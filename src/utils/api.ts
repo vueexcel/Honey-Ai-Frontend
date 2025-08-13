@@ -49,7 +49,7 @@ async function refreshAccessToken() {
   const refreshToken = typeof window !== "undefined" ? localStorage.getItem("refresh_token") : null;
   if (!refreshToken) throw new Error("No refresh token available");
 
-  const response = await fetch(`${BASE_URL}/auth/refresh-token`, {
+  const response = await fetch(`${BASE_URL}auth/refresh-token`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refresh_token: refreshToken }),
