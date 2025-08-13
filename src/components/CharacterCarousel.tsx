@@ -40,7 +40,7 @@ export default function CharacterCarousel() {
 
   return (
     <section className="px-3 py-0 xl:px-6 xl:py-4 bg-white dark:bg-[#0c0c0c] transition-colors duration-300">
-      <div className="max-w-9xl mx-auto">
+      <div className="max-w-4xl xl:max-w-full mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

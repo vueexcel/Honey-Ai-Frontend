@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Camera, SendHorizonal, Phone, User, MoreVertical, X, ArrowLeft } from "lucide-react";
 import PremiumButton from "../ui/PremiumBtn";
 import Link from "next/link";
@@ -18,6 +18,7 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
   const params = useParams();
   const [prompt, setPrompt] = useState("");
   const { messages, balance, isStreaming, error, sendMessage } = useChatStreaming();
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const isDisabled = !prompt.trim() || isStreaming;
 
   function formatTime(isoString: string) {
@@ -33,6 +34,11 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
 
     return `${hours}:${minutesStr} ${ampm}`;
   }
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSendMessage = () => {
     if (prompt.trim()) {
@@ -129,6 +135,7 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
             ))}
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
       <div className="flex w-full p-4 gap-3 bg-transparent">
         <div className="flex-1 bg-[var(--main)] border border-[var(--gray-dark)] flex items-center p-3 rounded-2xl">
