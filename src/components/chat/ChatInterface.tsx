@@ -6,7 +6,7 @@ import ChatListPanel from "@/components/chat/ChatListPanel";
 import ChatWindow from "@/components/chat/ChatWindow";
 import ProfileSidebar from "@/components/chat/ProfileSidebar";
 import ResizeIcon from "../icons/ResizeIcon";
-import { getConversationCharacter, getCharacterHistory } from "@/utils/api";
+import { getConversationCharacter } from "@/utils/api";
 import type { Character } from "@/types/character";
 import { Message } from "@/types/message";
 
@@ -36,8 +36,8 @@ export default function ChatInterface() {
     fetchData();
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing.current) return;
-      const maxWidth = window.innerWidth - 400;
-      const newWidth = Math.max(400, Math.min(e.clientX, maxWidth));
+      const maxWidth = window.innerWidth - 1000;
+      const newWidth = Math.max(440, Math.min(e.clientX, maxWidth));
       setChatPanelWidth(newWidth);
     };
     const handleMouseUp = () => {

@@ -4,16 +4,10 @@ import PremiumButton from "./ui/PremiumBtn";
 
 export default function AddBanner() {
   return (
-    <div className="fixed h-[66px] top-16 left-0 py-2 px-3 gap-4 bg-[#181818e6] backdrop-blur-sm z-10 flex items-center w-full">
+    <div className="fixed h-[66px] top-16 left-0 py-2 px-3 gap-4 bg-[#181818e6] backdrop-blur-sm flex items-center w-full z-30">
       <PremiumButton className="w-full h-fit" />
       <div className="flex justify-center items-center gap-0.5 px-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="23"
-          height="22"
-          viewBox="0 0 23 22"
-          fill="none"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
           <path
             d="M14.5808 7.4495C13.6939 8.33642 12.6354 9.4888 12.5055 10.9885C12.6354 12.4882 13.694 13.6406 14.5808 14.5275C15.782 15.5625 16.5425 17.0947 16.5425 18.8047C16.5425 18.8077 16.5422 18.8107 16.5422 18.8137H16.5425V21.221H5.25439V18.8137H5.25465C5.25465 18.8107 5.25439 18.8077 5.25439 18.8047C5.25439 17.0947 6.0149 15.5625 7.216 14.5275C8.10292 13.6406 9.16141 12.4882 9.29135 10.9885C9.16141 9.4888 8.10288 8.33642 7.216 7.4495C6.0149 6.41447 5.25439 4.88225 5.25439 3.17231V0.72876H16.5425V3.17231C16.5425 4.88225 15.782 6.41447 14.5808 7.4495Z"
             fill="#F9E7C0"

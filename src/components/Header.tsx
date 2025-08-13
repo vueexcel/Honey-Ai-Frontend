@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import BrandLogo from "./icons/BrandLogo";
 import { useAuth } from "@/context/AuthContextProvider";
 import CompassIcon from "./icons/CompassIcon";
 import MessageSquare from "./icons/MessageSqure";
 import MyAI from "./icons/MyAI";
 import Crown from "./icons/Crown";
-import { Menu, X, Clock, Sun, Moon, Venus, CrownIcon, Wand, Settings, LogOut } from "lucide-react";
+import { Menu, X, Clock, Sun, Moon, Settings, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeProvider";
 import { useSidebar } from "../context/SidebarProvider";
 import Button from "./ui/Button";
 import PremiumBtn from "./ui/PremiumBtn";
-import BrandLogo from "./icons/BrandLogo";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
 import SignInModal from "./SignInModal";
@@ -20,13 +20,13 @@ import DropdownMenu from "./DropdownMenu";
 
 import useChatStreaming from "@/hooks/useChatStreaming";
 import WandIcon from "./icons/WandIcon";
+import BrandLogoText from "./icons/BrandLogoText";
 
 const sidebarItems = [
   { icon: CompassIcon, notification: false, href: "/", text: "Explore" },
   { icon: MessageSquare, notification: false, href: "/chat", text: "Chat" },
-  // { icon: Gallary, notification: false, href: "/gallery", text: "Gallery" },
   { icon: MyAI, notification: true, href: "/my-ai", text: "MY AI" },
-  { icon: Crown, notification: true, href: "/pricing", text: "Pricing" },
+  { icon: Crown, notification: true, href: "/pricing", text: "Pricing", iconColor: "text-[rgb(255,_185,_48)]" },
 ];
 
 export default function Header() {
@@ -66,11 +66,22 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#0c0c0ce6] backdrop-blur  dark:border-gray-800 shadow-sm">
       <div className="px-4.5">
         <div className="flex items-center justify-between h-16 relative">
+          <div className="hidden xl:flex items-center">
+            <div className="flex items-center space-x-2 gap-12">
+              <Button className="mx-2" variant="ghost" size="icon" aria-label="Open menu" onClick={toggleSidebar}>
+                {isSidebarOpen ? <X size={48} strokeWidth={1} /> : <Menu size={48} strokeWidth={1} />}
+              </Button>
+              <div className="flex items-center space-x-2">
+                <BrandLogo className="block" />
+                <BrandLogoText />
+              </div>
+            </div>
+          </div>
+
           <div className="flex items-center flex-1 min-w-0 xl:hidden">
             <Button
               variant="ghost"
               size="icon"
-              className="xl:hidden"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Open menu"
             >
@@ -80,20 +91,8 @@ export default function Header() {
                 <Menu size={36} strokeWidth={1} color="white" />
               )}
             </Button>
-            <div className="xl:hidden flex items-center ml-3">
+            <div className="flex items-center ml-3">
               <BrandLogo />
-            </div>
-          </div>
-
-          <div className="hidden xl:flex items-center">
-            <div className="flex items-center space-x-2 gap-12">
-              <Button className="mx-2" variant="ghost" size="icon" aria-label="Open menu" onClick={toggleSidebar}>
-                {isSidebarOpen ? <X size={48} strokeWidth={1} /> : <Menu size={48} strokeWidth={1} />}
-              </Button>
-              <div className="flex items-center space-x-2">
-                <BrandLogo />
-                <span className="text-gray-900 dark:text-white font-semibold text-xl tracking-wider">get-honey.ai</span>
-              </div>
             </div>
           </div>
 
@@ -173,7 +172,7 @@ export default function Header() {
               {/* Sidebar Items */}
               <div className="flex flex-col gap-4 flex-1 w-full">
                 {sidebarItems.map((item, idx) => {
-                  const isActive = pathname === item.href;
+                  const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
                   return (
                     <div
@@ -184,7 +183,14 @@ export default function Header() {
                       <div className="flex items-center w-full px-4">
                         {/* Icon - fixed width */}
                         <div className="h-11.5 w-11.5 flex items-center justify-center group-hover:text-[#ff44ba] shrink-0">
-                          <item.icon size={22} className={clsx("transition-colors", isActive && "text-[#ff44ba]")} />
+                          <item.icon
+                            size={22}
+                            className={clsx(
+                              "transition-colors",
+                              isActive && "text-[#ff44ba]",
+                              item?.iconColor && `${item.iconColor}`
+                            )}
+                          />
                         </div>
 
                         <AnimatePresence>
@@ -209,7 +215,7 @@ export default function Header() {
                   );
                 })}
                 <div className="ml-6 mr-3 max-w-[250px]">
-                  <img src="	https://get-honey.ai/assets/timebomb-banner-Nf-LARff.webp" alt="" />
+                  <img src="https://get-honey.ai/assets/timebomb-banner-Nf-LARff.webp" alt="" />
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center px-3 py-6 relative">

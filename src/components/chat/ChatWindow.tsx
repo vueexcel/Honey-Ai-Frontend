@@ -121,9 +121,7 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
                   </div>
                 ) : (
                   <div className="flex gap-1.5 flex-col">
-                    <p className="text-white p-1 max-w-md overflow-hidden">
-                      {msg?.content}
-                    </p>
+                    <p className="text-white p-1 max-w-md overflow-hidden">{msg?.content}</p>
                     <span className="text-[13px] text-[var(--gray)]">{formatTime(msg?.created_at)}</span>
                   </div>
                 )}
@@ -164,7 +162,7 @@ export default function ChatWindow({ characterId, chatHistory, activeCharacter }
     }
   `}
         >
-          <SendHorizonal size={24} fill={isDisabled ? '#414141' : 'white'} color="" className="hover:scale-120" />
+          <SendHorizonal size={24} fill={isDisabled ? "#414141" : "white"} color="" className="hover:scale-120" />
         </button>
       </div>
     </main>

@@ -24,7 +24,7 @@ export default function FooterNav() {
     <nav className="fixed inset-x-0 bottom-0 z-50 bg-[var(--main)] px-6">
       <ul className="flex justify-between max-w-xl mx-auto items-center h-[68px]">
         {navLinks.map((link) => {
-          const isActive = pathname === link.href;
+          const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
 
           if (link.isCenter) {
             return (

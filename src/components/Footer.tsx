@@ -1,6 +1,7 @@
 "use client";
 
 import BrandLogo from "./icons/BrandLogo";
+import BrandLogoText from "./icons/BrandLogoText";
 
 export default function Footer() {
   return (
@@ -10,7 +11,7 @@ export default function Footer() {
           <div className="xl:col-span-3 place-self-center xl:place-self-start w-full">
             <div className="flex items-center space-x-2 mb-3 text-center xl:text-left w-full justify-center xl:justify-start">
               <BrandLogo />
-              <span className="text-gray-900 dark:text-white font-semibold text-xl tracking-wider">get-honey.ai</span>
+              <BrandLogoText/>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-6 w-full xl:max-w-md text-center xl:text-left">
               Your dream companion awaits! Create your AI Companion, shape her look, personality, and bring her to life

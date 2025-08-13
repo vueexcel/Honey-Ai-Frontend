@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
 import WandIcon from "./icons/WandIcon";
-import Gallary from "./icons/Galleryicon";
 import MyAI from "./icons/MyAI";
 import Link from "next/link";
 
@@ -17,7 +16,7 @@ const sidebarItems = [
   { icon: CompassIcon, notification: false, href: "/", text: "Explore" },
   { icon: MessageSquare, notification: false, href: "/chat", text: "Chat" },
   { icon: MyAI, notification: true, href: "/my-ai", text: "MY AI" },
-  { icon: Crown, notification: true, href: "/pricing", text: "Pricing" },
+  { icon: Crown, notification: true, href: "/pricing", text: "Pricing", iconColor: "text-[rgb(255,_185,_48)]" },
 ];
 
 export default function Sidebar() {
@@ -56,7 +55,7 @@ export default function Sidebar() {
       {/* Sidebar Items */}
       <div className="flex flex-col gap-4 flex-1 w-full">
         {sidebarItems.map((item, idx) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <div
@@ -65,12 +64,17 @@ export default function Sidebar() {
               onClick={() => router.push(item.href)}
             >
               <div className="flex items-center w-full px-4">
-                {/* Icon - fixed width */}
                 <div className="h-11.5 w-11.5 flex items-center justify-center group-hover:text-[#ff44ba] shrink-0">
-                  <item.icon size={22} className={clsx("transition-colors", isActive && "text-[#ff44ba]")} />
+                  <item.icon
+                    size={22}
+                    className={clsx(
+                      "transition-colors",
+                      isActive && "text-[#ff44ba]",
+                      item?.iconColor && `${item.iconColor}`
+                    )}
+                  />
                 </div>
 
-                {/* Label - only shown when sidebar is open */}
                 <AnimatePresence>
                   {isSidebarOpen && (
                     <motion.span
@@ -88,7 +92,6 @@ export default function Sidebar() {
                 </AnimatePresence>
               </div>
 
-              {/* Active indicator bar */}
               {isActive && (
                 <div className="absolute top-0 left-0 w-2 h-full rounded-tr-[12px] rounded-br-[12px] bg-pink-500 animate-pulse" />
               )}

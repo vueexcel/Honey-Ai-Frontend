@@ -5,7 +5,7 @@ import { Message } from "@/types/message";
 
 export default function useChatStreaming(characterId?: string) {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [balance, setBalance] = useState<number | null>(null);
+  const [balance, setBalance] = useState<number>(0);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesRef = useRef(messages);
@@ -65,6 +65,10 @@ export default function useChatStreaming(characterId?: string) {
   }, []);
 
   const sendMessage = useCallback(async (prompt: string, charId: string) => {
+    if (balance <= 0) {
+      alert("Credits Not Sufficient");
+      return;
+    }
     setMessages((prev) => [
       ...prev,
       {

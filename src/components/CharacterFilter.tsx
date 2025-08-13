@@ -1,7 +1,8 @@
 "use client";
 
 import Crown from "./icons/Crown";
-import { User, Sparkles } from "lucide-react";
+import FemaleIcon from "./icons/FemaleIcon";
+import AnimeIcon from "./icons/AnimeIcon";
 import { motion } from "framer-motion";
 
 interface CharacterFilterProps {
@@ -14,20 +15,23 @@ export default function CharacterFilter({ activeFilter, onFilterChange }: Charac
     {
       id: "realistic" as const,
       label: "Realistic",
-      icon: User,
+      icon: FemaleIcon,
       description: "Realistic characters",
+      iconColor: "",
     },
     {
       id: "anime" as const,
       label: "Anime",
-      icon: Sparkles,
+      icon: AnimeIcon,
       description: "Anime-style characters",
+      iconColor: "",
     },
     {
       id: "premium" as const,
       label: "Premium Models",
       icon: Crown,
       description: "Premium characters",
+      iconColor: "text-[rgb(255,_185,_48)]",
     },
   ];
 
@@ -49,7 +53,7 @@ export default function CharacterFilter({ activeFilter, onFilterChange }: Charac
                 : "bg-transparent hover:bg-[#181818] border-[#181818]"
             }`}
           >
-            <Icon size={16} />
+            <Icon size={22} className={filter.iconColor} />
             <span>{filter.label}</span>
           </motion.button>
         );
