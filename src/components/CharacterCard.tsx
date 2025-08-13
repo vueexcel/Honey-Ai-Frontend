@@ -42,8 +42,10 @@ export default function CharacterCard({
   };
 
   const handleNavigation = async () => {
-    await sendMessage("How are you?", id);
-    router.push(`/chat/${id}`);
+    const success = await sendMessage("How are you?", id);
+    if (success) {
+      router.push(`/chat/${id}`);
+    }
   };
 
   return (

@@ -67,9 +67,13 @@ export default function useChatStreaming(characterId?: string) {
   }, [isLoggedIn]);
 
   const sendMessage = useCallback(async (prompt: string, charId: string) => {
+    if (!isLoggedIn) {
+      alert("Login To Start Conversation");
+      return false;
+    }
     if (balance <= 0) {
       alert("Credits Not Sufficient");
-      return;
+      return false;
     }
     setMessages((prev) => [
       ...prev,
@@ -91,6 +95,7 @@ export default function useChatStreaming(characterId?: string) {
     setError(null);
     setIsStreaming(true);
     await startChatStreaming(prompt, charId);
+    return true;
   }, []);
 
   return {
