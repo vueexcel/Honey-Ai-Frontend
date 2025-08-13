@@ -46,21 +46,9 @@ const users = [
 // Perspective grid/cube sized by its parent (no fixed height)
 function PerspectiveGrid() {
   return (
-    <svg
-      className="absolute inset-0 h-full w-full"
-      viewBox="0 0 996 820"
-      fill="none"
-      aria-hidden="true"
-    >
+    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 996 820" fill="none" aria-hidden="true">
       <defs>
-        <linearGradient
-          id="grid-stroke"
-          x1="0"
-          y1="0"
-          x2="996"
-          y2="820"
-          gradientUnits="userSpaceOnUse"
-        >
+        <linearGradient id="grid-stroke" x1="0" y1="0" x2="996" y2="820" gradientUnits="userSpaceOnUse">
           <stop stopColor="#FFFFFF" stopOpacity="0.18" />
           <stop offset="1" stopColor="#FFFFFF" stopOpacity="0.08" />
         </linearGradient>
@@ -101,27 +89,19 @@ function PerspectiveGrid() {
 export default function FeaturedByUsers() {
   return (
     <section className="relative py-12 px-4">
-      <h2 className="text-3xl font-bold text-white text-center mb-8">
-        Featured by users
-      </h2>
-
-      {/* Scene wrapper with responsive height so nothing gets trimmed */}
+      <h2 className="text-3xl font-bold text-white text-center mb-8">Featured by users</h2>
       <div className="relative mx-auto max-w-[996px] min-h-[860px] pb-6">
-        {/* 3D grid */}
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-80">
           <PerspectiveGrid />
         </div>
 
-        {/* Pyramid layout: five columns with per-card offsets (no fixed heights) */}
         <div className="flex justify-center gap-6 mx-auto">
-          {/* Col 1: single, vertically centered-ish via top margin */}
           <div className="flex flex-col items-center">
             <div className="mt-70">
               <UserCard user={users[0]} />
             </div>
           </div>
 
-          {/* Col 2: two cards, offset to form the slope */}
           <div className="flex flex-col items-center gap-6">
             <div className="mt-30">
               <UserCard user={users[1]} />
@@ -131,7 +111,6 @@ export default function FeaturedByUsers() {
             </div>
           </div>
 
-          {/* Col 3 (middle): three cards with progressive offsets; no trimming now */}
           <div className="flex flex-col items-center gap-6">
             <div className="mt-0">
               <UserCard user={users[3]} highlight />
@@ -144,7 +123,6 @@ export default function FeaturedByUsers() {
             </div>
           </div>
 
-          {/* Col 4: mirror of col 2 */}
           <div className="flex flex-col items-center gap-6">
             <div className="mt-30">
               <UserCard user={users[6]} />
@@ -154,7 +132,6 @@ export default function FeaturedByUsers() {
             </div>
           </div>
 
-          {/* Col 5: single with larger offset */}
           <div className="flex flex-col items-center">
             <div className="mt-70">
               <UserCard user={users[8]} />
@@ -166,28 +143,16 @@ export default function FeaturedByUsers() {
   );
 }
 
-function UserCard({
-  user,
-  highlight = false,
-}: {
-  user: { name: string; img: string };
-  highlight?: boolean;
-}) {
+function UserCard({ user, highlight = false }: { user: { name: string; img: string }; highlight?: boolean }) {
   return (
     <div
       className={[
-        // Hard lock size so all cards match and never flex-shrink
         "relative shrink-0 w-[180px] min-w-[180px] max-w-[180px] h-[250px] min-h-[250px] max-h-[250px]",
-        // Layout + glass
         "p-3 flex flex-col justify-end items-start gap-2",
         "rounded-[24px] overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-md",
         "text-white text-left shadow-[0_10px_30px_rgba(0,0,0,0.35)]",
-        // Hover
         "transition-transform duration-200 will-change-transform hover:-translate-y-0.5",
-        // Subtle highlight ring that does not change size
-        highlight
-          ? "ring-1 ring-emerald-400/80 shadow-[0_0_24px_rgba(16,185,129,0.25)]"
-          : "ring-0",
+        highlight ? "ring-1 ring-emerald-400/80 shadow-[0_0_24px_rgba(16,185,129,0.25)]" : "ring-0",
       ].join(" ")}
     >
       <img
@@ -199,10 +164,7 @@ function UserCard({
         priority={highlight}
       />
 
-      {/* Legibility gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/25 to-black/80" />
-
-      {/* Rating above name */}
       <div className="relative z-10">
         <div
           className="mb-1.5 flex items-center gap-1 text-[13px] text-amber-300 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]"
@@ -214,9 +176,7 @@ function UserCard({
             </span>
           ))}
         </div>
-        <div className="text-[15px] font-semibold leading-tight">
-          {user.name}
-        </div>
+        <div className="text-[15px] font-semibold leading-tight">{user.name}</div>
         <div className="mt-1 flex items-center gap-1.5 text-[13px] text-white/90">
           <span>Verified</span>
           <BadgeCheck className="h-4 w-4 text-sky-400" aria-hidden="true" />

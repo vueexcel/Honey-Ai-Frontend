@@ -1,8 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { CheckCircle2, ShieldCheck, ShoppingCart } from "lucide-react";
 
-// Data for the pricing plans based on the image
 const plans = [
   {
     duration: "1 month",
@@ -43,57 +43,98 @@ const premiumBenefits = [
 ];
 
 export default function PricingSection() {
+  const [selectedPlan, setSelectedPlan] = useState<number | null>(null);
   return (
-    <div className="bg-[#0e0e0e] flex items-center justify-center min-h-screen p-4 sm:p-6 xl:p-8 font-sans">
-      <div className="bg-[#1a1a1a] rounded-2xl p-8 max-w-5xl w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-white text-4xl font-bold">Choose your plan</h1>
-          <div className="flex items-center justify-center text-green-400 mt-2">
-            <ShieldCheck size={20} className="mr-2" />
-            <p>Your payment is 100% anonymous!</p>
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8 font-sans">
+      <div className="text-center mb-6">
+        <h1 className="text-white font-bold" style={{ fontSize: "32px", fontWeight: 700 }}>
+          Choose your plan
+        </h1>
+        <div className="flex items-center justify-center mt-2 mr-1" style={{ color: "var(--gray)" }}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="_icon_ezdv9_56"
+          >
+            <path
+              d="M12.702 2.19756L19.702 4.82256C20.0833 4.96549 20.4119 5.22142 20.6438 5.55612C20.8758 5.89082 21.0001 6.28835 21 6.69556V12.0586C21 13.73 20.5346 15.3684 19.6559 16.7902C18.7772 18.212 17.52 19.3611 16.025 20.1086L12.671 21.7846C12.4627 21.8888 12.2329 21.943 12 21.943C11.7671 21.943 11.5373 21.8888 11.329 21.7846L7.975 20.1076C6.48004 19.3601 5.22277 18.211 4.34407 16.7892C3.46537 15.3674 2.99996 13.729 3 12.0576V6.69656C2.99975 6.28918 3.12391 5.89143 3.35587 5.55653C3.58783 5.22163 3.91653 4.96555 4.298 4.82256L11.298 2.19756C11.7506 2.0279 12.2494 2.0279 12.702 2.19756ZM12 8.00256C11.7551 8.00259 11.5187 8.09252 11.3356 8.25528C11.1526 8.41804 11.0357 8.64231 11.007 8.88556L11 9.00256V11.0026H9C8.74512 11.0028 8.49997 11.1004 8.31463 11.2754C8.1293 11.4504 8.01777 11.6895 8.00283 11.944C7.98789 12.1984 8.07067 12.4489 8.23426 12.6444C8.39786 12.8398 8.62991 12.9655 8.883 12.9956L9 13.0026H11V15.0026C11.0003 15.2574 11.0979 15.5026 11.2728 15.6879C11.4478 15.8733 11.687 15.9848 11.9414 15.9997C12.1958 16.0147 12.4464 15.9319 12.6418 15.7683C12.8373 15.6047 12.9629 15.3727 12.993 15.1196L13 15.0026V13.0026H15C15.2549 13.0023 15.5 12.9047 15.6854 12.7297C15.8707 12.5547 15.9822 12.3156 15.9972 12.0612C16.0121 11.8067 15.9293 11.5562 15.7657 11.3607C15.6021 11.1653 15.3701 11.0397 15.117 11.0096L15 11.0026H13V9.00256C13 8.73735 12.8946 8.48299 12.7071 8.29545C12.5196 8.10792 12.2652 8.00256 12 8.00256Z"
+              fill="#00ECA3"
+            ></path>
+          </svg>
+          <p>Your payment is 100% anonymous!</p>
         </div>
+      </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {/* Left Side: Plans */}
-          <div className="flex flex-col">
-            <div className="mb-6">
-              <h2 className="text-white text-3xl font-bold">Get Exclusive</h2>
-              <h2 className="text-purple-400 text-3xl font-bold">Discount Only</h2>
-              <h2 className="text-white text-3xl font-bold">Today!</h2>
-            </div>
-            
+      <div
+        className="rounded-2xl p-12 max-w-[1300px] w-full"
+        style={{ backgroundColor: "var(--secondary)", border: "2px solid var(--gray-dark)" }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+          {/* 1st Column: Discount Block  */}
+          <div className="order-1 lg:order-1 lg:col-span-1 flex flex-col items-start self-start">
+            <h2 className="text-[24px] leading-tight font-extrabold text-white mb-6">
+              Get{" "}
+              <span className="text-purple-400">
+                Exclusive <br />
+                Discount{" "}
+              </span>
+              Only Today!
+            </h2>
+          </div>
+          {/* 2nd Column: Tokens Banner  */}
+          <div className="order-2 lg:order-2 lg:col-span-2 flex flex-col justify-center mx-auto w-full max-w-2xl">
             {/* Tokens Banner */}
-            <div className="bg-gradient-to-r from-[#4a3a24] to-[#3c2f1e] text-white p-3 rounded-lg flex items-center justify-center mb-6">
-              <span className="bg-orange-400 text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center mr-3">C</span>
-              <span>Get 100 Tokens every month</span>
+            <div
+              className="bg-gradient-to-r from-[#4a3a24] to-[#3c2f1e] text-white p-3 flex items-center justify-center mb-6 w-full"
+              style={{ borderRadius: "12px" }}
+            >
+              <svg width="21" height="23" viewBox="0 0 21 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9.4395 6.61039L9.43945 6.61045L6.61045 9.43945L6.61039 9.4395C6.32919 9.72079 6.17121 10.1023 6.17121 10.5C6.17121 10.8977 6.32919 11.2792 6.61039 11.5605L6.61045 11.5606L9.43945 14.3896L9.4395 14.3896C9.72079 14.6708 10.1023 14.8288 10.5 14.8288C10.8977 14.8288 11.2792 14.6708 11.5605 14.3896L11.5606 14.3896L14.3896 11.5606L14.3896 11.5605C14.6708 11.2792 14.8288 10.8977 14.8288 10.5C14.8288 10.1023 14.6708 9.72079 14.3896 9.4395L14.3896 9.43945L11.5606 6.61045L11.5605 6.61039C11.2792 6.32919 10.8977 6.17121 10.5 6.17121C10.1023 6.17121 9.72079 6.32919 9.4395 6.61039ZM10.5 1C15.7469 1 20 5.25314 20 10.5C20 15.7469 15.7469 20 10.5 20C5.25314 20 1 15.7469 1 10.5C1 5.25314 5.25314 1 10.5 1Z"
+                  fill="#FFB930"
+                  stroke="#FF7B02"
+                ></path>
+              </svg>
+              <span style={{ marginLeft: "8px" }}>Get 100 Tokens every month</span>
             </div>
-
             {/* Plan Options */}
-            <div className="space-y-4">
-              {plans.map((plan) => (
+            <div className="space-y-4 w-full">
+              {plans.map((plan, idx) => (
                 <div
                   key={plan.duration}
-                  className={`bg-[#2c2c2c] p-4 rounded-lg border-2 ${
-                    plan.popular ? "border-purple-600" : "border-transparent"
-                  } cursor-pointer transition-all duration-300 hover:border-purple-500`}
+                  className={`bg-[#2c2c2c] p-4 border-2 transition-all duration-300 cursor-pointer w-full ${
+                    selectedPlan === idx
+                      ? "border-purple-600 shadow-[0_0_0_2px_#a855f7]"
+                      : "border-transparent hover:border-purple-500"
+                  }`}
+                  style={{
+                    background: "linear-gradient(90deg, var(--purple-900) 0%, var(--secondary) 100%)",
+                    borderRadius: "12px",
+                  }}
+                  onClick={() => setSelectedPlan(idx)}
                 >
                   <div className="flex justify-between items-center">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-white text-lg font-semibold">{plan.duration}</h3>
-                        <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">{plan.discount}</span>
-                      </div>
-                       <div className="text-gray-400 text-sm">
+                    <div className="flex flex-col items-start gap-1">
+                      <h3 className="text-[20px] font-bold text-white whitespace-nowrap w-fit">{plan.duration}</h3>
+                      <span className="bg-red-400 text-white text-xs font-bold px-2 py-1 rounded-md mt-1">
+                        {plan.discount}
+                      </span>
+                      <div className="text-gray-400 text-sm mt-1">
                         <span className="line-through">{plan.originalPrice}</span>
                         <span> {plan.discountedPrice}</span>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-white text-3xl font-bold">${plan.dailyPrice}</p>
-                      <p className="text-gray-400 text-sm">USD per day</p>
+                    <div className="flex flex-row items-start justify-end min-w-[110px]">
+                      <span className="text-white text-[42px] font-extrabold leading-none">{plan.dailyPrice}</span>
+                      <div className="flex flex-col items-start ml-2">
+                        <p className="text-[16px] text-white font-bold leading-none text-left mt-[2px]">USD</p>
+                        <p className="text-[14px] font-medium leading-[120%] whitespace-nowrap text-left text-gray-400">
+                          per day
+                        </p>
+                      </div>
                     </div>
                   </div>
                   {plan.popular && (
@@ -104,47 +145,202 @@ export default function PricingSection() {
                 </div>
               ))}
             </div>
+            {/* Footer Section */}
+            <div className="mt-8 w-full">
+              <div className="flex justify-center w-full mb-6">
+                <div className="flex flex-row items-center justify-center gap-6  rounded-lg px-6 py-3 w-fit">
+                  <div className="flex items-center text-white text-sm font-medium gap-2">
+                    <ShoppingCart size={18} className="text-green-400" />
+                    No commitment. Cancel anytime!
+                  </div>
+                  <div className="flex items-center text-white text-sm font-medium gap-2">
+                    <ShieldCheck size={18} className="text-green-400" />
+                    30-Day Money-Back Guarantee
+                  </div>
+                </div>
+              </div>
+              <button className="w-full bg-red-400 text-white font-bold text-lg py-4 rounded-lg hover:bg-pink-700 transition-colors duration-300">
+                Continue
+              </button>
+              <div className="text-gray-500 text-xs text-center mt-4">
+                <p>
+                  By continuing, you confirm that you are at least 18 years old and agree to an introductory payment of
+                  $43.99 for a quarterly subscription. If you do not cancel at least 24 hours before the end of the
+                  introductory period, you will automatically be charged $109.99 for each subsequent period until you
+                  cancel.
+                </p>
+                <p className="mt-2">
+                  By clicking Continue, you also confirm that you agree to our{" "}
+                  <a href="#" className="underline hover:text-gray-300">
+                    Terms & Conditions
+                  </a>
+                  .
+                </p>
+                <p className="mt-2">Payment will be shown as GetHoney AI</p>
+                <div className="flex justify-center gap-2 mt-2">
+                  <svg width="56" height="36" viewBox="0 0 56 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="56" height="36" rx="9.46032" fill="white"></rect>
+                    <g clip-path="url(#clip0_13_12581)">
+                      <path
+                        d="M17.9016 31.104V29.4343C17.9016 28.7941 17.5119 28.3767 16.8439 28.3767C16.51 28.3767 16.1482 28.4881 15.8977 28.8499C15.703 28.5437 15.4247 28.3767 15.0072 28.3767C14.7288 28.3767 14.4507 28.4602 14.228 28.7663V28.4324H13.6436V31.104H14.228V29.629C14.228 29.156 14.4785 28.9333 14.8682 28.9333C15.2576 28.9333 15.4526 29.1838 15.4526 29.629V31.104H16.037V29.629C16.037 29.156 16.3151 28.9333 16.6769 28.9333C17.0666 28.9333 17.2614 29.1838 17.2614 29.629V31.104H17.9016ZM26.5564 28.4324H25.6103V27.6254H25.0259V28.4324H24.4971V28.961H25.0257V30.1856C25.0257 30.798 25.2762 31.1596 25.9442 31.1596C26.1947 31.1596 26.4728 31.0762 26.6678 30.9649L26.5007 30.4639C26.3338 30.5752 26.139 30.6031 25.9998 30.6031C25.7216 30.6031 25.6103 30.4362 25.6103 30.1578V28.961H26.5564V28.4324ZM31.5101 28.3766C31.1762 28.3766 30.9536 28.5437 30.8144 28.7663V28.4324H30.2299V31.104H30.8144V29.6012C30.8144 29.156 31.0091 28.9055 31.3709 28.9055C31.4822 28.9055 31.6214 28.9334 31.7327 28.9612L31.8997 28.4046C31.7883 28.3767 31.6214 28.3767 31.5101 28.3767M24.024 28.6551C23.7456 28.4603 23.356 28.3769 22.9386 28.3769C22.2707 28.3769 21.8255 28.7108 21.8255 29.2396C21.8255 29.6849 22.1594 29.9353 22.7438 30.0188L23.0221 30.0467C23.3283 30.1022 23.4952 30.1858 23.4952 30.325C23.4952 30.5197 23.2726 30.6589 22.8829 30.6589C22.4932 30.6589 22.1872 30.5197 21.9923 30.3806L21.7141 30.8258C22.0202 31.0485 22.4377 31.1598 22.855 31.1598C23.6343 31.1598 24.0796 30.7981 24.0796 30.2971C24.0796 29.824 23.7178 29.5735 23.1612 29.4901L22.8829 29.4622C22.6324 29.4343 22.4377 29.3788 22.4377 29.2118C22.4377 29.0169 22.6324 28.9056 22.9386 28.9056C23.2726 28.9056 23.6065 29.0447 23.7735 29.1282L24.024 28.6551ZM39.5528 28.3769C39.2188 28.3769 38.9962 28.5438 38.857 28.7664V28.4325H38.2726V31.1041H38.857V29.6014C38.857 29.1561 39.0518 28.9056 39.4135 28.9056C39.525 28.9056 39.6642 28.9335 39.7755 28.9613L39.9424 28.4048C39.8311 28.3769 39.6642 28.3769 39.5528 28.3769ZM32.0945 29.7683C32.0945 30.5753 32.651 31.1598 33.5138 31.1598C33.9034 31.1598 34.1817 31.0763 34.4599 30.8537L34.1817 30.3806C33.9591 30.5476 33.7364 30.631 33.4859 30.631C33.0128 30.631 32.6789 30.2971 32.6789 29.7683C32.6789 29.2674 33.0128 28.9334 33.4859 28.9056C33.7364 28.9056 33.9591 28.9891 34.1817 29.1561L34.4599 28.683C34.1817 28.4603 33.9034 28.3769 33.5138 28.3769C32.651 28.3769 32.0945 28.9613 32.0945 29.7683ZM37.4934 29.7683V28.4325H36.909V28.7664C36.7142 28.5161 36.4359 28.3769 36.0741 28.3769C35.3227 28.3769 34.7383 28.9613 34.7383 29.7683C34.7383 30.5753 35.3227 31.1598 36.0741 31.1598C36.4637 31.1598 36.7421 31.0207 36.909 30.7702V31.1041H37.4934V29.7683ZM35.3505 29.7683C35.3505 29.2952 35.6567 28.9056 36.1575 28.9056C36.6306 28.9056 36.9647 29.2674 36.9647 29.7683C36.9647 30.2414 36.6306 30.631 36.1575 30.631C35.6567 30.6031 35.3505 30.2414 35.3505 29.7683ZM28.3654 28.3769C27.5861 28.3769 27.0295 28.9334 27.0295 29.7683C27.0295 30.6032 27.586 31.1598 28.3932 31.1598C28.7827 31.1598 29.1724 31.0485 29.4786 30.7981L29.2002 30.3806C28.9776 30.5476 28.6993 30.6589 28.421 30.6589C28.0592 30.6589 27.6974 30.4919 27.6139 30.0187H29.5899V29.7962C29.6178 28.9334 29.1169 28.3769 28.3654 28.3769ZM28.3653 28.8777C28.7269 28.8777 28.9776 29.1005 29.0331 29.5179H27.6417C27.6973 29.1561 27.9478 28.8777 28.3653 28.8777ZM42.8644 29.7683V27.375H42.28V28.7664C42.0851 28.5161 41.8068 28.3769 41.445 28.3769C40.6937 28.3769 40.1092 28.9613 40.1092 29.7683C40.1092 30.5753 40.6937 31.1598 41.445 31.1598C41.8347 31.1598 42.113 31.0207 42.28 30.7702V31.1041H42.8644V29.7683ZM40.7215 29.7683C40.7215 29.2952 41.0276 28.9056 41.5286 28.9056C42.0017 28.9056 42.3356 29.2674 42.3356 29.7683C42.3356 30.2414 42.0017 30.631 41.5286 30.631C41.0276 30.6031 40.7215 30.2414 40.7215 29.7683ZM21.1852 29.7683V28.4325H20.6008V28.7664C20.4059 28.5161 20.1277 28.3769 19.7659 28.3769C19.0145 28.3769 18.4301 28.9613 18.4301 29.7683C18.4301 30.5753 19.0145 31.1598 19.7659 31.1598C20.1555 31.1598 20.4338 31.0207 20.6008 30.7702V31.1041H21.1852V29.7683ZM19.0145 29.7683C19.0145 29.2952 19.3206 28.9056 19.8215 28.9056C20.2946 28.9056 20.6287 29.2674 20.6287 29.7683C20.6287 30.2414 20.2946 30.631 19.8215 30.631C19.3206 30.6031 19.0145 30.2414 19.0145 29.7683Z"
+                        fill="black"
+                      ></path>
+                      <path d="M23.8291 8.14453H32.5953V23.896H23.8291V8.14453Z" fill="#FF5F00"></path>
+                      <path
+                        d="M24.386 16.0186C24.386 12.8183 25.8888 9.97959 28.1985 8.14279C26.5011 6.807 24.3582 5.99998 22.0206 5.99998C16.4823 5.99998 12.0018 10.4805 12.0018 16.0186C12.0018 21.5567 16.4823 26.0372 22.0204 26.0372C24.3581 26.0372 26.5009 25.2302 28.1985 23.8943C25.8888 22.0854 24.386 19.2189 24.386 16.0186Z"
+                        fill="#EB001B"
+                      ></path>
+                      <path
+                        d="M44.4229 16.0186C44.4229 21.5566 39.9424 26.0372 34.4043 26.0372C32.0666 26.0372 29.9238 25.2302 28.2262 23.8943C30.5639 22.0576 32.0388 19.219 32.0388 16.0186C32.0388 12.8183 30.536 9.9796 28.2262 8.14281C29.9237 6.80702 32.0666 6 34.4043 6C39.9424 6 44.4229 10.5084 44.4229 16.0186Z"
+                        fill="#F79E1B"
+                      ></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_13_12581">
+                        <rect width="32.4568" height="25.2275" fill="white" transform="translate(12 6)"></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <svg width="62" height="36" viewBox="0 0 62 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="62" height="36" rx="9.46032" fill="white"></rect>
+                    <g clip-path="url(#clip0_13_12587)">
+                      <path
+                        d="M31.6683 15.7087C31.6461 17.4588 33.2279 18.4354 34.4196 19.0161C35.6439 19.6118 36.0551 19.9938 36.0502 20.5267C36.0411 21.342 35.0737 21.7019 34.1684 21.7159C32.5889 21.7403 31.6705 21.2894 30.9405 20.9484L30.3715 23.6108C31.104 23.9483 32.4603 24.2427 33.8668 24.2556C37.1685 24.2556 39.3284 22.6259 39.3401 20.099C39.3531 16.8921 34.9044 16.7146 34.9348 15.2812C34.9452 14.8465 35.36 14.3827 36.2688 14.2648C36.7186 14.2052 37.9604 14.1596 39.3683 14.8079L39.9208 12.232C39.1637 11.9563 38.1906 11.6923 36.9791 11.6923C33.8716 11.6923 31.6859 13.3443 31.6683 15.7087ZM45.2305 11.9142C44.6276 11.9142 44.1195 12.2659 43.8928 12.8055L39.1766 24.0664H42.4758L43.1323 22.252H47.1639L47.5447 24.0664H50.4526L47.9151 11.9142H45.2305ZM45.692 15.197L46.6441 19.7603H44.0366L45.692 15.197ZM27.6682 11.9144L25.0676 24.0663H28.2115L30.8108 11.9141L27.6682 11.9144ZM23.0173 11.9144L19.7451 20.1855L18.4214 13.1526C18.2661 12.3675 17.6527 11.9142 16.9716 11.9142H11.6224L11.5475 12.2671C12.6456 12.5054 13.8933 12.8897 14.6493 13.301C15.1119 13.5522 15.2438 13.7718 15.3957 14.3687L17.9028 24.0664H21.2251L26.3186 11.9142L23.0173 11.9144Z"
+                        fill="url(#paint0_linear_13_12587)"
+                      ></path>
+                    </g>
+                    <defs>
+                      <linearGradient
+                        id="paint0_linear_13_12587"
+                        x1="1800.17"
+                        y1="49.4576"
+                        x2="1836.53"
+                        y2="-1240.81"
+                        gradientUnits="userSpaceOnUse"
+                      >
+                        <stop stop-color="#222357"></stop>
+                        <stop offset="1" stop-color="#254AA5"></stop>
+                      </linearGradient>
+                      <clipPath id="clip0_13_12587">
+                        <rect
+                          width="38.9056"
+                          height="12.6138"
+                          fill="white"
+                          transform="translate(11.5472 11.6931)"
+                        ></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <svg width="56" height="36" viewBox="0 0 56 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="56" height="36" rx="9.46032" fill="white"></rect>
+                    <g clip-path="url(#clip0_13_12590)">
+                      <path d="M32.6161 23.9151H23.8407V8.14453H32.6161V23.9151Z" fill="#6C6BBD"></path>
+                      <path
+                        d="M24.3979 16.0297C24.3979 12.8305 25.8957 9.98085 28.2283 8.14443C26.5226 6.80155 24.3697 5.99997 22.0302 5.99997C16.4916 5.99997 12.0018 10.4903 12.0018 16.0297C12.0018 21.569 16.4916 26.0594 22.0302 26.0594C24.3698 26.0594 26.5226 25.2578 28.2283 23.9149C25.8957 22.0785 24.3979 19.2288 24.3979 16.0297Z"
+                        fill="#D32011"
+                      ></path>
+                      <path
+                        d="M44.4551 16.0298C44.4551 21.569 39.9654 26.0594 34.4268 26.0594C32.0872 26.0594 29.9344 25.2578 28.228 23.915C30.5613 22.0785 32.0591 19.2288 32.0591 16.0298C32.0591 12.8306 30.5613 9.98087 28.228 8.14446C29.9344 6.80157 32.0873 6 34.4268 6C39.9654 6 44.4551 10.4904 44.4551 16.0298Z"
+                        fill="#0099DF"
+                      ></path>
+                      <path
+                        d="M35.5853 28.3699C35.7019 28.3699 35.8697 28.3922 35.9978 28.4425L35.8193 28.9884C35.6969 28.9381 35.5744 28.9215 35.4571 28.9215C35.0783 28.9215 34.8889 29.1663 34.8889 29.6063V31.0997H34.3093V28.4368H34.8832V28.7601C35.0337 28.5261 35.2511 28.3699 35.5853 28.3699ZM33.444 28.9661H32.497V30.1693C32.497 30.4365 32.5915 30.615 32.8816 30.615C33.0321 30.615 33.2214 30.5647 33.3937 30.4645L33.5606 30.9601C33.3771 31.0881 33.0875 31.1667 32.8369 31.1667C32.1514 31.1667 31.9124 30.7987 31.9124 30.1802V28.9661H31.3717V28.4368H31.9124V27.6289H32.497V28.4368H33.444V28.9661ZM26.0286 29.5343C26.0905 29.1498 26.324 28.8877 26.7365 28.8877C27.1095 28.8877 27.3492 29.1216 27.4104 29.5343H26.0286ZM28.0125 29.7683C28.0067 28.9379 27.494 28.3699 26.7473 28.3699C25.9675 28.3699 25.4217 28.9381 25.4217 29.7682C25.4217 30.6144 25.9898 31.166 26.7869 31.166C27.188 31.166 27.5552 31.0658 27.8785 30.793L27.5941 30.3639C27.3717 30.5424 27.0872 30.6425 26.8201 30.6425C26.447 30.6425 26.1071 30.4697 26.0236 29.9909H28.001C28.0067 29.9181 28.0125 29.846 28.0125 29.7683ZM30.5579 29.1166C30.3966 29.0158 30.0681 28.8876 29.7282 28.8876C29.4106 28.8876 29.2213 29.005 29.2213 29.2001C29.2213 29.378 29.4216 29.4283 29.6722 29.4615L29.9451 29.5004C30.5247 29.5846 30.8754 29.8295 30.8754 30.2976C30.8754 30.8044 30.4296 31.1666 29.6613 31.1666C29.2264 31.1666 28.8253 31.055 28.5077 30.821L28.7807 30.3696C28.9758 30.5201 29.266 30.6482 29.667 30.6482C30.0624 30.6482 30.2741 30.5316 30.2741 30.325C30.2741 30.1751 30.1236 30.0909 29.806 30.0469L29.5331 30.008C28.9369 29.9238 28.6136 29.6566 28.6136 29.2224C28.6136 28.6932 29.0485 28.3699 29.7225 28.3699C30.1459 28.3699 30.5304 28.465 30.8084 28.6485L30.5579 29.1166ZM37.7028 28.9201C37.5836 28.9201 37.4733 28.9412 37.3706 28.9827C37.2713 29.0229 37.181 29.0828 37.1053 29.1587C37.0291 29.2363 36.9692 29.3285 36.9293 29.4297C36.8867 29.535 36.8655 29.6508 36.8656 29.7772C36.8656 29.9041 36.8866 30.0194 36.9293 30.1247C36.9721 30.23 37.0308 30.3204 37.1053 30.3957C37.181 30.4716 37.2713 30.5314 37.3706 30.5717C37.4733 30.6137 37.5836 30.6341 37.7028 30.6341C37.8219 30.6341 37.933 30.6139 38.0349 30.5717C38.1347 30.5315 38.2254 30.4717 38.3015 30.3957C38.3774 30.3205 38.4361 30.2299 38.4795 30.1247C38.5222 30.0194 38.5433 29.9041 38.5433 29.7772C38.5433 29.6508 38.5221 29.535 38.4795 29.4297C38.4361 29.3245 38.3774 29.234 38.3015 29.1587C38.2254 29.0827 38.1348 29.0228 38.035 28.9827C37.9294 28.9405 37.8166 28.9192 37.7029 28.9202M37.7029 28.37C37.9095 28.3699 38.1008 28.4058 38.2768 28.4778C38.4528 28.5493 38.605 28.6479 38.7334 28.7737C38.8626 28.9004 38.9652 29.0517 39.035 29.2186C39.1077 29.3903 39.144 29.5765 39.144 29.7773C39.144 29.9781 39.1077 30.1643 39.035 30.3359C38.9652 30.5031 38.8626 30.6547 38.7333 30.7816C38.6053 30.9072 38.4527 31.0055 38.2769 31.0775C38.1008 31.1489 37.9094 31.1846 37.7029 31.1846C37.4963 31.1846 37.305 31.1489 37.129 31.0775C36.953 31.0055 36.8019 30.9072 36.6744 30.7816C36.5458 30.6543 36.4437 30.5028 36.3739 30.3359C36.3013 30.1643 36.2649 29.9781 36.2649 29.7773C36.2649 29.5765 36.3013 29.3903 36.3739 29.2187C36.4437 29.052 36.5458 28.9007 36.6744 28.7737C36.8049 28.646 36.9594 28.5454 37.129 28.4778C37.305 28.4058 37.4963 28.3699 37.7029 28.37ZM22.6441 29.7682C22.6441 29.3003 22.9509 28.9158 23.452 28.9158C23.931 28.9158 24.2542 29.2837 24.2542 29.7683C24.2542 30.2529 23.931 30.6202 23.452 30.6202C22.9509 30.6202 22.6441 30.2362 22.6441 29.7682ZM24.8001 29.7683V28.4369H24.221V28.7602C24.0368 28.5205 23.7588 28.37 23.38 28.37C22.6333 28.37 22.0485 28.9547 22.0485 29.7683C22.0485 30.5814 22.6333 31.1667 23.38 31.1667C23.7588 31.1667 24.0367 31.0162 24.221 30.7765V31.0998H24.8001V29.7683ZM21.5357 31.0998V29.4286C21.5357 28.7991 21.1346 28.3757 20.4887 28.37C20.1489 28.3643 19.7974 28.4702 19.5526 28.8438C19.369 28.5485 19.0789 28.37 18.6721 28.37C18.3883 28.37 18.1096 28.4536 17.8922 28.7653V28.4369H17.3132V31.0998H17.8979V29.6237C17.8979 29.1613 18.1542 28.9159 18.5495 28.9159C18.9341 28.9159 19.1292 29.1664 19.1292 29.618V31.0998H19.714V29.6235C19.714 29.1612 19.9818 28.9158 20.3656 28.9158C20.7617 28.9158 20.9511 29.1663 20.9511 29.6178V31.0998H21.5357Z"
+                        fill="#110F0D"
+                      ></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_13_12590">
+                        <rect width="32.4568" height="25.2275" fill="white" transform="translate(12 6)"></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <svg width="62" height="36" viewBox="0 0 62 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="62" height="36" rx="9.46032" fill="#26A6D1"></rect>
+                    <path
+                      d="M12.6209 3.00049H49.3163C50.7632 3.00049 51.9374 4.17468 51.9374 5.62284V30.5232C51.9374 31.9701 50.7632 33.1443 49.3163 33.1443H12.6209C11.1728 33.1444 9.99988 31.9701 9.99988 30.5234V5.62284C9.99988 4.17468 11.1741 3.00049 12.6209 3.00049Z"
+                      fill="#26A6D1"
+                    ></path>
+                    <path
+                      d="M16.7623 13.4849L12.621 22.6496H17.5788L18.1934 21.1883H19.5983L20.2129 22.6496H25.6701V21.5343L26.1563 22.6496H28.9792L29.4655 21.5107V22.6496H40.8148L42.1949 21.2263L43.4871 22.6496L49.3164 22.6614L45.1619 18.0928L49.3164 13.4849H43.5775L42.2341 14.8818L40.9826 13.4849H28.6359L27.5757 15.8504L26.4907 13.4849H21.5432V14.5622L20.9928 13.4849H16.7623ZM17.7216 14.7863H20.1383L22.8853 21.0009V14.7863H25.5326L27.6544 19.2421L29.6098 14.7863H32.2439V21.3626H30.6411L30.628 16.2094L28.2913 21.3626H26.8575L24.5077 16.2094V21.3626H21.2103L20.5852 19.8882H17.2079L16.5841 21.3613H14.8174L17.7216 14.7863ZM33.7103 14.7863H40.2277L42.221 16.9395L44.2786 14.7863H46.272L43.2433 18.0915L46.272 21.3587H44.1882L42.1949 19.1805L40.1268 21.3587H33.7103V14.7863ZM18.8973 15.8989L17.7846 18.5253H20.0087L18.8973 15.8989ZM35.3197 16.1479V17.3484H38.8752V18.6864H35.3197V19.997H39.3078L41.1608 18.0666L39.3864 16.1467H35.3197V16.1479Z"
+                      fill="#FFFCFC"
+                    ></path>
+                  </svg>
+                  <svg width="80" height="37" viewBox="0 0 80 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.117645" width="80" height="36" rx="9.46032" fill="white"></rect>
+                    <g clip-path="url(#clip0_5534_8284)">
+                      <g filter="url(#filter0_i_5534_8284)">
+                        <path
+                          d="M41.5583 13.4276C38.9551 13.4276 36.843 15.4885 36.843 18.032C36.843 20.7364 38.8634 22.7578 41.5583 22.7578C44.1861 22.7578 46.2609 20.7095 46.2609 18.0852C46.2609 15.4763 44.2 13.4276 41.5583 13.4276"
+                          fill="url(#paint0_linear_5534_8284)"
+                        ></path>
+                      </g>
+                      <path
+                        d="M14.7893 13.5955H12.2543V22.5557H14.776C16.114 22.5557 17.0816 22.2345 17.9305 21.5219C18.9376 20.6754 19.5348 19.3991 19.5348 18.0799C19.5348 15.4345 17.5847 13.5955 14.7893 13.5955ZM16.8052 20.3252C16.2602 20.8235 15.5584 21.0389 14.4432 21.0389H13.9799V15.1128H14.4432C15.5584 15.1128 16.2333 15.3145 16.8052 15.8379C17.4017 16.3754 17.7574 17.2077 17.7574 18.0671C17.7574 18.9285 17.4017 19.7898 16.8052 20.3252ZM20.3309 22.5557H22.0538V13.5955H20.3311L20.3309 22.5557ZM26.2715 17.0325C25.2361 16.6438 24.9314 16.3874 24.9314 15.9054C24.9314 15.3407 25.4739 14.9111 26.2176 14.9111C26.7346 14.9111 27.1588 15.126 27.6109 15.6349L28.5113 14.4411C27.7689 13.7814 26.8808 13.446 25.912 13.446C24.3492 13.446 23.155 14.5482 23.155 16.0113C23.155 17.2484 23.7114 17.8792 25.3295 18.4719C26.0059 18.7125 26.3498 18.873 26.5226 18.9827C26.8673 19.2112 27.0404 19.5325 27.0404 19.9084C27.0404 20.6351 26.4698 21.1717 25.6997 21.1717C24.8776 21.1717 24.2154 20.7556 23.8175 19.9765L22.7051 21.0659C23.499 22.2466 24.4538 22.7723 25.7677 22.7723C27.5574 22.7723 28.8161 21.5615 28.8161 19.8288C28.8161 18.4044 28.2343 17.759 26.2715 17.0325ZM29.3595 18.08C29.3595 20.7162 31.402 22.7579 34.0278 22.7579C34.7702 22.7579 35.4065 22.6092 36.1895 22.2344V20.1777C35.4992 20.8771 34.8891 21.1585 34.1065 21.1585C32.3701 21.1585 31.1363 19.8818 31.1363 18.0671C31.1363 16.3482 32.4087 14.991 34.0278 14.991C34.8485 14.991 35.4727 15.2863 36.1895 15.9984V13.9419C35.4338 13.5536 34.8097 13.3934 34.0672 13.3934C31.4547 13.3934 29.3595 15.4763 29.3595 18.08ZM50.1631 19.6143L47.8029 13.5955H45.9201L49.6737 22.7846H50.601L54.4201 13.5954H52.5512L50.1631 19.6143ZM55.2041 22.5558H60.0959V21.0389H56.9274V18.6187H59.9746V17.1015H56.9274V15.1126H60.0959V13.5956H55.204L55.2041 22.5558ZM66.9224 16.2399C66.9224 14.5613 65.7837 13.5955 63.7937 13.5955H61.2344V22.5557H62.9598V18.9545H63.1856L65.5709 22.5557H67.6924L64.9063 18.7815C66.2076 18.5118 66.9224 17.6112 66.9224 16.2399ZM63.4616 17.7196H62.9598V15.0045H63.4892C64.5655 15.0045 65.1486 15.4627 65.1486 16.3347C65.1486 17.2342 64.5655 17.7196 63.4616 17.7196Z"
+                        fill="#0B1015"
+                      ></path>
+                    </g>
+                    <defs>
+                      <filter
+                        id="filter0_i_5534_8284"
+                        x="36.8429"
+                        y="13.4276"
+                        width="10.3009"
+                        height="10.2131"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                      >
+                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                          result="hardAlpha"
+                        ></feColorMatrix>
+                        <feOffset dx="0.882963" dy="0.882963"></feOffset>
+                        <feGaussianBlur stdDeviation="0.78836"></feGaussianBlur>
+                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"></feComposite>
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"></feColorMatrix>
+                        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_5534_8284"></feBlend>
+                      </filter>
+                      <linearGradient
+                        id="paint0_linear_5534_8284"
+                        x1="219.682"
+                        y1="97.9871"
+                        x2="864.988"
+                        y2="770.534"
+                        gradientUnits="userSpaceOnUse"
+                      >
+                        <stop stop-color="#F34F26"></stop>
+                        <stop offset="1" stop-color="#F69E35"></stop>
+                      </linearGradient>
+                      <clipPath id="clip0_5534_8284">
+                        <rect
+                          width="55.5794"
+                          height="9.46032"
+                          fill="white"
+                          transform="translate(12.2103 13.3875)"
+                        ></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* Right Side: Benefits */}
-          <div className="bg-[#2c2c2c] p-8 rounded-lg">
-            <h3 className="text-white text-2xl font-bold mb-6 text-purple-400">Premium Benefits</h3>
-            <ul className="space-y-4">
+          {/* 3rd Column: Premium Benefits */}
+          <div className="order-3 lg:order-3 lg:col-span-1 p-0 rounded-lg flex flex-col items-start self-start">
+            <h3 className="text-[24px] font-bold mb-4" style={{ color: "var(--accent)" }}>
+              Premium Benefits
+            </h3>
+            <ul className="space-y-3">
               {premiumBenefits.map((benefit, index) => (
-                <li key={index} className="flex items-center text-white">
-                  <CheckCircle2 size={20} className="text-purple-400 mr-3 flex-shrink-0" />
-                  <span>{benefit}</span>
+                <li key={index} className="flex items-center text-white text-sm">
+                  <CheckCircle2 size={16} className="text-purple-400 mr-2 flex-shrink-0" />
+                  <span style={{ fontSize: "16px", fontWeight: "700" }}>{benefit}</span>
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
-
-        {/* Footer Section */}
-        <div className="mt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center text-gray-300 text-sm mb-6 gap-4">
-            <div className="flex items-center">
-              <ShoppingCart size={20} className="mr-2" />
-              <span>No commitment. Cancel anytime!</span>
-            </div>
-            <div className="flex items-center">
-              <ShieldCheck size={20} className="mr-2 text-green-400" />
-              <span>30-Day Money-Back Guarantee</span>
-            </div>
-          </div>
-
-          <button className="w-full bg-pink-600 text-white font-bold text-lg py-4 rounded-lg hover:bg-pink-700 transition-colors duration-300">
-            Continue
-          </button>
-          
-          <div className="text-gray-500 text-xs text-center mt-4">
-            <p>
-              By continuing, you confirm that you are at least 18 years old and agree to an introductory payment of $43.99 for a quarterly subscription. 
-              If you do not cancel at least 24 hours before the end of the introductory period, you will automatically be charged $109.99 for each subsequent period until you cancel.
-            </p>
-            <p className="mt-2">
-              By clicking Continue, you also confirm that you agree to our <a href="#" className="underline hover:text-gray-300">Terms & Conditions</a>.
-            </p>
           </div>
         </div>
       </div>
