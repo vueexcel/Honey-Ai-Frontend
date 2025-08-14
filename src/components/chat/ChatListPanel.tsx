@@ -85,8 +85,9 @@ export default function ChatListPanel({
                   <p className="text-[var(--gray)] flex items-center gap-1">
                     {/* {lastMessage.type === "video" && <VideoImage />} */}
                     <span className="truncate overflow-hidden whitespace-nowrap flex-1">
-                      {" "}
-                      <span>{lastMessage ? lastMessage.content : ""}</span>
+                      {user.id === activeCharacterId
+                        ? lastMessage?.content
+                        : user?.last_message?.content}
                     </span>
                   </p>
                 </div>

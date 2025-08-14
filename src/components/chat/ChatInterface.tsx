@@ -21,6 +21,7 @@ export default function ChatInterface() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [error, setError] = useState("");
+  const hasFetched = useRef(false);
   const isResizing = useRef(false);
   const activeCharacter = useMemo(() => {
     if (!characterId) return undefined;
@@ -28,6 +29,9 @@ export default function ChatInterface() {
   }, [characters, characterId]);
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
     async function fetchData() {
       try {
         const data = await getConversationCharacter();
@@ -36,7 +40,11 @@ export default function ChatInterface() {
         setError(err.message);
       }
     }
+
     fetchData();
+  }, []);
+
+  useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing.current) return;
       const maxWidth = 60; // max 60vw
