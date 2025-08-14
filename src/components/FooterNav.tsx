@@ -51,7 +51,7 @@ export default function FooterNav() {
                           <span className="absolute -top-1 -right-1 block h-2.5 w-2.5 rounded-full text-[#ff44ba] border-2 border-[#121212]"></span>
                         )}
                       </div>
-                      <span className="text-base font-semibold">{link.text}</span>
+                      <span className="text-xs sm:text-base font-semibold">{link.text}</span>
                     </Link>
                     {isActive && <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#ff44ba]"></span>}
                   </>
@@ -74,7 +74,7 @@ export default function FooterNav() {
                     <span className="absolute -top-1 -right-1 block h-2.5 w-2.5 rounded-full text-[#ff44ba] border-2 border-[#121212]"></span>
                   )}
                 </div>
-                <span className="text-base font-semibold">{link.text}</span>
+                <span className="text-sm sm:text-base font-semibold">{link.text}</span>
               </Link>
               {isActive && <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#ff44ba]"></span>}
             </li>

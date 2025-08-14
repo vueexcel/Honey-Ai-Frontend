@@ -5,7 +5,7 @@ import WandIcon from "./icons/WandIcon";
 
 export default function HeroSection() {
   return (
-    <section className="relative h-72 flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-purple-50/20 to-gray-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 my-4 mx-3 xl:mx-0 xl:my-0 rounded-xl xl:rounded-none">
+    <section className="relative h-72 flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-purple-50/20 to-gray-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 my-4 mx-3 xl:mx-0 xl:my-0 rounded-xl xl:rounded-none max-w-full">
       <div className="absolute inset-y-0 left-0 xl:w-1/2 w-full overflow-hidden">
         <picture>
           <img
@@ -26,7 +26,7 @@ export default function HeroSection() {
       </div>
 
       <div className="hidden xl:flex relative z-10 flex-col p-6 justify-center h-fit max-w-96 bg-[#4c2e5e66] backdrop-blur-md rounded-2xl gap-3 text-white text-center">
-        <span className="text-2xl font-extrabold leading-snug">
+        <span className="text:xl xl:text-2xl font-extrabold leading-snug">
           Your Dream <br /> Companion awaits
         </span>
         <p className="text-sm text-gray-100">
@@ -42,12 +42,12 @@ export default function HeroSection() {
         </Button>
       </div>
       <div className="xl:hidden relative z-10 flex flex-col p-6 h-fit rounded-2xl gap-3 text-white text-center self-end">
-        <span className="text-2xl font-bold leading-snug text-left">
+        <span className="text:xl text-2xl font-bold leading-snug text-left">
           Your Dream <br /> Companion awaits
         </span>
         <Button
           variant="gradient"
-          className="w-sm h-12 rounded-xl flex items-center justify-center text-base font-bold shadow-lg gap-2 "
+          className="w-full sm:w-sm h-12 rounded-xl flex items-center justify-center text-base font-bold shadow-lg gap-2 "
         >
           <WandIcon size={22} />
           Create Character

@@ -54,7 +54,7 @@ export default function LoginModal({ isOpen = true, onClose = () => {} }: LoginM
           <Dialog.Overlay className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
           <Dialog.Content
             style={{ backgroundColor: "var(--main, rgb(24 24 27))" }}
-            className="fixed left-1/2 top-1/2 z-50 w-[96%] max-w-[700px] md:max-w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-xl border-2 border-[var(--gray-dark)] p-8 md:p-10 text-white shadow-2xl"
+            className="fixed left-1/2 top-1/2 z-50 w-[96%] max-w-[700px] md:max-w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-xl border-2 border-[var(--gray-dark)] p-4 sm:p-8 md:p-10 text-white shadow-2xl"
           >
             <button
               aria-label="Close"

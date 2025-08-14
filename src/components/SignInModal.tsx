@@ -52,7 +52,7 @@ export default function SignInModal({ isOpen, onClose }: { isOpen: boolean; onCl
               rounded-xl bg-[linear-gradient(144deg,_#181818_1.24%,_#101010)] text-white
               shadow-[0_20px_80px_rgba(0,0,0,0.6)]
               overflow-hidden
-              grid grid-cols-1 md:grid-cols-[45%_55%]"
+              grid grid-cols-1 md:grid-cols-[45%_55%] px-2"
           >
             <button
               onClick={onClose}

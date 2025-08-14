@@ -15,8 +15,9 @@ export default function ChatInterface() {
   const params = useParams();
   const characterId = params.characterId?.[0] as string | undefined;
 
-  const [chatPanelWidth, setChatPanelWidth] = useState<number>(440);
-  const [isProfileSidebarVisible, setIsProfileSidebar] = useState<Boolean>(true);
+  const [chatPanelWidth, setChatPanelWidth] = useState<number>(30);
+  const [isProfileSidebarVisible, setIsProfileSidebar] =
+    useState<boolean>(false);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [error, setError] = useState("");
@@ -38,8 +39,12 @@ export default function ChatInterface() {
     fetchData();
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing.current) return;
-      const maxWidth = window.innerWidth - 900;
-      const newWidth = Math.max(440, Math.min(e.clientX, maxWidth));
+      const maxWidth = 60; // max 60vw
+      const minWidth = 20; // min 20vw
+      const newWidth = Math.max(
+        minWidth,
+        Math.min((e.clientX / window.innerWidth) * 100, maxWidth)
+      );
       setChatPanelWidth(newWidth);
     };
     const handleMouseUp = () => {
@@ -54,6 +59,19 @@ export default function ChatInterface() {
     };
   }, []);
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsProfileSidebar(window.innerWidth >= 1280);
+    };
+
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     isResizing.current = true;
@@ -65,8 +83,16 @@ export default function ChatInterface() {
 
   return (
     <div className="bg-[#121212] text-white flex h-[calc(100dvh-132px)] xl:h-[calc(100dvh-64px)] font-sans overflow-hidden">
-      <div className={`${characterId ? "hidden xl:flex" : "flex w-full xl:w-auto"}`}>
-        <ChatListPanel width={chatPanelWidth} activeCharacterId={characterId} characters={characters} />
+      <div
+        className={`${
+          characterId ? "hidden xl:flex" : "flex w-full xl:w-auto"
+        }`}
+      >
+        <ChatListPanel
+          width={chatPanelWidth}
+          activeCharacterId={characterId}
+          characters={characters}
+        />
       </div>
       {characterId && (
         <div
@@ -109,7 +135,9 @@ export default function ChatInterface() {
         <div className="hidden xl:flex flex-1 items-center justify-center bg-[#121212]">
           <div className="text-center">
             <h2 className="text-2xl font-bold">Welcome to the Chat</h2>
-            <p className="text-gray-400 mt-2">Select a character from the list to start a conversation.</p>
+            <p className="text-gray-400 mt-2">
+              Select a character from the list to start a conversation.
+            </p>
           </div>
         </div>
       )}

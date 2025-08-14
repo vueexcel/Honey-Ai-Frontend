@@ -12,13 +12,20 @@ interface ChatListPanelProps {
   characters?: Character[];
 }
 
-export default function ChatListPanel({ width, activeCharacterId, characters }: ChatListPanelProps) {
+export default function ChatListPanel({
+  width,
+  activeCharacterId,
+  characters,
+}: ChatListPanelProps) {
   const { messages } = useChatStreaming();
-  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+  const lastMessage =
+    messages.length > 0 ? messages[messages.length - 1] : null;
   return (
     <aside
       className="bg-[var(--secondary)] flex flex-col shrink-0 w-full xl:w-auto"
-      style={{ width: width && window.innerWidth >= 1280 ? `${width}px` : undefined }}
+      style={{
+        width: width && window.innerWidth >= 1280 ? `${width}vw` : undefined,
+      }}
     >
       <div className="p-4 flex gap-3 flex-col bg-linear-[144deg,_rgb(24,_24,_24)_1.24%,_rgb(16,_16,_16)]">
         <div className="flex justify-between items-center">
@@ -28,7 +35,10 @@ export default function ChatListPanel({ width, activeCharacterId, characters }: 
           </button>
         </div>
         <div className="relative">
-          <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search
+            size={20}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
           <input
             type="text"
             placeholder="Search for a profile..."
@@ -61,7 +71,11 @@ export default function ChatListPanel({ width, activeCharacterId, characters }: 
                 }`}
               >
                 <div className="relative h-[54px] w-[54px] rounded-xl overflow-hidden shrink-0">
-                  <img src={user?.resized_images[0].desktop_image} alt={user.first_name} className="rounded-xl" />
+                  <img
+                    src={user?.resized_images[0].desktop_image}
+                    alt={user.first_name}
+                    className="rounded-xl"
+                  />
                   {user.id === activeCharacterId && (
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#2C2C2C]"></div>
                   )}

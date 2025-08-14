@@ -22,14 +22,25 @@ export const metadata: Metadata = {
   title: "get-honey.ai - Your Dream AI Companion Awaits",
   description:
     "Create your ideal companion, shape her look, personality, and bring her to life in one click. 100% powered by Artificial intelligence",
-  keywords: "AI companion, artificial intelligence, virtual companion, AI girlfriend, AI character",
+  keywords:
+    "AI companion, artificial intelligence, virtual companion, AI girlfriend, AI character",
   authors: [{ name: "get-honey.ai" }],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   console.log("remounting layout");
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+      </head>
       <body
         className={`${manrope.variable} ${inter.variable} antialiased bg-gray-900 text-white font-[var(--font-manrope)]`}
       >
@@ -37,9 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider>
             <SidebarProvider>
               <Sidebar />
-              <div className="flex-1 flex flex-col">
-                {children}
-              </div>
+              <div className="flex-1 flex flex-col">{children}</div>
             </SidebarProvider>
           </ThemeProvider>
         </AuthProvider>
