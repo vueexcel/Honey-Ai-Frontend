@@ -1,7 +1,7 @@
 import { Character } from "@/types/character";
 import Button from "../ui/Button";
 import WandIcon from "../icons/WandIcon";
-import { ArrowLeft, Camera, Phone } from "lucide-react";
+import { ArrowBigLeft, ArrowLeft, Camera, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 const sarahMitchellProfile = {
   personality: [
@@ -35,7 +35,7 @@ const AttributeItem = ({ title, value }) => (
 export default function ProfileSidebar({ characterId, activeCharacter, toggleProfileSideBar }: ProfileSidebarProps) {
   const router = useRouter();
   return (
-    <aside className="w-full h-full xl:w-[368px] bg-[var(--secondary)] flex flex-col xl:border-l xl:border-gray-700 xl:space-y-6 overflow-y-auto z-30">
+    <aside className="w-full h-full xl:w-[368px] bg-[var(--secondary)] flex flex-col xl:border-l xl:border-gray-700 xl:space-y-6 overflow-y-auto">
       <button
         className="flex xl:hidden py-3 px-6  items-center bg-transparent cursor-pointer text-white gap-2"
         onClick={toggleProfileSideBar}

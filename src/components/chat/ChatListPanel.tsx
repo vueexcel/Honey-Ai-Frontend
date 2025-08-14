@@ -58,7 +58,7 @@ export default function ChatListPanel({
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto max-w-dvw">
         <ul className="space-y-1 py-2 pl-3 pr-1">
           {characters?.map((user) => (
             <li key={user.id}>
@@ -83,11 +83,10 @@ export default function ChatListPanel({
                 <div className="flex-1 overflow-hidden">
                   <p className="font-bold">{user.first_name}</p>
                   <p className="text-[var(--gray)] flex items-center gap-1">
-                    {/* {lastMessage.type === "video" && <VideoImage />} */}
-                    <span className="truncate overflow-hidden whitespace-nowrap flex-1">
-                      {user.id === activeCharacterId
+                    <span className="truncate overflow-hidden whitespace-nowrap min-w-0 flex-1">
+                      {(user.id === activeCharacterId
                         ? lastMessage?.content
-                        : user?.last_message?.content}
+                        : user?.last_message?.content) || ""}
                     </span>
                   </p>
                 </div>

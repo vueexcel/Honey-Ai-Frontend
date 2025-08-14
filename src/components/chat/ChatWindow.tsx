@@ -35,6 +35,7 @@ export default function ChatWindow({
   const { messages, balance, isStreaming, error, sendMessage } =
     useChatStreaming();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const [activeDate, setActiveDate] = useState("");
   const isDisabled = !prompt.trim() || isStreaming;
 
   function formatTime(isoString: string) {
@@ -56,12 +57,41 @@ export default function ChatWindow({
     }
   }, [messages]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry) {
+          setActiveDate(visibleEntry.target.getAttribute("data-date") || "");
+        }
+      },
+      {
+        root: document.querySelector("#chatScrollContainer"),
+        threshold: 0.1,
+      }
+    );
+
+    document
+      .querySelectorAll("[data-date]")
+      .forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [messages]);
+
   const handleSendMessage = () => {
     if (prompt.trim()) {
       sendMessage(prompt, characterId);
       setPrompt("");
     }
   };
+
+  function formatChatDate(isoString: string) {
+    if (isoString === "") return "";
+    const date = new Date(isoString);
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    return `${day} ${month}`;
+  }
 
   return (
     <main className="flex-1 flex flex-col min-w-0 bg-linear-[0deg,_#2a133866,_#0e0e0e66]">
@@ -126,16 +156,19 @@ export default function ChatWindow({
         </div>
 
         <div className="text-[var(--gray)] absolute w-full justify-center -bottom-12 left-0 flex items-center">
-          <div className="flex items-center justify-center rounded-xl text-base px-4 py-2 bg-[rgba(24,_24,_24,_0.8)] z-10 backdrop:sm">
-            <span className=" text-center">August 4</span>
+          <div className="flex items-center justify-center rounded-xl text-base px-4 py-2 bg-[rgba(24,_24,_24,_0.8)] backdrop:sm">
+            <span className="text-center">{formatChatDate(activeDate)}</span>
           </div>
         </div>
       </div>
-      <div className="flex-1 p-6 overflow-y-auto space-y-6 ">
+      <div
+        className="flex-1 p-6 overflow-y-auto space-y-6"
+        id="chatScrollContainer"
+      >
         {messages && (
           <div className="flex gap-6 flex-col">
             {messages.map((msg) => (
-              <div key={msg?.id}>
+              <div key={msg?.id} data-date={msg?.created_at}>
                 {msg?.sender_type == "character" ? (
                   <div className="flex gap-1.5 flex-col w-full">
                     <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words break-all">
