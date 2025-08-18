@@ -27,13 +27,13 @@ export default function MyAISection() {
   const router = useRouter();
 
   return (
-    <div className="h-full p-6">
-      <div className="px-4 sm:px-6 xl:px-8">
+    <div className="h-full p-6 w-full mt-16 xl:mt-0">
+      <div className="px-0 sm:px-6 xl:px-8">
         <h1 className="flex items-center justify-center text-[32px] font-bold mb-12">
           <span>My&nbsp;</span>
           <span className="text-[#ae52e7]">AI</span>
         </h1>
-        <div className="grid [grid-template-columns:repeat(2,minmax(150px,180px))] xl:[grid-template-columns:repeat(4,minmax(220px,300px))] gap-6 justify-center">
+        <div className="grid [grid-template-columns:repeat(2,minmax(130px,180px))] xl:[grid-template-columns:repeat(4,minmax(220px,300px))] gap-3 sm:gap-6 justify-center">
           <div
             className="rounded-[21px] h-[300px] xl:h-[440px] gap-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] cursor-pointer flex flex-col justify-center items-center text-white font-medium"
             onClick={() => router.push("/create-character")}

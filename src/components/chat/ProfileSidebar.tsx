@@ -1,7 +1,7 @@
 import { Character } from "@/types/character";
 import Button from "../ui/Button";
 import WandIcon from "../icons/WandIcon";
-import { ArrowBigLeft, ArrowLeft, Camera, MoveLeft, Phone } from "lucide-react";
+import { ArrowBigLeft, ArrowLeft, Camera, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 const sarahMitchellProfile = {
   personality: [
@@ -35,7 +35,7 @@ const AttributeItem = ({ title, value }) => (
 export default function ProfileSidebar({ characterId, activeCharacter, toggleProfileSideBar }: ProfileSidebarProps) {
   const router = useRouter();
   return (
-    <aside className="w-full h-full xl:w-[368px] bg-[var(--secondary)] flex flex-col xl:border-l xl:border-gray-700 xl:space-y-6 overflow-y-auto z-30">
+    <aside className="w-full h-full xl:w-[368px] bg-[var(--secondary)] flex flex-col xl:border-l xl:border-gray-700 xl:space-y-6 overflow-y-auto">
       <button
         className="flex xl:hidden py-3 px-6  items-center bg-transparent cursor-pointer text-white gap-2"
         onClick={toggleProfileSideBar}
@@ -44,12 +44,13 @@ export default function ProfileSidebar({ characterId, activeCharacter, togglePro
         Back
       </button>
       <div className="max-w-[425px] max-h-[470px] xl:max-h-[400px] xl:max-w-full self-center">
-        <img className="" src={activeCharacter?.resized_images[0].default_url} alt="Profile" />
+        <img src={activeCharacter?.resized_images[0].default_url} alt="Profile" />
       </div>
       <div className="-top-8 bg-[var(--main)] p-6 rounded-t-4xl">
         <div>
           <h1 className="text-2xl font-bold mb-[3px]">
-            {activeCharacter?.first_name + " " + activeCharacter?.last_name}
+            {activeCharacter && activeCharacter.first_name && activeCharacter.last_name} 
+            {/* {activeCharacter?.first_name + " " + activeCharacter?.last_name} */}
           </h1>
           <h3 className="text-base text-[var(--gray)] mb-3">{activeCharacter?.description}</h3>
         </div>

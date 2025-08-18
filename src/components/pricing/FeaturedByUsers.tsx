@@ -88,7 +88,7 @@ function PerspectiveGrid() {
 
 export default function FeaturedByUsers() {
   return (
-    <section className="relative py-12 px-4">
+    <section className="relative py-12 px-4 w-[calc(100dvw-12px)] xl:w-[calc(100dvw-106px)] overflow-hidden">
       <h2 className="text-3xl font-bold text-white text-center mb-8">Featured by users</h2>
       <div className="relative mx-auto max-w-[996px] min-h-[860px] pb-6">
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-80">
@@ -147,7 +147,7 @@ function UserCard({ user, highlight = false }: { user: { name: string; img: stri
   return (
     <div
       className={[
-        "relative shrink-0 w-[180px] min-w-[180px] max-w-[180px] h-[250px] min-h-[250px] max-h-[250px]",
+        "relative shrink-0 max-w-[180px] h-[250px] min-h-[250px] max-h-[250px]",
         "p-3 flex flex-col justify-end items-start gap-2",
         "rounded-[24px] overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-md",
         "text-white text-left shadow-[0_10px_30px_rgba(0,0,0,0.35)]",

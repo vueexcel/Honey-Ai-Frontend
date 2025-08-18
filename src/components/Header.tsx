@@ -106,7 +106,7 @@ export default function Header() {
             </div>
 
             {isLoggedIn ? (
-              <div className="text-white bg-[var(--gray-500)] px-2 py-2 rounded-xl">
+              <div className="text-xs sm:text-base text-white bg-[var(--gray-500)] px-2 py-2 rounded-xl">
                 <span>Credits: </span>
                 <span>{balance}</span>
               </div>

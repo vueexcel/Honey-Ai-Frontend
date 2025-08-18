@@ -39,7 +39,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-  // Prevent rendering children until mounted to avoid hydration mismatch
   if (!mounted) return null;
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;

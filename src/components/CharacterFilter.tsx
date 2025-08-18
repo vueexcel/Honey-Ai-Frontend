@@ -10,7 +10,10 @@ interface CharacterFilterProps {
   onFilterChange: (filter: "realistic" | "anime" | "premium") => void;
 }
 
-export default function CharacterFilter({ activeFilter, onFilterChange }: CharacterFilterProps) {
+export default function CharacterFilter({
+  activeFilter,
+  onFilterChange,
+}: CharacterFilterProps) {
   const filters = [
     {
       id: "realistic" as const,
@@ -36,7 +39,7 @@ export default function CharacterFilter({ activeFilter, onFilterChange }: Charac
   ];
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center my-2 max-w-[calc(100vw-24px)] overflow-x-auto hide-scrollbar">
       {filters.map((filter) => {
         const Icon = filter.icon;
         const isActive = activeFilter === filter.id;
@@ -47,14 +50,14 @@ export default function CharacterFilter({ activeFilter, onFilterChange }: Charac
             whileHover={{ scale: 1.0 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => onFilterChange(filter.id)}
-            className={`flex items-center space-x-3 px-4 h-12 rounded-lg font-semibold text-base transition-all duration-200 text-white border-2 cursor-pointer ${
+            className={`flex items-center space-x-3 px-4 h-12 rounded-lg font-semiboldtext-sm sm:text-base transition-all duration-200 text-white border-2 cursor-pointer ${
               isActive
                 ? "bg-[#24162c] shadow-sm shadow-purple-500/25  border-[#ae52e7]"
                 : "bg-transparent hover:bg-[#181818] border-[#181818]"
             }`}
           >
             <Icon size={22} className={filter.iconColor} />
-            <span>{filter.label}</span>
+            <span className="whitespace-nowrap">{filter.label}</span>
           </motion.button>
         );
       })}
