@@ -46,7 +46,7 @@ export default function CharacterCarousel() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0 hidden xl:block"
+            className="text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0 hidden xl:block whitespace-nowrap"
           >
             <span className="text-[#ae52e7]">Explore </span>
             <span>AI Characters</span>
