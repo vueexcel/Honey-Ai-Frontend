@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./Providers";
 import ThemeProvider from "@/context/ThemeProvider";
 import SidebarProvider from "@/context/SidebarProvider";
 import { AuthProvider } from "@/context/AuthContextProvider";
 import { Sidebar } from "@/components";
+import { UserContextProvider } from "@/context/UserContextProvider";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -22,17 +22,11 @@ export const metadata: Metadata = {
   title: "get-honey.ai - Your Dream AI Companion Awaits",
   description:
     "Create your ideal companion, shape her look, personality, and bring her to life in one click. 100% powered by Artificial intelligence",
-  keywords:
-    "AI companion, artificial intelligence, virtual companion, AI girlfriend, AI character",
+  keywords: "AI companion, artificial intelligence, virtual companion, AI girlfriend, AI character",
   authors: [{ name: "get-honey.ai" }],
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  console.log("remounting layout");
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -46,10 +40,12 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ThemeProvider>
-            <SidebarProvider>
-              <Sidebar />
-              <div className="flex-1 flex flex-col">{children}</div>
-            </SidebarProvider>
+            <UserContextProvider>
+              <SidebarProvider>
+                <Sidebar />
+                <div className="flex-1 flex flex-col">{children}</div>
+              </SidebarProvider>
+            </UserContextProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

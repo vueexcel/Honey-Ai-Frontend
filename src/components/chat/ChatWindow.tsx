@@ -1,16 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import {
-  ChevronDown,
-  Camera,
-  SendHorizonal,
-  Phone,
-  User,
-  MoreVertical,
-  X,
-  ArrowLeft,
-} from "lucide-react";
+import { ChevronDown, Camera, SendHorizonal, Phone, User, MoreVertical, X, ArrowLeft } from "lucide-react";
 import PremiumButton from "../ui/PremiumBtn";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -32,8 +23,7 @@ export default function ChatWindow({
 }: ChatWindowProps) {
   const params = useParams();
   const [prompt, setPrompt] = useState("");
-  const { messages, balance, isStreaming, error, sendMessage } =
-    useChatStreaming();
+  const { messages, isStreaming, error, sendMessage } = useChatStreaming();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [activeDate, setActiveDate] = useState("");
   const isDisabled = !prompt.trim() || isStreaming;
@@ -71,9 +61,7 @@ export default function ChatWindow({
       }
     );
 
-    document
-      .querySelectorAll("[data-date]")
-      .forEach((el) => observer.observe(el));
+    document.querySelectorAll("[data-date]").forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
   }, [messages]);
@@ -109,9 +97,7 @@ export default function ChatWindow({
               />
             </div>
             <div className="flex-1">
-              <h2 className="font-bold text-base sm:text-2xl">
-                {activeCharacter?.first_name}
-              </h2>
+              <h2 className="font-bold text-base sm:text-2xl">{activeCharacter?.first_name}</h2>
               <div className="flex items-center text-[rgb(178,_178,_178)] text-xs sm:text-base">
                 <div className="w-[13px] h-[13px] mx-1 sm:mx-3 bg-[var(--green)] rounded-full"></div>
                 Online
@@ -161,10 +147,7 @@ export default function ChatWindow({
           </div>
         </div>
       </div>
-      <div
-        className="flex-1 p-6 overflow-y-auto space-y-6"
-        id="chatScrollContainer"
-      >
+      <div className="flex-1 p-6 overflow-y-auto space-y-6" id="chatScrollContainer">
         {messages && (
           <div className="flex gap-6 flex-col">
             {messages.map((msg) => (
@@ -174,18 +157,12 @@ export default function ChatWindow({
                     <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words break-all">
                       {msg?.content}
                     </p>
-                    <span className="text-[13px] text-[var(--gray)]">
-                      {formatTime(msg?.created_at)}
-                    </span>
+                    <span className="text-[13px] text-[var(--gray)]">{formatTime(msg?.created_at)}</span>
                   </div>
                 ) : (
                   <div className="flex gap-1.5 flex-col">
-                    <p className="text-white p-1 max-w-md overflow-hidden flex-wrap break-after-all">
-                      {msg?.content}
-                    </p>
-                    <span className="text-[13px] text-[var(--gray)]">
-                      {formatTime(msg?.created_at)}
-                    </span>
+                    <p className="text-white p-1 max-w-md overflow-hidden flex-wrap break-after-all">{msg?.content}</p>
+                    <span className="text-[13px] text-[var(--gray)]">{formatTime(msg?.created_at)}</span>
                   </div>
                 )}
               </div>
@@ -223,12 +200,7 @@ export default function ChatWindow({
           }
         `}
         >
-          <SendHorizonal
-            size={24}
-            fill={isDisabled ? "#414141" : "white"}
-            color=""
-            className="hover:scale-120"
-          />
+          <SendHorizonal size={24} fill={isDisabled ? "#414141" : "white"} color="" className="hover:scale-120" />
         </button>
       </div>
     </main>

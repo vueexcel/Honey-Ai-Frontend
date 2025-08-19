@@ -90,7 +90,6 @@ export async function getCharacterHistory(character_id: string) {
 
 export async function startChatStreaming(message: string, character_id: string) {
   const socket = getSocket();
-  console.log(socket, "socket");
   return apiFetch("chat/text", {
     method: "POST",
     body: JSON.stringify({ message, socketId: socket.id, character_id }),

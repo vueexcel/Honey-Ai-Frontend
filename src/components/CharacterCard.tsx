@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useChatStreaming } from "@/context/ChatStreamingContext";
 import { getCharacterHistory } from "@/utils/api";
+import { useUser } from "@/context/UserContextProvider";
 
 interface CharacterCardProps {
   id: string;
@@ -30,6 +31,7 @@ export default function CharacterCard({
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { sendMessage } = useChatStreaming();
+  const { characters, refreshCharacters } = useUser();
 
   const handleMouseEnter = () => {
     if (videoRef.current) videoRef.current.play();
@@ -44,9 +46,10 @@ export default function CharacterCard({
 
   const handleNavigation = async () => {
     try {
-      const history = await getCharacterHistory(id);
-      if (!history?.history.length) {
+      console.log(characters, "characters");
+      if (!characters?.last_message) {
         const success = await sendMessage("How are you?", id);
+        await refreshCharacters();
         if (success) {
           router.push(`/chat/${id}`);
         }

@@ -18,7 +18,6 @@ export function useSidebar() {
 }
 
 export default function SidebarProvider({ children }: { children: ReactNode }) {
-  console.log('sideBarProvider is runing')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);

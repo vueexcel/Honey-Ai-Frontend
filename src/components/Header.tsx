@@ -18,7 +18,7 @@ import clsx from "clsx";
 import SignInModal from "./SignInModal";
 import DropdownMenu from "./DropdownMenu";
 
-import useChatStreaming from "@/hooks/useChatStreaming";
+import { useUser } from "@/context/UserContextProvider";
 import WandIcon from "./icons/WandIcon";
 import BrandLogoText from "./icons/BrandLogoText";
 
@@ -37,7 +37,7 @@ export default function Header() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { isLoggedIn, logout, user } = useAuth();
-  const { balance } = useChatStreaming();
+  const { balance } = useUser();
 
   const items = [
     {
@@ -53,7 +53,7 @@ export default function Header() {
     {
       label: "Settings",
       icon: <Settings className="w-5 h-5" />,
-      onClick: () => console.log("Open Settings"),
+      onClick: () => router.push("/settings"),
     },
     {
       label: "Log out",
@@ -144,7 +144,7 @@ export default function Header() {
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 400, damping: 40 }}
             className={clsx(
-              "fixed  w-full  inset-0 z-50 bg-linear-[0deg,_#000c_-23.86%,_#281633cc_95.44%] flex",
+              "fixed w-full inset-0 z-50 bg-linear-[0deg,_#000c_-23.86%,_#281633cc_95.44%] flex",
               pathname == "/" ? "top-[130px] h-[calc(100dvh-130px)]" : "top-[64px] h-[calc(100dvh-64px)]"
             )}
           >

@@ -23,7 +23,6 @@ export default function CreateCharacterForm() {
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
-      console.log("Final Answers:", answers);
       alert("Character creation complete!");
     }
   };

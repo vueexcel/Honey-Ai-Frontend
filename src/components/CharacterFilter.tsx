@@ -39,7 +39,7 @@ export default function CharacterFilter({
   ];
 
   return (
-    <div className="flex items-center my-2 max-w-[calc(100vw-24px)] overflow-x-auto hide-scrollbar xl:justify-end">
+    <div className="flex items-center my-2 max-w-[calc(100vw-24px)] overflow-x-auto hide-scrollbar xl:justify-end gap-1 xl:gap-2">
       {filters.map((filter) => {
         const Icon = filter.icon;
         const isActive = activeFilter === filter.id;

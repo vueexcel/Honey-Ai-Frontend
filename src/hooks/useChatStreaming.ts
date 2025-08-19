@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { initSocket } from "@/lib/socket";
-import { startChatStreaming, getCredits, getCharacterHistory } from "@/utils/api";
+import { initSocket, getSocket } from "@/lib/socket";
+import { startChatStreaming, getCharacterHistory } from "@/utils/api";
 import { Message } from "@/types/message";
 import { useAuth } from "@/context/AuthContextProvider";
+import { useUser } from "@/context/UserContextProvider";
 
 export default function useChatStreaming(characterId?: string) {
   const { isLoggedIn } = useAuth();
+  const { balance, setBalance } = useUser();
+
   const [messages, setMessages] = useState<Message[]>([]);
-  const [balance, setBalance] = useState<number>(0);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesRef = useRef(messages);
@@ -31,27 +33,23 @@ export default function useChatStreaming(characterId?: string) {
   }, [characterId]);
 
   useEffect(() => {
-    const socket = initSocket();
-    socketRef.current = socket;
-    async function fetchBalance() {
-      const balance = await getCredits();
-      setBalance(balance.balance);
+    let socket;
+    try {
+      socket = getSocket();
+    } catch {
+      socket = initSocket();
     }
+    socketRef.current = socket;
 
-    fetchBalance();
     socket.on("token", (token: string) => {
       setMessages((prev) => {
         if (!prev.length) return prev;
         const last = prev[prev.length - 1];
         if (last.sender_type !== "character") return prev;
-
         return [...prev.slice(0, -1), { ...last, content: last.content + token }];
       });
     });
 
-    socket.on("balance", (newBalance: number) => {
-      setBalance(newBalance);
-    });
     socket.on("done", () => setIsStreaming(false));
     socket.on("error", (msg: string) => {
       setError(msg);
@@ -60,7 +58,6 @@ export default function useChatStreaming(characterId?: string) {
 
     return () => {
       socket.off("token");
-      socket.off("balance");
       socket.off("done");
       socket.off("error");
     };
