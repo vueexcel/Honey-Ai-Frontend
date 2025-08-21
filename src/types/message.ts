@@ -6,4 +6,5 @@ export interface Message {
   message_type: "text" | "image" | "video";
   content: string;
   created_at?: string;
-};
+  media_url?: string | null;
+}

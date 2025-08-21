@@ -48,7 +48,7 @@ export default function CharacterCard({
     try {
       console.log(characters, "characters");
       if (!characters?.last_message) {
-        const success = await sendMessage("How are you?", id);
+        const success = await sendMessage("How are you?", id, false);
         await refreshCharacters();
         if (success) {
           router.push(`/chat/${id}`);

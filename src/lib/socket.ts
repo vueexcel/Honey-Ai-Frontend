@@ -11,6 +11,7 @@ export const initSocket = (): Socket => {
     });
   }
 
+  console.log(socket)
   return socket;
 };
 

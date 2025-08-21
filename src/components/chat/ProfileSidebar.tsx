@@ -1,18 +1,24 @@
 import { Character } from "@/types/character";
 import Button from "../ui/Button";
 import WandIcon from "../icons/WandIcon";
-import { ArrowBigLeft, ArrowLeft, Camera, Phone } from "lucide-react";
+import { ArrowLeft, Camera, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
+import PersonalityIcon from "../icons/PersonalityIcon";
+import OccupationIcon from "../icons/OccupationIcon";
+import HobbiesIcon from "../icons/HobbiesIcon";
+import RelationshipIcon from "../icons/RelationshipIcon";
+import AgeIcon from "../icons/AgeIcon";
+import ZodiacIcon from "../icons/ZodiacIcon";
 const sarahMitchellProfile = {
   personality: [
-    { title: "Personality", value: "Driven and professional" },
-    { title: "Occupation", value: "Lawyer" },
-    { title: "Hobbies", value: "Reading • Hiking" },
-    { title: "Relationship", value: "Married" },
+    { title: "Personality", value: "Driven and professional", icon: PersonalityIcon },
+    { title: "Occupation", value: "Lawyer", icon: OccupationIcon },
+    { title: "Hobbies", value: "Reading • Hiking", icon: HobbiesIcon },
+    { title: "Relationship", value: "Married", icon: RelationshipIcon },
   ],
   physical: [
-    { title: "Age", value: "32" },
-    { title: "Zodiac Sign", value: "Pisces" },
+    { title: "Age", value: "32", icon: AgeIcon },
+    { title: "Zodiac Sign", value: "Pisces", icon: ZodiacIcon },
   ],
 };
 
@@ -22,9 +28,9 @@ interface ProfileSidebarProps {
   toggleProfileSideBar: () => void;
 }
 
-const AttributeItem = ({ title, value }) => (
+const AttributeItem = ({ title, value, icon: Icon }) => (
   <li className="flex items-start gap-4 h-full">
-    <div className="text-[var(--pink)] self-center">{/* <Icon className="w-5 h-5" /> */}</div>
+    <div className="text-[var(--pink)] self-center">{Icon && <Icon size={20} />}</div>
     <div>
       <p className="text-lg font-bold text-[rgb(223,_186,_245)]">{title}</p>
       <p className="font-medium text-sm text-white gap-2">{value}</p>
@@ -49,8 +55,7 @@ export default function ProfileSidebar({ characterId, activeCharacter, togglePro
       <div className="-top-8 bg-[var(--main)] p-6 rounded-t-4xl">
         <div>
           <h1 className="text-2xl font-bold mb-[3px]">
-            {activeCharacter && activeCharacter.first_name && activeCharacter.last_name} 
-            {/* {activeCharacter?.first_name + " " + activeCharacter?.last_name} */}
+            {activeCharacter && <span>{`${activeCharacter.first_name} ${activeCharacter.last_name}`}</span>}
           </h1>
           <h3 className="text-base text-[var(--gray)] mb-3">{activeCharacter?.description}</h3>
         </div>

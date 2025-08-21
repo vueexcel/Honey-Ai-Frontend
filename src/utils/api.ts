@@ -95,3 +95,16 @@ export async function startChatStreaming(message: string, character_id: string) 
     body: JSON.stringify({ message, socketId: socket.id, character_id }),
   });
 }
+
+export async function startPhotoGeneration(
+  prompt: string,
+  character_id: string,
+  referenceImage: string,
+  isAnime: boolean
+) {
+  const socket = getSocket();
+  return apiFetch("chat/generate", {
+    method: "POST",
+    body: JSON.stringify({ prompt, socketId: socket.id, character_id, referenceImage, isAnime }),
+  });
+}

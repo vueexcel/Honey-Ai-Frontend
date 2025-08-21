@@ -6,10 +6,10 @@ import ChatListPanel from "@/components/chat/ChatListPanel";
 import ChatWindow from "@/components/chat/ChatWindow";
 import ProfileSidebar from "@/components/chat/ProfileSidebar";
 import ResizeIcon from "../icons/ResizeIcon";
-import type { Character } from "@/types/character";
-import { Message } from "@/types/message";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUser } from "@/context/UserContextProvider";
+import { useChatStreaming } from "@/context/ChatStreamingContext";
+import Spinner from "../ui/Spinner";
 
 export default function ChatInterface() {
   const params = useParams();
@@ -17,12 +17,10 @@ export default function ChatInterface() {
 
   const [chatPanelWidth, setChatPanelWidth] = useState<number>(30);
   const [isProfileSidebarVisible, setIsProfileSidebar] = useState<boolean>(false);
-  const [chatHistory, setChatHistory] = useState<Message[]>([]);
-  const [error, setError] = useState("");
-  const hasFetched = useRef(false);
   const isResizing = useRef(false);
 
   const { characters } = useUser();
+  const { isLoadingHistory } = useChatStreaming();
   const activeCharacter = useMemo(() => {
     if (!characterId) return undefined;
     return characters.find((char) => char.id === characterId);
@@ -31,8 +29,8 @@ export default function ChatInterface() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing.current) return;
-      const maxWidth = 60; // max 60vw
-      const minWidth = 20; // min 20vw
+      const maxWidth = 60;
+      const minWidth = 20;
       const newWidth = Math.max(minWidth, Math.min((e.clientX / window.innerWidth) * 100, maxWidth));
       setChatPanelWidth(newWidth);
     };
@@ -80,36 +78,43 @@ export default function ChatInterface() {
           className="w-0.5 bg-[var(--gray-dark)] text-[var(--main)] cursor-ew-resize relative hidden xl:block"
           onMouseDown={handleMouseDown}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-[var(--gray-dark)] rounded-full">
-            <ResizeIcon />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-[var(--gray-dark)] rounded-full bg-[#0c0c0c]">
+            <ResizeIcon bgColor="#0c0c0c" />
           </div>
         </div>
       )}
       {characterId ? (
         <div className="flex flex-1 min-w-0 relative">
-          <ChatWindow
-            characterId={characterId}
-            chatHistory={chatHistory}
-            activeCharacter={activeCharacter}
-            toggleProfileSideBar={toggleProfileSideBar}
-          />
-          {isProfileSidebarVisible && (
-            <AnimatePresence>
-              <motion.div
-                key="profile-sidebar"
-                initial={{ x: 300, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 300, opacity: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="absolute top-0 right-0 xl:flex xl:relative h-full"
-              >
-                <ProfileSidebar
-                  characterId={characterId}
-                  activeCharacter={activeCharacter}
-                  toggleProfileSideBar={toggleProfileSideBar}
-                />
-              </motion.div>
-            </AnimatePresence>
+          {isLoadingHistory ? (
+            <div className="w-full flex justify-center items-center">
+              <Spinner size={6} />
+            </div>
+          ) : (
+            <>
+              <ChatWindow
+                characterId={characterId}
+                activeCharacter={activeCharacter}
+                toggleProfileSideBar={toggleProfileSideBar}
+              />
+              {isProfileSidebarVisible && (
+                <AnimatePresence>
+                  <motion.div
+                    key="profile-sidebar"
+                    initial={{ x: 300, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 300, opacity: 0 }}
+                    transition={{ duration: 0.1, ease: "easeInOut" }}
+                    className="absolute top-0 right-0 xl:flex xl:relative h-full"
+                  >
+                    <ProfileSidebar
+                      characterId={characterId}
+                      activeCharacter={activeCharacter}
+                      toggleProfileSideBar={toggleProfileSideBar}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              )}
+            </>
           )}
         </div>
       ) : (

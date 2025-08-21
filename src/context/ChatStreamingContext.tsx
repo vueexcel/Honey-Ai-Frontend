@@ -8,7 +8,8 @@ interface ChatStreamingContextValue {
   balance: number | null;
   isStreaming: boolean;
   error: string | null;
-  sendMessage: (prompt: string, characterId: string) => Promise<void>;
+  sendMessage: (prompt: string, characterId: string, isImage: boolean) => Promise<void>;
+  isLoadingHistory: boolean;
 }
 
 const ChatStreamingContext = createContext<ChatStreamingContextValue | null>(null);

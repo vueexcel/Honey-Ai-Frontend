@@ -1,16 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { initSocket, getSocket } from "@/lib/socket";
-import { startChatStreaming, getCharacterHistory } from "@/utils/api";
+import { startChatStreaming, getCharacterHistory, startPhotoGeneration } from "@/utils/api";
 import { Message } from "@/types/message";
 import { useAuth } from "@/context/AuthContextProvider";
 import { useUser } from "@/context/UserContextProvider";
 
 export default function useChatStreaming(characterId?: string) {
   const { isLoggedIn } = useAuth();
-  const { balance, setBalance } = useUser();
+  const { balance, setBalance, characters } = useUser();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const messagesRef = useRef(messages);
   const socketRef = useRef<any>(null);
@@ -22,15 +23,18 @@ export default function useChatStreaming(characterId?: string) {
   useEffect(() => {
     async function loadHistory() {
       if (!characterId) return;
+      setIsLoadingHistory(true);
       try {
         const characterHistory = await getCharacterHistory(characterId);
         setMessages(characterHistory?.history || []);
       } catch (err: any) {
         setError(err.message || "Failed to load history");
+      } finally {
+        setIsLoadingHistory(false);
       }
     }
     loadHistory();
-  }, [characterId]);
+  }, [characterId, isLoggedIn]);
 
   useEffect(() => {
     let socket;
@@ -49,6 +53,15 @@ export default function useChatStreaming(characterId?: string) {
         return [...prev.slice(0, -1), { ...last, content: last.content + token }];
       });
     });
+    socket.on("imageGenerated", (imgObj: any) => {
+      console.log("webhook responded");
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const last = prev[prev.length - 1];
+        if (last.sender_type !== "character") return prev;
+        return [...prev.slice(0, -1), { ...last, media_url: imgObj?.imageUrl }];
+      });
+    });
 
     socket.on("done", () => setIsStreaming(false));
     socket.on("error", (msg: string) => {
@@ -64,7 +77,7 @@ export default function useChatStreaming(characterId?: string) {
   }, [isLoggedIn]);
 
   const sendMessage = useCallback(
-    async (prompt: string, charId: string) => {
+    async (prompt: string, charId: string, isImage: boolean) => {
       if (!isLoggedIn) {
         alert("Login To Start Conversation");
         return false;
@@ -81,21 +94,30 @@ export default function useChatStreaming(characterId?: string) {
           message_type: "text",
           content: prompt,
           created_at: new Date().toISOString(),
+          media_url: null,
         },
         {
           id: "temp-char-msg-" + Date.now(),
           sender_type: "character",
-          message_type: "text",
+          message_type: isImage ? "image" : "text",
           content: "",
           created_at: new Date().toISOString(),
+          media_url: null,
         },
       ]);
       setError(null);
       setIsStreaming(true);
-      await startChatStreaming(prompt, charId);
+      if (isImage) {
+        const curCharacter = characters.find((char) => char.id === charId);
+        const characterRef = curCharacter?.resized_images[0].default_url;
+        const isAnime = curCharacter?.is_anime as boolean;
+        await startPhotoGeneration(prompt, charId, characterRef, isAnime);
+      } else {
+        await startChatStreaming(prompt, charId);
+      }
       return true;
     },
-    [isLoggedIn, balance]
+    [isLoggedIn, balance, characters]
   );
 
   return {
@@ -104,5 +126,6 @@ export default function useChatStreaming(characterId?: string) {
     isStreaming,
     error,
     sendMessage,
+    isLoadingHistory,
   };
 }

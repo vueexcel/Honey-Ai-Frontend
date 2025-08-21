@@ -1,32 +1,52 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Camera, SendHorizonal, Phone, User, MoreVertical, X, ArrowLeft } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { ChevronDown, Camera, SendHorizonal, Phone, User, MoreVertical, X, ArrowLeft, ChevronUp } from "lucide-react";
 import PremiumButton from "../ui/PremiumBtn";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Character } from "@/types/character";
 import { useChatStreaming } from "@/context/ChatStreamingContext";
+import clsx from "clsx";
+import Dropdown from "../ui/Dropdown";
+import ImageColorIcon from "../icons/ImageColorIcon";
+import VideoColorIcon from "../icons/VideoColorIcon";
+import UserIcon from "../icons/UserIcon";
 
 interface ChatWindowProps {
   characterId: string;
-  chatHistory: any;
   activeCharacter: Character;
   toggleProfileSideBar: () => void;
 }
 
-export default function ChatWindow({
-  characterId,
-  chatHistory,
-  activeCharacter,
-  toggleProfileSideBar,
-}: ChatWindowProps) {
-  const params = useParams();
+export default function ChatWindow({ characterId, activeCharacter, toggleProfileSideBar }: ChatWindowProps) {
   const [prompt, setPrompt] = useState("");
   const { messages, isStreaming, error, sendMessage } = useChatStreaming();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [activeDate, setActiveDate] = useState("");
   const isDisabled = !prompt.trim() || isStreaming;
+  const options = [
+    {
+      value: "Send me a Photo",
+      label: "Send me a Photo ...",
+      icon: ImageColorIcon,
+      submenu: [
+        { value: "Lying on the grass", label: "🌿 Lying on the grass" },
+        { value: "Drinking coffee in the morning", label: "🧋 Drinking coffee in the morning" },
+        { value: "Standing in the rain", label: "🌧️ Standing in the rain" },
+      ],
+    },
+    {
+      value: "Send me a Video",
+      label: "Send me a Video",
+      icon: VideoColorIcon,
+      submenu: [
+        { value: "Smiles and waves good morning", label: "👋 Smiles and waves good morning" },
+        { value: "Looks at you and softly smiles", label: "😊 Looks at you and softly smiles" },
+        { value: "Bite an apple", label: "🍎 Bite an apple" },
+      ],
+    },
+  ];
 
   function formatTime(isoString: string) {
     const date = new Date(isoString);
@@ -68,7 +88,10 @@ export default function ChatWindow({
 
   const handleSendMessage = () => {
     if (prompt.trim()) {
-      sendMessage(prompt, characterId);
+      const lower = prompt.toLowerCase();
+      const isPhoto = lower.startsWith("send me a photo");
+      const isVideo = lower.startsWith("send me a video");
+      sendMessage(prompt, characterId, isPhoto);
       setPrompt("");
     }
   };
@@ -110,7 +133,7 @@ export default function ChatWindow({
               <div className="absolute rounded-full h-2.5 w-2.5 top-0 -right-1 bg-[var(--pink)]"></div>
             </button>
             <button className="py-3" onClick={toggleProfileSideBar}>
-              <User size={24} color="var(--accent) " />
+              <UserIcon size={20} strokeWidth={3} strokeColor="#bf75ec" className="text-transparent cursor-pointer" />
             </button>
             <button className="py-3">
               <MoreVertical size={24} color="var(--accent)" strokeWidth={3} />
@@ -154,14 +177,71 @@ export default function ChatWindow({
               <div key={msg?.id} data-date={msg?.created_at}>
                 {msg?.sender_type == "character" ? (
                   <div className="flex gap-1.5 flex-col w-full">
-                    <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words break-all">
-                      {msg?.content}
-                    </p>
+                    {msg?.message_type == "text" ? (
+                      <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words break-all">
+                        {msg?.content}
+                      </p>
+                    ) : (
+                      <>
+                        {!msg?.media_url ? (
+                          <div className="relative w-[340px] max-w-full aspect-[4/5] rounded-xl overflow-hidden bg-neutral-900 shadow-xl">
+                            {/* shimmer */}
+                            <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.12)_20%,rgba(255,255,255,0.06)_40%)] bg-[length:200%_100%] [animation:shimmer_2s_infinite_linear] opacity-40" />
+
+                            {/* vignette + blur tint */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/35 to-black/60 backdrop-blur-sm" />
+
+                            {/* pulsing glow behind icon */}
+                            <div className="absolute inset-0 overflow-hidden">
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
+                            </div>
+                            <div className="absolute inset-0 grid place-items-center">
+                              <svg
+                                className="animate-spin h-6 w-6 text-[var(--accent)] mb-2"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                                ></path>
+                              </svg>
+                            </div>
+                          </div>
+                        ) : msg?.message_type === "image" ? (
+                          <img
+                            src={msg?.media_url}
+                            className="rounded-xl max-w-[340px] w-full aspect-[4/5] object-cover opacity-0 transition-opacity duration-500"
+                            onLoad={(e) => (e.currentTarget.style.opacity = "1")}
+                          />
+                        ) : msg?.message_type === "video" ? (
+                          <video
+                            controls
+                            className="rounded-xl max-w-[340px] w-full aspect-[4/5] object-cover opacity-0 transition-opacity duration-500"
+                            onLoadedData={(e) => (e.currentTarget.style.opacity = "1")}
+                          >
+                            <source src={msg?.media_url} type="video/mp4" />
+                          </video>
+                        ) : null}
+                      </>
+                    )}
                     <span className="text-[13px] text-[var(--gray)]">{formatTime(msg?.created_at)}</span>
                   </div>
                 ) : (
-                  <div className="flex gap-1.5 flex-col">
-                    <p className="text-white p-1 max-w-md overflow-hidden flex-wrap break-after-all">{msg?.content}</p>
+                  <div className="flex gap-1.5 flex-col items-end ">
+                    <p className="text-white max-w-md overflow-hidden flex-wrap break-after-all bg-[var(--gray-dark)] rounded-br-sm rounded-t-2xl rounded-bl-2xl p-3">
+                      {msg?.content}
+                    </p>
                     <span className="text-[13px] text-[var(--gray)]">{formatTime(msg?.created_at)}</span>
                   </div>
                 )}
@@ -186,9 +266,25 @@ export default function ChatWindow({
             }}
             rows={1}
           />
-          <button className="text-sm sm:text-base flex items-center gap-1.5 bg-[rgb(31,_22,_37)] text-[rgb(207,_151,_241)] p-3 rounded-md font-semibold h-9">
-            <Camera size={20} /> Ask <ChevronDown size={20} />
-          </button>
+          <Dropdown
+            options={options}
+            onChange={(val) => setPrompt(val)}
+            placement="top"
+            renderButton={({ open, toggle }) => (
+              <button
+                onClick={toggle}
+                className="text-sm sm:text-base flex items-center gap-1.5 bg-[rgb(31,_22,_37)] text-[rgb(207,_151,_241)] p-3 rounded-md font-semibold h-9 cursor-pointer"
+              >
+                <Camera size={20} /> Ask {open ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </button>
+            )}
+            renderOption={({ option, selected }) => (
+              <div className="flex gap-2">
+                {option.icon && <option.icon size={20} className="text-[#ff44ba]" />}
+                <span className={clsx(selected && "underline")}>{option.label}</span>
+              </div>
+            )}
+          />
         </div>
         <button
           onClick={handleSendMessage}
