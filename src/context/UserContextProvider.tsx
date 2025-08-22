@@ -12,6 +12,7 @@ type UserContextType = {
   characters: Character[];
   refreshCharacters: () => Promise<void>;
   refreshBalance: () => Promise<void>;
+  updateCharacterLastMessage: (charId: string, message: any) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -20,6 +21,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
   const { isLoggedIn } = useAuth();
   const [balance, setBalance] = useState<number>(0);
   const [characters, setCharacters] = useState<Character[]>([]);
+
   const socketRef = useRef<any>(null);
 
   const refreshBalance = useCallback(async () => {
@@ -38,6 +40,20 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     } catch (err: any) {
       console.error("Failed to fetch conversation characters", err);
     }
+  }, []);
+
+  const updateCharacterLastMessage = useCallback((charId: string, message: any) => {
+    setCharacters((prevChars) => {
+      let updated = prevChars.map((c) => (c.id === charId ? { ...c, last_message: message } : c));
+      
+      updated.sort((a, b) => {
+        const aTime = a.last_message ? new Date(a.last_message.created_at).getTime() : 0;
+        const bTime = b.last_message ? new Date(b.last_message.created_at).getTime() : 0;
+        return bTime - aTime;
+      });
+
+      return updated;
+    });
   }, []);
 
   useEffect(() => {
@@ -72,6 +88,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         characters,
         refreshCharacters,
         refreshBalance,
+        updateCharacterLastMessage,
       }}
     >
       {children}

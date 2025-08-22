@@ -7,7 +7,7 @@ import { useUser } from "@/context/UserContextProvider";
 
 export default function useChatStreaming(characterId?: string) {
   const { isLoggedIn } = useAuth();
-  const { balance, setBalance, characters } = useUser();
+  const { balance, characters, updateCharacterLastMessage } = useUser();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -78,6 +78,21 @@ export default function useChatStreaming(characterId?: string) {
 
   const sendMessage = useCallback(
     async (prompt: string, charId: string, isImage: boolean) => {
+      function createTempMessage(
+        sender: "user" | "character",
+        messageType: "text" | "image",
+        content: string
+      ): Message {
+        return {
+          id: `temp-${sender}-msg-${Date.now()}`,
+          sender_type: sender,
+          message_type: messageType,
+          content,
+          created_at: new Date().toISOString(),
+          media_url: null,
+        };
+      }
+
       if (!isLoggedIn) {
         alert("Login To Start Conversation");
         return false;
@@ -86,25 +101,22 @@ export default function useChatStreaming(characterId?: string) {
         alert("Credits Not Sufficient");
         return false;
       }
+      const newUserMsg = {
+        id: "temp-user-msg-" + Date.now(),
+        sender_type: "user",
+        message_type: "text",
+        content: prompt,
+        created_at: new Date().toISOString(),
+        media_url: null,
+      };
+
       setMessages((prev) => [
         ...prev,
-        {
-          id: "temp-user-msg-" + Date.now(),
-          sender_type: "user",
-          message_type: "text",
-          content: prompt,
-          created_at: new Date().toISOString(),
-          media_url: null,
-        },
-        {
-          id: "temp-char-msg-" + Date.now(),
-          sender_type: "character",
-          message_type: isImage ? "image" : "text",
-          content: "",
-          created_at: new Date().toISOString(),
-          media_url: null,
-        },
+        createTempMessage("user", "text", prompt),
+        createTempMessage("character", isImage ? "image" : "text", ""),
       ]);
+
+      updateCharacterLastMessage(charId, newUserMsg);
       setError(null);
       setIsStreaming(true);
       if (isImage) {
