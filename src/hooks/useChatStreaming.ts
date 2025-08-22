@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { initSocket, getSocket } from "@/lib/socket";
-import { startChatStreaming, getCharacterHistory, startPhotoGeneration } from "@/utils/api";
+import { startChatStreaming, getCharacterHistory, startPhotoGeneration, checkNsfw } from "@/utils/api";
 import { Message } from "@/types/message";
 import { useAuth } from "@/context/AuthContextProvider";
 import { useUser } from "@/context/UserContextProvider";
@@ -53,13 +53,25 @@ export default function useChatStreaming(characterId?: string) {
         return [...prev.slice(0, -1), { ...last, content: last.content + token }];
       });
     });
+
     socket.on("imageGenerated", (imgObj: any) => {
-      console.log("webhook responded");
       setMessages((prev) => {
         if (!prev.length) return prev;
         const last = prev[prev.length - 1];
         if (last.sender_type !== "character") return prev;
         return [...prev.slice(0, -1), { ...last, media_url: imgObj?.imageUrl }];
+      });
+    });
+
+    socket.on("imageGenerationError", (data) => {
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const last = prev[prev.length - 1];
+        if (last.sender_type !== "character") return prev;
+        return [
+          ...prev.slice(0, -1),
+          { ...last, message_type: "text", content: "I can't do this. Let's change the topic" },
+        ];
       });
     });
 
@@ -73,6 +85,7 @@ export default function useChatStreaming(characterId?: string) {
       socket.off("token");
       socket.off("done");
       socket.off("error");
+      socket.off("imageGenerated");
     };
   }, [isLoggedIn]);
 
@@ -101,27 +114,40 @@ export default function useChatStreaming(characterId?: string) {
         alert("Credits Not Sufficient");
         return false;
       }
-      const newUserMsg = {
-        id: "temp-user-msg-" + Date.now(),
-        sender_type: "user",
-        message_type: "text",
-        content: prompt,
-        created_at: new Date().toISOString(),
-        media_url: null,
-      };
 
-      setMessages((prev) => [
-        ...prev,
-        createTempMessage("user", "text", prompt),
-        createTempMessage("character", isImage ? "image" : "text", ""),
-      ]);
+      const userMsg = createTempMessage("user", "text", prompt);
+      const charPlaceholder = createTempMessage("character", isImage ? "image" : "text", "");
+      setMessages((prev) => [...prev, userMsg, charPlaceholder]);
 
-      updateCharacterLastMessage(charId, newUserMsg);
+      updateCharacterLastMessage(charId, userMsg);
       setError(null);
       setIsStreaming(true);
       if (isImage) {
+        // try {
+        //   const nsfwCheck = await checkNsfw(prompt, charId);
+        //   if (!nsfwCheck.valid) {
+        //     setMessages((prev) => [
+        //       ...prev.slice(0, -1),
+        //       {
+        //         ...charPlaceholder,
+        //         message_type: "text",
+        //         content: "I can't do this. Let's change the topic",
+        //       },
+        //     ]);
+        //     setIsStreaming(false);
+        //     return false;
+        //   }
+        // } catch (err) {
+        //   console.error("NSFW check failed:", err);
+        //   setMessages((prev) => [
+        //     ...prev.slice(0, -1),
+        //     { ...charPlaceholder, message_type: "text", content: "Something went wrong while checking your request." },
+        //   ]);
+        //   setIsStreaming(false);
+        //   return false;
+        // }
         const curCharacter = characters.find((char) => char.id === charId);
-        const characterRef = curCharacter?.resized_images[0].default_url;
+        const characterRef = curCharacter?.resized_images[0]?.default_url;
         const isAnime = curCharacter?.is_anime as boolean;
         await startPhotoGeneration(prompt, charId, characterRef, isAnime);
       } else {

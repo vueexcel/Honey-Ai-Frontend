@@ -108,3 +108,10 @@ export async function startPhotoGeneration(
     body: JSON.stringify({ prompt, socketId: socket.id, character_id, referenceImage, isAnime }),
   });
 }
+
+export async function checkNsfw(prompt: string, character_id: string) {
+  return apiFetch("chat/nsfw", {
+    method: "POST",
+    body: JSON.stringify({ prompt, character_id }),
+  });
+}
