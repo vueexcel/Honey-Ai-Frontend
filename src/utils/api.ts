@@ -115,3 +115,17 @@ export async function checkNsfw(prompt: string, character_id: string) {
     body: JSON.stringify({ prompt, character_id }),
   });
 }
+
+export async function startBulkImageGeneration(
+  prompt: string,
+  character_id: string,
+  referenceImage: string,
+  isAnime: boolean,
+  numImages: number
+) {
+  const socket = getSocket();
+  return apiFetch("chat/generate-bulk", {
+    method: "POST",
+    body: JSON.stringify({ prompt, character_id, referenceImage, isAnime, numImages, socketId: socket.id }),
+  });
+}

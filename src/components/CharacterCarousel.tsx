@@ -87,22 +87,6 @@ export default function CharacterCarousel() {
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Load More Button */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-12"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 shadow-md"
-          >
-            Load More Characters
-          </motion.button>
-        </motion.div> */}
         <Banner />
       </div>
     </section>

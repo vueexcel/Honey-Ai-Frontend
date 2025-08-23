@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { initSocket, getSocket } from "@/lib/socket";
-import { startChatStreaming, getCharacterHistory, startPhotoGeneration, checkNsfw } from "@/utils/api";
+import { startChatStreaming, getCharacterHistory, startPhotoGeneration } from "@/utils/api";
 import { Message } from "@/types/message";
 import { useAuth } from "@/context/AuthContextProvider";
 import { useUser } from "@/context/UserContextProvider";

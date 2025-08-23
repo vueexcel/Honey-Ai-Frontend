@@ -176,22 +176,25 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
             {messages.map((msg) => (
               <div key={msg?.id} data-date={msg?.created_at}>
                 {msg?.sender_type == "character" ? (
-                  <div className="flex gap-1.5 flex-col w-full">
+                  <div className="flex gap-1.5 flex-col max-w-full">
                     {msg?.message_type == "text" ? (
-                      <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words break-all">
-                        {msg?.content}
+                      <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words">
+                        {msg.content == "" ? (
+                          <div className="flex items-center justify-start space-x-2">
+                            <span className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                            <span className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                            <span className="w-3 h-3 bg-white rounded-full animate-bounce"></span>
+                          </div>
+                        ) : (
+                          msg.content
+                        )}
                       </p>
                     ) : (
                       <>
                         {!msg?.media_url ? (
                           <div className="relative w-[340px] max-w-full aspect-[4/5] rounded-xl overflow-hidden bg-neutral-900 shadow-xl">
-                            {/* shimmer */}
                             <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.12)_20%,rgba(255,255,255,0.06)_40%)] bg-[length:200%_100%] [animation:shimmer_2s_infinite_linear] opacity-40" />
-
-                            {/* vignette + blur tint */}
                             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/35 to-black/60 backdrop-blur-sm" />
-
-                            {/* pulsing glow behind icon */}
                             <div className="absolute inset-0 overflow-hidden">
                               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
                             </div>

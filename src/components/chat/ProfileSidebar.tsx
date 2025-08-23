@@ -72,7 +72,10 @@ export default function ProfileSidebar({ characterId, activeCharacter, togglePro
             <Phone fill="white" size={24} strokeWidth={0.5} />
             Call Me
           </button>
-          <button className="w-full flex items-center justify-center gap-2 border border-pink-400 text-pink-400 font-semibold py-3 rounded-lg hover:bg-pink-400/10 transition-colors">
+          <button
+            onClick={() => router.push(`/ai-girlfriend-generator?character=${characterId}`)}
+            className="w-full flex items-center justify-center gap-2 border border-pink-400 text-pink-400 font-semibold py-3 rounded-lg hover:bg-pink-400/10 transition-colors"
+          >
             <Camera size={20} /> Generate Photo
           </button>
         </div>
