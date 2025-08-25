@@ -9,6 +9,8 @@ import HobbiesIcon from "../icons/HobbiesIcon";
 import RelationshipIcon from "../icons/RelationshipIcon";
 import AgeIcon from "../icons/AgeIcon";
 import ZodiacIcon from "../icons/ZodiacIcon";
+import EthnicityIcon from "../icons/EthnicityIcon";
+import SlimBodyIcon from "../icons/SlimBodyIcon";
 const sarahMitchellProfile = {
   personality: [
     { title: "Personality", value: "Driven and professional", icon: PersonalityIcon },
@@ -22,24 +24,61 @@ const sarahMitchellProfile = {
   ],
 };
 
+const attributeMap = {
+  Personality: { icon: PersonalityIcon, title: "Personality" },
+  Occupation: { icon: OccupationIcon, title: "Occupation" },
+  Hobbies: { icon: HobbiesIcon, title: "Hobbies" },
+  Relationship: { icon: RelationshipIcon, title: "Relationship" },
+  Age: { icon: AgeIcon, title: "Age" },
+  Body_Type: { icon: SlimBodyIcon, title: "Body" },
+  Ethnicity: { icon: EthnicityIcon, title: "Ethnicity" },
+  Zodiac_Sign: { icon: ZodiacIcon, title: "Zodiac Sign" },
+};
+
 interface ProfileSidebarProps {
   characterId: string;
   activeCharacter: Character;
   toggleProfileSideBar: () => void;
 }
 
+// Updated AttributeItem
 const AttributeItem = ({ title, value, icon: Icon }) => (
   <li className="flex items-start gap-4 h-full">
     <div className="text-[var(--pink)] self-center">{Icon && <Icon size={20} />}</div>
     <div>
       <p className="text-lg font-bold text-[rgb(223,_186,_245)]">{title}</p>
-      <p className="font-medium text-sm text-white gap-2">{value}</p>
+      <p className="font-medium text-sm text-white">{Array.isArray(value) ? value.join(" • ") : value}</p>
     </div>
   </li>
 );
 
 export default function ProfileSidebar({ characterId, activeCharacter, toggleProfileSideBar }: ProfileSidebarProps) {
   const router = useRouter();
+  const backendData = activeCharacter?.attributes || {}; // assuming backend data is under `attributes`
+
+  // Transform backend data into an array for mapping
+  const personalityAttributes = ["Personality", "Occupation", "Hobbies", "Relationship"]
+    .filter((key) => backendData[key])
+    .map((key) => {
+      const map = attributeMap[key] || { title: key, icon: null }; // fallback
+      return {
+        title: map.title,
+        value: backendData[key],
+        icon: map.icon,
+      };
+    });
+
+  const physicalAttributes = ["Age", "Body_Type", "Zodiac_Sign", "Ethnicity"]
+    .filter((key) => backendData[key])
+    .map((key) => {
+      const map = attributeMap[key] || { title: key, icon: null }; // fallback
+      return {
+        title: map.title,
+        value: backendData[key],
+        icon: map.icon,
+      };
+    });
+
   return (
     <aside className="w-full h-full xl:w-[368px] bg-[var(--secondary)] flex flex-col xl:border-l xl:border-gray-700 xl:space-y-6 overflow-y-auto">
       <button
@@ -83,15 +122,16 @@ export default function ProfileSidebar({ characterId, activeCharacter, togglePro
           <div>
             <h2 className="font-bold mb-4 text-xl">Personality Attributes</h2>
             <ul className="space-y-4 text-sm">
-              {sarahMitchellProfile.personality.map((attr) => (
+              {personalityAttributes.map((attr) => (
                 <AttributeItem key={attr.title} {...attr} />
               ))}
             </ul>
           </div>
+
           <div>
             <h3 className="font-bold mb-4 text-xl">Physical Attributes</h3>
             <ul className="space-y-4">
-              {sarahMitchellProfile.physical.map((attr) => (
+              {physicalAttributes.map((attr) => (
                 <AttributeItem key={attr.title} {...attr} />
               ))}
             </ul>

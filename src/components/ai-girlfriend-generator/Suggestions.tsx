@@ -143,7 +143,7 @@ export default function Suggestions({ selectedValues, onAdd, onRemove }: Suggest
     <div className="w-full">
       <div className="flex flex-col xl:flex-row mb-6 gap-4 xl:gap-36 w-full">
         <h1 className="text-xl xl:text-2xl font-bold text-white">Suggestions</h1>
-        <div className="flex w-full gap-4 overflow-x-scroll hide-scrollbar">
+        <div className="flex w-full gap-4 overflow-scroll hide-scrollbar">
           {TABS.map((tab) => (
             <button
               key={tab}

@@ -64,11 +64,15 @@ export default function CreateCharacterPage() {
   };
 
   const generateBulkImage = (count: number) => {
-    bulkImageGenerator(prompt, curCharacter?.id, count);
+    if (curCharacter) {
+      bulkImageGenerator(prompt, curCharacter?.id, count, curCharacter);
+    } else {
+      alert("please select a character to generate image");
+    }
   };
   return (
     <Layout>
-      <div className="pt-10 pb-6 px-6 xl:px-12 max-w-[1300px] mx-auto">
+      <div className="pt-10 pb-6 px-6 xl:px-12 max-w-screen xl:max-w-[1300px] mx-auto">
         {isCharacterSelection ? (
           <CharacterSelector
             handleCharacterSelect={handleCharacterSelect}

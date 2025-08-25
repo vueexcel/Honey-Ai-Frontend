@@ -13,7 +13,7 @@ type UserContextType = {
   refreshCharacters: () => Promise<void>;
   refreshBalance: () => Promise<void>;
   updateCharacterLastMessage: (charId: string, message: any) => void;
-  bulkImageGenerator: (prompt: string, characterId: string, count: number) => Promise<void>;
+  bulkImageGenerator: (prompt: string, characterId: string, count: number, curCharacter: Character) => Promise<void>;
   isBulkImageGenerating: boolean;
   curBulkRequestId: string;
   setImagesGenerated: any;
@@ -26,14 +26,26 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { isLoggedIn } = useAuth();
+
   const [balance, setBalance] = useState<number>(0);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isBulkImageGenerating, setIsBulkImageGenerating] = useState<boolean>(false);
   const [curBulkRequestId, setCurBulkRequestId] = useState<string>("");
-  const [imagesGenerated, setImagesGenerated] = useState([]);
-  const [bulkImagesToGenerate, setBulkImagesToGenerate] = useState(0);
+  const [imagesGenerated, setImagesGenerated] = useState<any[]>([]);
+  const [bulkImagesToGenerate, setBulkImagesToGenerate] = useState<number>(0);
 
   const socketRef = useRef<any>(null);
+  const curBulkRequestIdRef = useRef<string>(curBulkRequestId);
+  const bulkImagesToGenerateRef = useRef<number>(bulkImagesToGenerate);
+
+  // Keep refs in sync
+  useEffect(() => {
+    curBulkRequestIdRef.current = curBulkRequestId;
+  }, [curBulkRequestId]);
+
+  useEffect(() => {
+    bulkImagesToGenerateRef.current = bulkImagesToGenerate;
+  }, [bulkImagesToGenerate]);
 
   const refreshBalance = useCallback(async () => {
     try {
@@ -68,52 +80,61 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
   }, []);
 
   const bulkImageGenerator = useCallback(
-    async (prompt: string, charId: string, count: number) => {
-      const curCharacter = characters.find((char) => char.id === charId);
+    async (prompt: string, charId: string, count: number, curCharacter: Character) => {
       const characterRef = curCharacter?.resized_images[0]?.default_url;
       const isAnime = curCharacter?.is_anime as boolean;
       const { bulkRequestId } = await startBulkImageGeneration(prompt, charId, characterRef, isAnime, count);
+
       setBulkImagesToGenerate(count);
-      setIsBulkImageGenerating(true);
       setCurBulkRequestId(bulkRequestId);
+      setIsBulkImageGenerating(true);
+      setImagesGenerated([]);
     },
-    [isLoggedIn, balance, characters]
+    []
   );
 
   useEffect(() => {
     if (!isLoggedIn) return;
 
-    refreshBalance();
-    refreshCharacters();
-
-    // socket setup
+    // Initialize singleton socket
     let socket;
     try {
-      socket = getSocket();
+      socket = getSocket() || initSocket();
     } catch {
       socket = initSocket();
     }
     socketRef.current = socket;
 
-    socket.on("bulkImagesGenerated", ({ imageUrls,bulkRequestId }) => {
-      console.log(imageUrls, "urls");
-      if (curBulkRequestId === bulkRequestId) {
+    const handleBulkImages = ({ bulkRequestId, imageUrls }: any) => {
+      if (curBulkRequestIdRef.current === bulkRequestId) {
         setImagesGenerated((prev) => {
           const updated = [...prev, ...imageUrls];
-          if (updated.length >= bulkImagesToGenerate) {
+          if (updated.length >= bulkImagesToGenerateRef.current) {
             setIsBulkImageGenerating(false);
           }
           return updated;
         });
       }
-    });
-    socket.on("balance", (newBalance: number) => {
+    };
+
+    const handleBalance = (newBalance: number) => {
       setBalance(newBalance);
-    });
+    };
+
+    socket.on("bulkImagesGenerated", handleBulkImages);
+    socket.on("balance", handleBalance);
 
     return () => {
-      socket.off("balance");
+      socket.off("bulkImagesGenerated", handleBulkImages);
+      socket.off("balance", handleBalance);
     };
+  }, [isLoggedIn]);
+
+  // Initial data fetch
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    refreshBalance();
+    refreshCharacters();
   }, [isLoggedIn, refreshBalance, refreshCharacters]);
 
   return (

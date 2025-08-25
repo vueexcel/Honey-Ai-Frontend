@@ -50,28 +50,33 @@ const GenerationSettings = ({ generateBulkImage }: GenerationSettingsProps) => {
           <span>{totalCost}</span>
         </div>
       </Button>
-      <div className="mt-6">
-        <h1 className="text-xl xl:text-2xl">Your Generated Images</h1>
-        <span className="mt-2">
-          Your images are being generated. Feel free to explore while they load, or start another creation!
-        </span>
-        {isBulkImageGenerating ? (
-          <div className="mt-6 w-full flex justify-center">
-            <Spinner />
-          </div>
-        ) : (
-          <div className="flex gap-4 flex-wrap">
-            {imagesGenerated.map((url, index) => (
-              <img
-                key={index}
-                src={url}
-                alt={`Generated ${index + 1}`}
-                className="w-64 h-64 object-cover rounded-lg shadow"
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      {(isBulkImageGenerating || imagesGenerated.length > 0) && (
+        <div className="mt-6">
+          <h1 className="text-xl xl:text-2xl">Your Generated Images</h1>
+          <span className="mt-2">
+            {isBulkImageGenerating
+              ? "Your images are being generated. Feel free to explore while they load!"
+              : "Here are your generated images:"}
+          </span>
+
+          {isBulkImageGenerating ? (
+            <div className="mt-6 w-full flex justify-center">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="flex gap-4 flex-wrap mt-6">
+              {imagesGenerated.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Generated ${index + 1}`}
+                  className="w-64 h-64 object-cover rounded-lg shadow"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
