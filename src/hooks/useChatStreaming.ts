@@ -15,6 +15,8 @@ export default function useChatStreaming(characterId?: string) {
   const [error, setError] = useState<string | null>(null);
   const messagesRef = useRef(messages);
   const socketRef = useRef<any>(null);
+  const [imageProgress, setImageProgress] = useState<number | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     messagesRef.current = messages;
@@ -55,6 +57,12 @@ export default function useChatStreaming(characterId?: string) {
     });
 
     socket.on("imageGenerated", (imgObj: any) => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      setImageProgress(100);
+      setTimeout(() => setImageProgress(null), 1000);
       setMessages((prev) => {
         if (!prev.length) return prev;
         const last = prev[prev.length - 1];
@@ -64,6 +72,7 @@ export default function useChatStreaming(characterId?: string) {
     });
 
     socket.on("imageGenerationError", (data) => {
+      setImageProgress(null);
       setMessages((prev) => {
         if (!prev.length) return prev;
         const last = prev[prev.length - 1];
@@ -123,33 +132,19 @@ export default function useChatStreaming(characterId?: string) {
       setError(null);
       setIsStreaming(true);
       if (isImage) {
-        // try {
-        //   const nsfwCheck = await checkNsfw(prompt, charId);
-        //   if (!nsfwCheck.valid) {
-        //     setMessages((prev) => [
-        //       ...prev.slice(0, -1),
-        //       {
-        //         ...charPlaceholder,
-        //         message_type: "text",
-        //         content: "I can't do this. Let's change the topic",
-        //       },
-        //     ]);
-        //     setIsStreaming(false);
-        //     return false;
-        //   }
-        // } catch (err) {
-        //   console.error("NSFW check failed:", err);
-        //   setMessages((prev) => [
-        //     ...prev.slice(0, -1),
-        //     { ...charPlaceholder, message_type: "text", content: "Something went wrong while checking your request." },
-        //   ]);
-        //   setIsStreaming(false);
-        //   return false;
-        // }
         const curCharacter = characters.find((char) => char.id === charId);
         const characterRef = curCharacter?.resized_images[0]?.default_url;
         const isAnime = curCharacter?.is_anime as boolean;
         await startPhotoGeneration(prompt, charId, characterRef, isAnime);
+        setImageProgress(0);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = setInterval(() => {
+          setImageProgress((prev) => {
+            if (prev === null) return 0;
+            if (prev >= 95) return prev;
+            return prev + 1;
+          });
+        }, 800);
       } else {
         await startChatStreaming(prompt, charId);
       }
@@ -165,5 +160,6 @@ export default function useChatStreaming(characterId?: string) {
     error,
     sendMessage,
     isLoadingHistory,
+    imageProgress,
   };
 }

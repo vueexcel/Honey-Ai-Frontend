@@ -12,6 +12,7 @@ import Dropdown from "../ui/Dropdown";
 import ImageColorIcon from "../icons/ImageColorIcon";
 import VideoColorIcon from "../icons/VideoColorIcon";
 import UserIcon from "../icons/UserIcon";
+import ProgressSpinner from "../ui/ProgressSpinner";
 
 interface ChatWindowProps {
   characterId: string;
@@ -21,7 +22,7 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ characterId, activeCharacter, toggleProfileSideBar }: ChatWindowProps) {
   const [prompt, setPrompt] = useState("");
-  const { messages, isStreaming, error, sendMessage } = useChatStreaming();
+  const { messages, isStreaming, error, sendMessage, imageProgress } = useChatStreaming();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [activeDate, setActiveDate] = useState("");
   const isDisabled = !prompt.trim() || isStreaming;
@@ -199,26 +200,7 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
                               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
                             </div>
                             <div className="absolute inset-0 grid place-items-center">
-                              <svg
-                                className="animate-spin h-6 w-6 text-[var(--accent)] mb-2"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                ></circle>
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                                ></path>
-                              </svg>
+                              <ProgressSpinner progress={imageProgress} />
                             </div>
                           </div>
                         ) : msg?.message_type === "image" ? (

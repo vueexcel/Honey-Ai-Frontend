@@ -10,6 +10,7 @@ interface ChatStreamingContextValue {
   error: string | null;
   sendMessage: (prompt: string, characterId: string, isImage: boolean) => Promise<void>;
   isLoadingHistory: boolean;
+  imageProgress: number;
 }
 
 const ChatStreamingContext = createContext<ChatStreamingContextValue | null>(null);

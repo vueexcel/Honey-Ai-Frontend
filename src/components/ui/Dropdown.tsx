@@ -9,6 +9,7 @@ export type DropdownOption = {
   label: string;
   disabled?: boolean;
   submenu?: DropdownOption[];
+  icon?: any;
 };
 
 export type DropdownProps = {
