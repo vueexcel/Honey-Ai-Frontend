@@ -56,6 +56,15 @@ export default function useChatStreaming(characterId?: string) {
       });
     });
 
+    socket.on("message_saved", ({ messageId }) => {
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const last = prev[prev.length - 1];
+        if (last.sender_type !== "character") return prev;
+        return [...prev.slice(0, -1), { ...last, id: messageId }];
+      });
+    });
+
     socket.on("imageGenerated", (imgObj: any) => {
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
