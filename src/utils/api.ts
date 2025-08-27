@@ -129,3 +129,30 @@ export async function startBulkImageGeneration(
     body: JSON.stringify({ prompt, character_id, referenceImage, isAnime, numImages, socketId: socket.id }),
   });
 }
+
+export async function generateTTS(messageId: string) {
+  const socket = getSocket();
+  if (!socket?.id) {
+    throw new Error("Socket not connected");
+  }
+
+  return apiFetch("chat/tts", {
+    method: "POST",
+    body: JSON.stringify({
+      messageId,
+      socketId: socket.id,
+    }),
+  });
+}
+
+export async function generateVideo(referenceImage: string, character_id: string) {
+  const socket = getSocket();
+  if (!socket?.id) {
+    throw new Error("Socket not connected");
+  }
+
+  return apiFetch("chat/generate-video", {
+    method: "POST",
+    body: JSON.stringify({ referenceImage, socketId: socket.id, character_id }),
+  });
+}

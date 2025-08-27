@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { ChevronDown, Camera, SendHorizonal, Phone, User, MoreVertical, X, ArrowLeft, ChevronUp } from "lucide-react";
+import { ChevronDown, Camera, SendHorizonal, Phone, MoreVertical, X, ArrowLeft, ChevronUp } from "lucide-react";
+import AudioPlayer from "./AudioPlayer";
 import PremiumButton from "../ui/PremiumBtn";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { Character } from "@/types/character";
 import { useChatStreaming } from "@/context/ChatStreamingContext";
 import clsx from "clsx";
@@ -13,6 +13,8 @@ import ImageColorIcon from "../icons/ImageColorIcon";
 import VideoColorIcon from "../icons/VideoColorIcon";
 import UserIcon from "../icons/UserIcon";
 import ProgressSpinner from "../ui/ProgressSpinner";
+import Button from "../ui/Button";
+import TokenIcon from "../icons/TokenIcon";
 
 interface ChatWindowProps {
   characterId: string;
@@ -22,9 +24,10 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ characterId, activeCharacter, toggleProfileSideBar }: ChatWindowProps) {
   const [prompt, setPrompt] = useState("");
-  const { messages, isStreaming, error, sendMessage, imageProgress } = useChatStreaming();
+  const { messages, isStreaming, error, sendMessage, imageProgress, requestAudio, requestVideo } = useChatStreaming();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [activeDate, setActiveDate] = useState("");
+  const prevLength = useRef(0);
   const isDisabled = !prompt.trim() || isStreaming;
   const options = [
     {
@@ -62,10 +65,12 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
 
     return `${hours}:${minutesStr} ${ampm}`;
   }
+
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messages.length > prevLength.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
+    prevLength.current = messages.length;
   }, [messages]);
 
   useEffect(() => {
@@ -179,17 +184,19 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
                 {msg?.sender_type == "character" ? (
                   <div className="flex gap-1.5 flex-col max-w-full">
                     {msg?.message_type == "text" ? (
-                      <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words">
-                        {msg.content == "" ? (
+                      msg.content == "" ? (
+                        <div className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-fit min-w-0">
                           <div className="flex items-center justify-start space-x-2">
                             <span className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                             <span className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                             <span className="w-3 h-3 bg-white rounded-full animate-bounce"></span>
                           </div>
-                        ) : (
-                          msg.content
-                        )}
-                      </p>
+                        </div>
+                      ) : (
+                        <p className="bg-[var(--accent)] text-white rounded-tl-sm rounded-b-2xl rounded-tr-2xl p-3 max-w-md min-w-0 overflow-hidden break-words">
+                          {msg.content}
+                        </p>
+                      )
                     ) : (
                       <>
                         {!msg?.media_url ? (
@@ -220,7 +227,30 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
                         ) : null}
                       </>
                     )}
-                    <span className="text-[13px] text-[var(--gray)]">{formatTime(msg?.created_at)}</span>
+                    <div className="flex gap-2 items-center max-w-[340px]">
+                      {msg && msg.message_type == "text" && (
+                        <AudioPlayer url={msg?.audio_url} messageId={msg.id} requestAudio={requestAudio} />
+                      )}
+                      {msg?.message_type === "image" && (
+                        <Button
+                          variant="ghost-pink"
+                          className="w-full h-12 rounded-xl flex items-center justify-center gap-2 font-medium text-lg"
+                          onClick={() => requestVideo(msg.media_url, msg.character_id)}
+                          disabled={isStreaming}
+                        >
+                          <div className="flex gap-3 justify-center items-center">
+                            <span>Animate</span>
+                            <div className="flex gap-1 items-center">
+                              <span>15</span>
+                              <TokenIcon size={18} />
+                            </div>
+                          </div>
+                        </Button>
+                      )}
+                      <span className="text-[13px] text-[var(--gray)] whitespace-nowrap">
+                        {formatTime(msg?.created_at)}
+                      </span>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex gap-1.5 flex-col items-end ">

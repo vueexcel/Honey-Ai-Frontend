@@ -11,6 +11,8 @@ const variants = {
   ghost: "bg-transparent hover:bg-[#181818] text-gray-700 dark:text-gray-200",
   pink: "bg-[linear-gradient(91deg,_#ff44ba_0%,_#8840b5_100%)]",
   gradient: "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700",
+  "ghost-pink":
+    "bg-[var(--main)] text-[#e590fd] border border-[#e590fd] hover:text-[rgb(223,_186,_245)] hover:bg-[var(--gray-600)] hover:border-[var(--accent)]",
 };
 
 const sizes = {

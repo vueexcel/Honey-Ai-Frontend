@@ -1,5 +1,5 @@
 export interface Message {
-  id?: string; // optional for temp streamed message
+  id: string; // optional for temp streamed message
   user_id?: string;
   character_id?: string;
   sender_type: "user" | "character";
@@ -7,4 +7,5 @@ export interface Message {
   content: string;
   created_at?: string;
   media_url?: string | null;
+  audio_url: string | null;
 }

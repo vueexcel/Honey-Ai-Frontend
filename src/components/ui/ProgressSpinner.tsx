@@ -12,7 +12,7 @@ export default function ProgressSpinner({
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <svg width={size * 16} height={size * 16} className="rotate-[-90deg]">
+    <svg width={size * 16} height={size * 16}>
       <circle cx="50%" cy="50%" r={radius} stroke="#e5e7eb" strokeWidth="8" fill="transparent" />
       <circle
         cx="50%"
@@ -25,6 +25,7 @@ export default function ProgressSpinner({
         strokeDashoffset={offset}
         strokeLinecap="round"
         className="transition-all duration-500 ease-linear"
+        transform="rotate(-90, 50%, 50%)" // ✅ rotate only the progress stroke
       />
       <text x="50%" y="50%" dy="0.3em" textAnchor="middle" className="font-semibold text-sm" style={{ fill: color }}>
         {progress}%

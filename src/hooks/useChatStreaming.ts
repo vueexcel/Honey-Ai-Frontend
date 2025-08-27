@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { initSocket, getSocket } from "@/lib/socket";
-import { startChatStreaming, getCharacterHistory, startPhotoGeneration } from "@/utils/api";
+import { startChatStreaming, getCharacterHistory, startPhotoGeneration, generateTTS, generateVideo } from "@/utils/api";
 import { Message } from "@/types/message";
 import { useAuth } from "@/context/AuthContextProvider";
 import { useUser } from "@/context/UserContextProvider";
 
 export default function useChatStreaming(characterId?: string) {
   const { isLoggedIn } = useAuth();
-  const { balance, characters, updateCharacterLastMessage } = useUser();
+  const { balance, setBalance, characters, updateCharacterLastMessage } = useUser();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -71,6 +71,21 @@ export default function useChatStreaming(characterId?: string) {
       });
     });
 
+    socket.on("videoGenerated", (videoObj: any) => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      setImageProgress(100);
+      setTimeout(() => setImageProgress(null), 1000);
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const last = prev[prev.length - 1];
+        if (last.sender_type !== "character") return prev;
+        return [...prev.slice(0, -1), { ...last, media_url: videoObj?.videoUrl }];
+      });
+    });
+
     socket.on("imageGenerationError", (data) => {
       setImageProgress(null);
       setMessages((prev) => {
@@ -81,6 +96,17 @@ export default function useChatStreaming(characterId?: string) {
           ...prev.slice(0, -1),
           { ...last, message_type: "text", content: "I can't do this. Let's change the topic" },
         ];
+      });
+    });
+
+    socket.on("videoGenerationError", (data) => {
+      setImageProgress(null);
+      alert("error in generating video");
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const last = prev[prev.length - 1];
+        if (last.sender_type !== "character") return prev;
+        return [...prev.slice(0, -1)];
       });
     });
 
@@ -95,6 +121,7 @@ export default function useChatStreaming(characterId?: string) {
       socket.off("done");
       socket.off("error");
       socket.off("imageGenerated");
+      socket.off("imageGenerationError");
     };
   }, [isLoggedIn]);
 
@@ -112,6 +139,7 @@ export default function useChatStreaming(characterId?: string) {
           content,
           created_at: new Date().toISOString(),
           media_url: null,
+          audio_url: null,
         };
       }
 
@@ -153,6 +181,64 @@ export default function useChatStreaming(characterId?: string) {
     [isLoggedIn, balance, characters]
   );
 
+  const requestAudio = useCallback(
+    async (messageId: string) => {
+      try {
+        const { success, audioUrl } = await generateTTS(messageId);
+        if (!success) return;
+        setMessages((prev) => prev.map((msg) => (msg.id === messageId ? { ...msg, audio_url: audioUrl } : msg)));
+      } catch (err: any) {
+        setError("Failed to generate audio");
+      }
+    },
+    [setBalance]
+  );
+
+  const requestVideo = useCallback(
+    async (imageUrl: string, charId: string) => {
+      function createTempMessage(sender: "user" | "character", content: string): Message {
+        return {
+          id: `temp-${sender}-msg-${Date.now()}`,
+          sender_type: sender,
+          message_type: "video",
+          content,
+          created_at: new Date().toISOString(),
+          media_url: null,
+          audio_url: null,
+        };
+      }
+      try {
+        if (!isLoggedIn) {
+          alert("Login To Start Conversation");
+          return false;
+        }
+        if (balance <= 0) {
+          alert("Credits Not Sufficient");
+          return false;
+        }
+        const charPlaceholder = createTempMessage("character", "");
+        setMessages((prev) => [...prev, charPlaceholder]);
+        setError(null);
+        setIsStreaming(true);
+        await generateVideo(imageUrl, charId);
+        setImageProgress(0);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = setInterval(() => {
+          setImageProgress((prev) => {
+            if (prev === null) return 0;
+            if (prev >= 95) return prev;
+            return prev + 1;
+          });
+        }, 1000);
+        return true;
+      } catch (err: any) {
+        setError("Failed to generate audio");
+        return false;
+      }
+    },
+    [isLoggedIn, balance, characters]
+  );
+
   return {
     messages,
     balance,
@@ -161,5 +247,7 @@ export default function useChatStreaming(characterId?: string) {
     sendMessage,
     isLoadingHistory,
     imageProgress,
+    requestAudio,
+    requestVideo,
   };
 }

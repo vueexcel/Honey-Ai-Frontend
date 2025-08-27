@@ -11,6 +11,8 @@ interface ChatStreamingContextValue {
   sendMessage: (prompt: string, characterId: string, isImage: boolean) => Promise<void>;
   isLoadingHistory: boolean;
   imageProgress: number;
+  requestAudio: (messageId: string) => Promise<void>;
+  requestVideo: (imageUrl: string, charId: string) => Promise<void>;
 }
 
 const ChatStreamingContext = createContext<ChatStreamingContextValue | null>(null);
