@@ -16,7 +16,10 @@ interface ChatListPanelProps {
 
 export default function ChatListPanel({ width, activeCharacterId, characters }: ChatListPanelProps) {
   const { messages } = useChatStreaming();
-  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+
+  const lastCharacterMsg = [...messages]
+    .filter((m) => m.sender_type === "character")
+    .sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime())[0];
 
   const activeRef = useRef<HTMLLIElement | null>(null);
 
@@ -68,7 +71,7 @@ export default function ChatListPanel({ width, activeCharacterId, characters }: 
         <ul className="space-y-1 py-2 pl-3 pr-1">
           {characters?.map((user) => {
             const isActive = user.id === activeCharacterId;
-            const msg = isActive && lastMessage ? lastMessage : user?.last_message || null;
+            const msg = isActive && lastCharacterMsg ? lastCharacterMsg : user?.last_message || null;
 
             return (
               <li key={user.id} ref={isActive ? activeRef : null}>
@@ -88,7 +91,7 @@ export default function ChatListPanel({ width, activeCharacterId, characters }: 
                     <p className="font-bold">{`${user.first_name} ${user.last_name}`}</p>
                     <p className="text-[var(--gray)] flex items-center gap-1">
                       {msg ? (
-                        msg.message_type === "image" ? (
+                        msg.message_type === "image" || msg.message_type === "video" ? (
                           <span className="flex items-center gap-1">
                             <ImageIcon size={20} />
                             <span>
