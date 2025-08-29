@@ -1,31 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { MyAICharacter } from "@/types/my-ai/character.ts";
 import MyAiCharacterCard from "./MyAiCharacterCard";
 import { useRouter } from "next/navigation";
-
-const myCharacters: MyAICharacter[] = [
-  {
-    id: "59b65a5c-b1a3-4668-b2a6-cf4fc0654a98",
-    blurredImageUrl:
-      "https://storage.googleapis.com/get_honey_prod/CreateCharacter_PreGenerated_Blurred_Images/Anime/SFW/angel_white.webp",
-    resizedImages: [null],
-    bodyImages: [null],
-    age: 21,
-    firstName: "Lian",
-    lastName: "Zhang",
-    description:
-      "🌌 Precision is my art, solitude my canvas. 🎯 Seeking an ally for life's covert missions. 🌿 Let's craft an extraordinary story together! 🌠",
-    isLocked: true,
-  },
-];
+import { getMyAICharacter } from "@/utils/api";
+import { Character } from "@/types/character";
 
 export default function MyAISection() {
   const [activeTab, setActiveTab] = useState<"all" | "active" | "premium">("all");
+  const [character, setCharacters] = useState<Character[]>([]);
   const router = useRouter();
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getMyAICharacter();
+        console.log(data, "data");
+        setCharacters(data);
+      } catch (err: any) {
+        console.log(err, "err");
+      }
+    }
+    fetchData();
+  }, []);
   return (
     <div className="h-full p-6 w-full mt-16 xl:mt-0">
       <div className="px-0 sm:px-6 xl:px-8">
@@ -49,7 +47,7 @@ export default function MyAISection() {
             </div>
             <span>Create New AI</span>
           </div>
-          {myCharacters.map((character, index) => (
+          {character?.map((character, index) => (
             <motion.div
               key={character.id}
               initial={{ opacity: 0, y: 20 }}
@@ -57,14 +55,15 @@ export default function MyAISection() {
               transition={{ duration: 0.6, delay: 0.1 * index }}
             >
               <MyAiCharacterCard
-                firstName={character.firstName}
-                lastName={character.lastName}
+                id={character.id}
+                firstName={character.first_name}
+                lastName={character.last_name}
                 age={character.age}
                 description={character.description}
-                blurredImageUrl={character.blurredImageUrl}
-                bodyImages={character.bodyImages}
-                isLocked={character.isLocked}
-                resizedImages={character.resizedImages}
+                blurredImageUrl={character.white_desktop_premium_model_experiment_image}
+                bodyImages={character.body_images}
+                isLocked={false}
+                resizedImages={character.resized_images}
               />
             </motion.div>
           ))}

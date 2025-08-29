@@ -139,12 +139,14 @@ export default function useChatStreaming(characterId?: string) {
       function createTempMessage(
         sender: "user" | "character",
         messageType: "text" | "image",
+        charId: string,
         content: string
       ): Message {
         return {
           id: `temp-${sender}-msg-${Date.now()}`,
           sender_type: sender,
           message_type: messageType,
+          character_id: charId,
           content,
           created_at: new Date().toISOString(),
           media_url: null,
@@ -161,8 +163,8 @@ export default function useChatStreaming(characterId?: string) {
         return false;
       }
 
-      const userMsg = createTempMessage("user", "text", prompt);
-      const charPlaceholder = createTempMessage("character", isImage ? "image" : "text", "");
+      const userMsg = createTempMessage("user", "text", charId, prompt);
+      const charPlaceholder = createTempMessage("character", isImage ? "image" : "text", charId, "");
       setMessages((prev) => [...prev, userMsg, charPlaceholder]);
 
       updateCharacterLastMessage(charId, userMsg);
@@ -210,6 +212,7 @@ export default function useChatStreaming(characterId?: string) {
           id: `temp-${sender}-msg-${Date.now()}`,
           sender_type: sender,
           message_type: "video",
+          character_id: charId,
           content,
           created_at: new Date().toISOString(),
           media_url: null,

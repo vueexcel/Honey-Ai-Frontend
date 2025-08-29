@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { MyAICharacter } from "@/types/my-ai/character";
 import Button from "./ui/Button";
+import { useRouter } from "next/navigation";
 
 export default function MyAiCharacterCard({
   id,
@@ -15,21 +16,24 @@ export default function MyAiCharacterCard({
   description,
   isLocked,
 }: Partial<MyAICharacter>) {
+  const router = useRouter();
   return (
     <motion.div
       whileTap={{ scale: 0.98 }}
       className="relative bg-white/70 dark:bg-gray-800/50 rounded-[21px] overflow-hidden transition-all duration-300 cursor-pointer group shadow-md"
+      onClick={() => {
+        router.push(`/chat/${id}`);
+      }}
     >
       <div className="relative h-[300px] xl:h-[440px] bg-gradient-to-br from-purple-400/20 to-pink-400/20 dark:from-purple-400/10 dark:to-pink-400/10">
-        {/* Image (always shown) */}
         {isLocked ? (
           <img src={blurredImageUrl} alt={firstName} className="w-full h-full object-cover" />
         ) : (
-          <div></div>
-          // <img src={resizedImages[0].default_url} alt={firstName} className="w-full h-full object-cover" />
+          <div className="h-full w-full">
+            <img src={resizedImages[0]?.default_url} alt={firstName} className="w-full h-full object-cover" />
+          </div>
         )}
 
-        {/* Character Info Overlay */}
         <div className="absolute bottom-0 left-0 right-0 text-white">
           <div className="flex justify-start flex-col py-11 px-8 gap-4">
             <div className="flex gap-2 text-2xl">
@@ -44,12 +48,14 @@ export default function MyAiCharacterCard({
           </div>
         </div>
         <div className="absolute inset-0 z-20 flex justify-center items-center">
-          <Button
-            variant="gradient"
-            className="w-1/2 h-12 rounded-xl flex items-center justify-center font-medium text-base gap-2 "
-          >
-            Unlock Now
-          </Button>
+          {isLocked && (
+            <Button
+              variant="gradient"
+              className="w-1/2 h-12 rounded-xl flex items-center justify-center font-medium text-base gap-2 "
+            >
+              Unlock Now
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>

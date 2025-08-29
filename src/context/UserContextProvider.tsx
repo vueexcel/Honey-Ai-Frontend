@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
-import { getCredits, getConversationCharacter, startBulkImageGeneration } from "@/utils/api";
+import { getCredits, getConversationCharacter, startBulkImageGeneration, generateCharacter } from "@/utils/api";
 import { initSocket, getSocket } from "@/lib/socket";
 import { useAuth } from "./AuthContextProvider";
 import { Character } from "@/types/character";
@@ -20,6 +20,8 @@ type UserContextType = {
   bulkImagesToGenerate: number;
   imagesGenerated: any;
   setIsBulkImageGenerating: (s: boolean) => void;
+  newCharacterImage: string | null;
+  generateNewCharacter: (name: string, attributes: any, age: number, isAnime: boolean) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -33,12 +35,12 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
   const [curBulkRequestId, setCurBulkRequestId] = useState<string>("");
   const [imagesGenerated, setImagesGenerated] = useState<any[]>([]);
   const [bulkImagesToGenerate, setBulkImagesToGenerate] = useState<number>(0);
+  const [newCharacterImage, setNewCharacterImage] = useState<string | null>(null);
 
   const socketRef = useRef<any>(null);
   const curBulkRequestIdRef = useRef<string>(curBulkRequestId);
   const bulkImagesToGenerateRef = useRef<number>(bulkImagesToGenerate);
 
-  // Keep refs in sync
   useEffect(() => {
     curBulkRequestIdRef.current = curBulkRequestId;
   }, [curBulkRequestId]);
@@ -93,10 +95,17 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     []
   );
 
-  useEffect(() => {
-    if (!isLoggedIn) return;
+  const generateNewCharacter = useCallback(async (name: string, attributes: any, age: number, isAnime: boolean) => {
+    try {
+      const data = await generateCharacter(name, attributes, age, isAnime);
+      console.log(data?.character, "character");
+      return data?.character;
+    } catch (err: any) {
+      console.log(err, "err");
+    }
+  }, []);
 
-    // Initialize singleton socket
+  useEffect(() => {
     let socket;
     try {
       socket = getSocket() || initSocket();
@@ -121,10 +130,17 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
       setBalance(newBalance);
     };
 
+    const handleNewCharacterImage = ({ imageUrls, characterId }: any) => {
+      console.log(imageUrls, "imageUrl generated");
+      setNewCharacterImage(imageUrls[0]);
+    };
+
+    socket.on("newCharacterImageGenerated", handleNewCharacterImage);
     socket.on("bulkImagesGenerated", handleBulkImages);
     socket.on("balance", handleBalance);
 
     return () => {
+      socket.off("newCharacterImageGenerated", handleNewCharacterImage);
       socket.off("bulkImagesGenerated", handleBulkImages);
       socket.off("balance", handleBalance);
     };
@@ -145,6 +161,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         characters,
         curBulkRequestId,
         bulkImagesToGenerate,
+        newCharacterImage,
         setBalance,
         refreshCharacters,
         refreshBalance,
@@ -153,6 +170,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         setImagesGenerated,
         setIsBulkImageGenerating,
         imagesGenerated,
+        generateNewCharacter,
       }}
     >
       {children}

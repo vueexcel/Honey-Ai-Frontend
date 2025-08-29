@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { ArrowRightIcon, Box } from "lucide-react";
 import Button from "../ui/Button";
+import { generateAnimeCharacterName } from "@/utils/animeNameGenerator";
+import { motion } from "framer-motion";
 
 interface NameSelectorProps {
   handleNext: (value: string) => void;
@@ -25,6 +27,7 @@ const ProgressBar = ({ label, progress }: { label: string; progress: number }) =
 
 export default function NameSelector({ handleNext }: NameSelectorProps) {
   const [name, setName] = useState("");
+  const [rolling, setRolling] = useState(false);
 
   const [progress1, setProgress1] = useState(0);
   const [progress2, setProgress2] = useState(0);
@@ -35,6 +38,7 @@ export default function NameSelector({ handleNext }: NameSelectorProps) {
     const timer2 = setTimeout(() => setProgress2(100), 1200);
     const timer3 = setTimeout(() => setProgress3(100), 1900);
 
+    setName(generateAnimeCharacterName());
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
@@ -42,9 +46,14 @@ export default function NameSelector({ handleNext }: NameSelectorProps) {
     };
   }, []);
 
+  const handleRoll = () => {
+    setRolling(true);
+    setName(generateAnimeCharacterName());
+    setTimeout(() => setRolling(false), 600);
+  };
+
   return (
     <div className="w-full flex flex-col items-center mt-16">
-      {/* Input Section */}
       <div className="w-full flex items-center gap-3 mb-6">
         <div className="relative w-full border-2 border-transparent rounded-xl focus-within:border-[var(--accent)]">
           <input
@@ -55,9 +64,18 @@ export default function NameSelector({ handleNext }: NameSelectorProps) {
             className="w-full bg-[#1e1e1e] text-white border-none rounded-xl px-4 py-3 focus:outline-none focus:ring-0"
           />
         </div>
-        <button className="flex-shrink-0 bg-gradient-to-br from-purple-600 to-pink-500 text-white p-3 rounded-lg hover:opacity-90 transition-opacity">
-          <Box size={24} />
-        </button>
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          onClick={handleRoll}
+          className="flex-shrink-0 bg-gradient-to-br from-purple-600 to-pink-500 text-white p-3 rounded-lg hover:opacity-90 transition-opacity"
+        >
+          <motion.div
+            animate={rolling ? { rotate: 90 } : { rotate: 0 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            <Box size={24} />
+          </motion.div>
+        </motion.button>
       </div>
 
       {/* Next Button - positioned below input for alignment */}

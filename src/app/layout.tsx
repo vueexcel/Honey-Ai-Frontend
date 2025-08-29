@@ -5,6 +5,7 @@ import ThemeProvider from "@/context/ThemeProvider";
 import SidebarProvider from "@/context/SidebarProvider";
 import { AuthProvider } from "@/context/AuthContextProvider";
 import { Sidebar } from "@/components";
+import { SliderProvider } from "@/context/SliderContext";
 import { UserContextProvider } from "@/context/UserContextProvider";
 
 const manrope = Manrope({
@@ -39,14 +40,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${manrope.variable} ${inter.variable} antialiased bg-gray-900 text-white font-[var(--font-manrope)]`}
       >
         <AuthProvider>
-          <ThemeProvider>
-            <UserContextProvider>
-              <SidebarProvider>
-                <Sidebar />
-                <div className="flex-1 flex flex-col">{children}</div>
-              </SidebarProvider>
-            </UserContextProvider>
-          </ThemeProvider>
+          <SliderProvider>
+            <ThemeProvider>
+              <UserContextProvider>
+                <SidebarProvider>
+                  <Sidebar />
+                  <div className="flex-1 flex flex-col">{children}</div>
+                </SidebarProvider>
+              </UserContextProvider>
+            </ThemeProvider>
+          </SliderProvider>
         </AuthProvider>
       </body>
     </html>

@@ -8,22 +8,67 @@ import Button from "../ui/Button";
 import { ArrowRightIcon } from "lucide-react";
 import VoiceSelector from "./VoiceSelector";
 import NameSelector from "./NameSelector";
+import CharacterSummary from "./CharacterSummary";
+import { useUser } from "@/context/UserContextProvider";
 
 type AnswerMap = Record<string, string | string[]>;
 type Mode = "realistic" | "anime";
+type MappingRule = {
+  source: keyof AnswerMap;
+  target: string;
+  isArray?: boolean;
+  pickFirst?: boolean;
+  wrapArray?: boolean;
+  forceArray?: boolean;
+};
 
 export default function CreateCharacterForm() {
   const [mode, setMode] = useState<Mode | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const { generateNewCharacter } = useUser();
   const [answers, setAnswers] = useState<AnswerMap>({});
+  const [finished, setFinished] = useState(false);
+  const [mappedAnswer, setMappedAnswer] = useState<Record<string, string | string[]> | {}>([]);
+  const [name, setName] = useState<string>("");
 
-  const handleNext = () => {
+  function getRandomAgeFromValue(value: string, name?: string): number {
+    let target = value;
+    if (!/^\d/.test(value) && name) {
+      target = name;
+    }
+
+    const rangeMatch = /^(\d+)\s*-\s*(\d+)$/.exec(target);
+    if (rangeMatch) {
+      const min = parseInt(rangeMatch[1], 10);
+      const max = parseInt(rangeMatch[2], 10);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const num = parseInt(target, 10);
+    if (!isNaN(num)) return num;
+
+    return Math.floor(Math.random() * (45 - 18 + 1)) + 18;
+  }
+
+  const handleNext = async () => {
     if (!mode) return;
     const steps = createCharacterSteps[mode];
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
-      alert("Character creation complete!");
+      console.log(answers, "answers");
+      const answer = mapAnswersToAttributes(answers, mode);
+      setMappedAnswer(answer);
+
+      try {
+        const age = getRandomAgeFromValue(answer?.Age || null);
+        const fullName = (answer.Name || "") as string;
+        const data = await generateNewCharacter(fullName, answer, age, mode === "anime");
+      } catch (err) {
+        console.error("❌ Failed to create character:", err);
+      }
+
+      setFinished(true);
     }
   };
 
@@ -48,7 +93,6 @@ export default function CreateCharacterForm() {
   };
 
   const handleSelect = (key: string, value: string) => {
-    console.log(value, "handleSelect");
     setAnswers((prev) => ({ ...prev, [key]: value }));
     handleNext();
   };
@@ -70,6 +114,58 @@ export default function CreateCharacterForm() {
   };
   const handleNameSelect = (key: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
+    setName(value);
+  };
+
+  const animeMappings: MappingRule[] = [
+    { source: "animeRace", target: "Ethnicity", forceArray: true },
+    { source: "animeEyeColor", target: "Eye_Color" },
+    { source: "animeHairStyle", target: "Hair_Style" },
+    { source: "animeHairColor", target: "Hair_Color" },
+    { source: "animeOccupation", target: "Occupation", forceArray: true },
+    { source: "animeCharacterName", target: "Name" },
+  ];
+
+  const realisticMappings: MappingRule[] = [
+    { source: "realisticAge", target: "Age" },
+    { source: "realisticCharacterHobby", target: "Hobbies", forceArray: true },
+    { source: "realisticBodyType", target: "Body_Type" },
+    { source: "realisticEthnicity", target: "Ethnicity", forceArray: true },
+    { source: "realisticOccupation", target: "Occupation", forceArray: true }, // keep array
+    { source: "realisticPersonality", target: "Personality", forceArray: true },
+    { source: "realisticZodiacSign", target: "Zodiac_Sign" },
+    { source: "realisticMaritalStatus", target: "Relationship", forceArray: true }, // keep array
+    { source: "realisticVoice", target: "Voice" },
+    { source: "realisticEyeColor", target: "Eye_Color" },
+    { source: "realisticHairColor", target: "Hair_Color" },
+    { source: "realisticHairStyle", target: "Hair_Style" },
+    { source: "realisticCharacterName", target: "Name" },
+  ];
+
+  const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+  const applyMappings = (answers: AnswerMap, mappings: MappingRule[]): Record<string, string | string[]> => {
+    const result: Record<string, string | string[]> = {};
+    for (const { source, target, forceArray } of mappings) {
+      const val = (answers as any)[source];
+      if (val === undefined || val === null) continue;
+      if (Array.isArray(val)) {
+        if (val.length === 0) continue;
+        result[target] = val.map((v) => capitalize(String(v)));
+      } else {
+        if (forceArray) {
+          result[target] = [capitalize(String(val))];
+        } else {
+          result[target] = capitalize(String(val));
+        }
+      }
+    }
+    return result;
+  };
+  const mapAnswersToAttributes = (answers: AnswerMap, mode: Mode) => {
+    if (mode === "anime") return applyMappings(answers, animeMappings);
+    if (mode === "realistic") return applyMappings(answers, realisticMappings);
+    return {};
   };
 
   if (!mode) {
@@ -148,38 +244,49 @@ export default function CreateCharacterForm() {
           </div>
         );
       case "name":
-        return <NameSelector handleNext={(value) => handleNameSelect(currentStep.key, value)} />;
+        return (
+          <NameSelector
+            handleNext={(value) => {
+              handleNameSelect(currentStep.key, value);
+              handleNext();
+            }}
+          />
+        );
       default:
         return <div className="text-white">This step type is not configured yet.</div>;
     }
   };
 
   return (
-    <div className="p-4 flex items-center justify-center bg-black h-[calc(100vh-138px)]">
-      <div className="w-full max-w-[1060px] mx-auto text-white flex flex-col h-full">
-        <div className="shrink-0">
-          <Stepper
-            onBack={() => handleBack()}
-            totalSteps={steps.length}
-            currentStep={currentStepIndex + 1}
-            title={currentStep.title}
-            subtitle={currentStep.subtitle}
-          />
-        </div>
-        <div className="overflow-auto">{renderStepContent()}</div>
-        {((currentStep.type === "options" && currentStep?.mode !== "single") || currentStep.type === "voice") && (
-          <div className="flex justify-center">
-            <Button
-              variant="gradient"
-              className="h-11.5 max-w-96 w-full mt-4 rounded-xl flex items-center justify-center shadow-lg"
-              onClick={handleNext}
-            >
-              <span className="mr-3">Next</span>
-              <ArrowRightIcon size={18} />
-            </Button>
+    <div className="p-4 flex items-center justify-center bg-black h-[calc(100vh-138px)] xl:h-[calc(100vh-74px)]">
+      {!finished ? (
+        <div className="w-full max-w-[1060px] mx-auto text-white flex flex-col h-full">
+          <div className="shrink-0">
+            <Stepper
+              onBack={() => handleBack()}
+              totalSteps={steps.length}
+              currentStep={currentStepIndex + 1}
+              title={currentStep.title}
+              subtitle={currentStep.subtitle}
+            />
           </div>
-        )}
-      </div>
+          <div className="overflow-auto">{renderStepContent()}</div>
+          {((currentStep.type === "options" && currentStep?.mode !== "single") || currentStep.type === "voice") && (
+            <div className="flex justify-center">
+              <Button
+                variant="gradient"
+                className="h-11.5 max-w-96 w-full mt-4 rounded-xl flex items-center justify-center shadow-lg"
+                onClick={handleNext}
+              >
+                <span className="mr-3">Next</span>
+                <ArrowRightIcon size={18} />
+              </Button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <CharacterSummary attributes={mappedAnswer} name={name} />
+      )}
     </div>
   );
 }

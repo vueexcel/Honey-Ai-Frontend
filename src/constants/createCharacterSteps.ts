@@ -14,12 +14,12 @@ export const createCharacterSteps = {
         {
           image: "https://get-honey.ai/assets/20s-SpbyEcf5.avif",
           value: "20",
-          name: "20s",
+          name: "20",
         },
         {
           image: "https://get-honey.ai/assets/30s-rW5_KDhW.avif",
           value: "30",
-          name: "30s",
+          name: "30",
         },
         {
           image: "https://get-honey.ai/assets/milf-BGXMHnIa.avif",
@@ -29,7 +29,7 @@ export const createCharacterSteps = {
         {
           image: "https://get-honey.ai/assets/granny-s4JSj_cW.avif",
           value: "granny",
-          name: "Granny",
+          name: "40-90",
         },
       ],
     },

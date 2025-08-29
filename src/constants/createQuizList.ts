@@ -1,0 +1,575 @@
+import { QuizQuestion } from "@/types/quiz";
+
+const quizQuestions: QuizQuestion[] = [
+  {
+    type: "image-options",
+    question: "Select the age that feels right for your AI match",
+    description: "",
+    options: [
+      {
+        id: "quiz_model_age_radio_18-21",
+        name: "model-age",
+        value: "18-21",
+        label: "18-21",
+        imageSrc: "/assets/images/girl_18-21.webp",
+        imageAlt: "model",
+      },
+      {
+        id: "quiz_model_age_radio_21-29",
+        name: "model-age",
+        value: "21-29",
+        label: "21-29",
+        imageSrc: "/assets/images/girl_21-30.webp",
+        imageAlt: "model",
+      },
+      {
+        id: "quiz_model_age_radio_30-40",
+        name: "model-age",
+        value: "30-40",
+        label: "30-40",
+        imageSrc: "/assets/images/girl_31_40.webp",
+        imageAlt: "model",
+      },
+      {
+        id: "quiz_model_age_radio_40+",
+        name: "model-age",
+        value: "40+",
+        label: "40+",
+        imageSrc: "/assets/images/40s-mobile.webp",
+        imageAlt: "model",
+      },
+    ],
+  },
+  {
+    type: "number-input",
+    question: "Choose your age",
+    description: "This site contains adult content and is only for users 18 and older",
+    placeholder: "Your age",
+    min: 18,
+    max: 100,
+  },
+  {
+    type: "image-options",
+    question: "What kind of figure do you prefer in women?",
+    description: "",
+    options: [
+      {
+        id: "quiz_figure_radio_extra-skinny",
+        name: "figure-preference",
+        label: "Extra skinny",
+        value: "extra_skinny",
+        imageSrc: "/assets/images/extra-skinny.webp", // To be added later
+        imageAlt: "Extra skinny figure",
+      },
+      {
+        id: "quiz_figure_radio_curvy",
+        name: "figure-preference",
+        label: "Curvy",
+        value: "curvy",
+        imageSrc: "/assets/images/curv.webp", // To be added later
+        imageAlt: "Curvy figure",
+      },
+      {
+        id: "quiz_figure_radio_skinny",
+        name: "figure-preference",
+        label: "Skinny",
+        value: "skinny",
+        imageSrc: "/assets/images/skinny.webp", // To be added later
+        imageAlt: "Skinny figure",
+      },
+      {
+        id: "quiz_figure_radio_thick",
+        name: "figure-preference",
+        label: "Thick",
+        value: "thick",
+        imageSrc: "/assets/images/thick.webp", // To be added later
+        imageAlt: "Thick figure",
+      },
+      {
+        id: "quiz_figure_radio_athletic",
+        name: "figure-preference",
+        label: "Athletic",
+        value: "athletic",
+        imageSrc: "/assets/images/athletic.webp", // To be added later
+        imageAlt: "Athletic figure",
+      },
+      {
+        id: "quiz_figure_radio_extra-thick",
+        name: "figure-preference",
+        label: "Extra thick",
+        value: "extra_thick",
+        imageSrc: "/assets/images/extra_thick.webp", // To be added later
+        imageAlt: "Extra thick figure",
+      },
+    ],
+  },
+  {
+    type: "image-options",
+    question: "Do you have any ethnic preferences?",
+    description: "",
+    options: [
+      {
+        id: "quiz_ethnicity_radio_caucasian",
+        name: "ethnicity-preference",
+        label: "Caucasian",
+        value: "caucasian",
+        imageSrc: "/assets/images/caucasian.webp", // To be added later
+        imageAlt: "Caucasian model",
+      },
+      {
+        id: "quiz_ethnicity_radio_asian",
+        name: "ethnicity-preference",
+        label: "Asian",
+        value: "asian",
+        imageSrc: "/assets/images/asian.webp", // To be added later
+        imageAlt: "Asian model",
+      },
+      {
+        id: "quiz_ethnicity_radio_hispanic",
+        name: "ethnicity-preference",
+        label: "Hispanic",
+        value: "hispanic",
+        imageSrc: "/assets/images/hispanic.webp", // To be added later
+        imageAlt: "Hispanic model",
+      },
+      {
+        id: "quiz_ethnicity_radio_black",
+        name: "ethnicity-preference",
+        label: "Black",
+        value: "black",
+        imageSrc: "/assets/images/black.webp", // To be added later
+        imageAlt: "Black model",
+      },
+      {
+        id: "quiz_ethnicity_radio_middle-eastern",
+        name: "ethnicity-preference",
+        label: "Middle Eastern",
+        value: "middle_eastern",
+        imageSrc: "/assets/images/middle_eastern.webp", // To be added later
+        imageAlt: "Middle Eastern model",
+      },
+    ],
+  },
+  {
+    type: "image-options",
+    question: "What's your favourite hair color?",
+    description: "",
+    options: [
+      {
+        id: "quiz_hair_radio_blonde",
+        name: "hair-preference",
+        label: "Blonde",
+        value: "blonde",
+        imageSrc: "/assets/images/blonde.webp", // To be added later
+        imageAlt: "Blonde hair",
+      },
+      {
+        id: "quiz_hair_radio_dark",
+        name: "hair-preference",
+        label: "Dark",
+        value: "dark",
+        imageSrc: "/assets/images/dark.webp", // To be added later
+        imageAlt: "Dark hair",
+      },
+      {
+        id: "quiz_hair_radio_open",
+        name: "hair-preference",
+        label: "I'm open to anything",
+        value: "open",
+        imageSrc: "/assets/images/anythink.webp", // To be added later
+        imageAlt: "Various hair colors",
+      },
+      {
+        id: "quiz_hair_radio_ginger",
+        name: "hair-preference",
+        label: "Ginger",
+        value: "ginger",
+        imageSrc: "/assets/images/ginger.webp", // To be added later
+        imageAlt: "Ginger hair",
+      },
+      {
+        id: "quiz_hair_radio_colorful",
+        name: "hair-preference",
+        label: "Colorful",
+        value: "colorful",
+        imageSrc: "/assets/images/colorful.webp", // To be added later
+        imageAlt: "Colorful hair",
+      },
+    ],
+  },
+  {
+    type: "image-options",
+    question: "What's your favourite eye color?",
+    description: "",
+    options: [
+      {
+        id: "quiz_eyes_radio_blue",
+        name: "eyes-preference",
+        label: "Blue",
+        value: "blue",
+        imageSrc: "/assets/images/blue.webp", // To be added later
+        imageAlt: "Blue eyes",
+      },
+      {
+        id: "quiz_eyes_radio_green",
+        name: "eyes-preference",
+        label: "Green",
+        value: "green",
+        imageSrc: "/assets/images/green.webp", // To be added later
+        imageAlt: "Green eyes",
+      },
+      {
+        id: "quiz_eyes_radio_brown",
+        name: "eyes-preference",
+        label: "Brown",
+        value: "brown",
+        imageSrc: "/assets/images/brown.webp", // To be added later
+        imageAlt: "Brown eyes",
+      },
+      {
+        id: "quiz_eyes_radio_special",
+        name: "eyes-preference",
+        label: "Special",
+        value: "special",
+        imageSrc: "/assets/images/special.webp", // To be added later
+        imageAlt: "Special eyes",
+      },
+      {
+        id: "quiz_eyes_radio_any",
+        name: "eyes-preference",
+        label: "Any color",
+        value: "any",
+        imageSrc: "/assets/images/any_color.webp", // To be added later
+        imageAlt: "Various eye colors",
+      },
+    ],
+  },
+  {
+    type: "image-options",
+    question: "Any specific preferences?",
+    description: "",
+    options: [
+      {
+        id: "quiz_features_radio_tattoos",
+        name: "features-preference",
+        label: "Tattoos",
+        value: "tattoos",
+        imageSrc: "/assets/images/tattoos.webp", // To be added later
+        imageAlt: "Model with tattoos",
+      },
+      {
+        id: "quiz_features_radio_freckles",
+        name: "features-preference",
+        label: "Freckles",
+        value: "freckles",
+        imageSrc: "/assets/images/freckles.webp", // To be added later
+        imageAlt: "Model with freckles",
+      },
+      {
+        id: "quiz_features_radio_tooth-gap",
+        name: "features-preference",
+        label: "Tooth gap",
+        value: "tooth_gap",
+        imageSrc: "/assets/images/tooth_gap.webp", // To be added later
+        imageAlt: "Model with tooth gap",
+      },
+      {
+        id: "quiz_features_radio_makeup",
+        name: "features-preference",
+        label: "Makeup",
+        value: "makeup",
+        imageSrc: "/assets/images/makeup.webp", // To be added later
+        imageAlt: "Model with makeup",
+      },
+      {
+        id: "quiz_features_radio_body-hair",
+        name: "features-preference",
+        label: "Body hair",
+        value: "body_hair",
+        imageSrc: "/assets/images/body_hair.webp", // To be added later
+        imageAlt: "Model with body hair",
+      },
+      {
+        id: "quiz_features_radio_no-makeup",
+        name: "features-preference",
+        label: "No makeup",
+        value: "no_makeup",
+        imageSrc: "/assets/images/no_makeup.webp", // To be added later
+        imageAlt: "Model without makeup",
+      },
+    ],
+  },
+  {
+    question: "What character traits should your ideal woman have?",
+    type: "slider-group",
+    sliders: [
+      {
+        left: "Cold",
+        right: "Passionate",
+        value: 5,
+        leftIcon: "Cold",
+        rightIcon: "Fire",
+        min: 0,
+        max: 10,
+      },
+      {
+        left: "Dominant",
+        right: "Submissive",
+        value: 5,
+        leftIcon: "Dominant",
+        rightIcon: "Submissive",
+        min: 0,
+        max: 10,
+      },
+      {
+        left: "Flirtatious",
+        right: "Reserved",
+        value: 5,
+        leftIcon: "Flirtatious",
+        rightIcon: "Reserved",
+        min: 0,
+        max: 10,
+      },
+      {
+        left: "Serious",
+        right: "Playful",
+        value: 5,
+        leftIcon: "Serious",
+        rightIcon: "Playful",
+        min: 0,
+        max: 10,
+      },
+      {
+        left: "Restrained",
+        right: "Wild",
+        value: 5,
+        leftIcon: "Restrained",
+        rightIcon: "Wild",
+        min: 0,
+        max: 10,
+      },
+      {
+        left: "Dangerous",
+        right: "Safe",
+        value: 5,
+        leftIcon: "Dangerous",
+        rightIcon: "Safe",
+        min: 0,
+        max: 10,
+      },
+      {
+        left: "Provocative",
+        right: "Modest",
+        value: 5,
+        leftIcon: "Provocative",
+        rightIcon: "Modest",
+        min: 0,
+        max: 10,
+      },
+    ],
+  },
+  {
+    type: "image-options",
+    question: "What turns you on most in women?",
+    description: "You can choose all that excite you",
+    options: [
+      {
+        id: "quiz_turnon_radio_lipstick",
+        name: "turnon-preference",
+        label: "Lipstick",
+        value: "lipstick",
+        imageSrc: "/assets/images/lipstick.webp", // To be added later
+        imageAlt: "Lipstick",
+      },
+      {
+        label: "Toys",
+        id: "quiz_turnon_radio_toys",
+        name: "turnon-preference",
+        value: "toys",
+        imageSrc: "/assets/images/toys.webp", // To be added later
+        imageAlt: "Toys",
+      },
+      {
+        label: "High heels",
+        id: "quiz_turnon_radio_high-heels",
+        name: "turnon-preference",
+        value: "high_heels",
+        imageSrc: "/assets/images/high_heels.webp", // To be added later
+        imageAlt: "High heels",
+      },
+      {
+        label: "Stockings",
+        id: "quiz_turnon_radio_stockings",
+        name: "turnon-preference",
+        value: "stockings",
+        imageSrc: "/assets/images/stockings.webp", // To be added later
+        imageAlt: "Stockings",
+      },
+      {
+        label: "Dirty talk",
+        id: "quiz_turnon_radio_dirty-talk",
+        name: "turnon-preference",
+        value: "dirty_talk",
+        imageSrc: "/assets/images/dirty_talk.webp", // To be added later
+        imageAlt: "Dirty talk",
+      },
+      {
+        label: "Innoncence",
+        id: "quiz_turnon_radio_innoncence",
+        name: "turnon-preference",
+        value: "innoncence",
+        imageSrc: "/assets/images/innocence.webp", // To be added later
+        imageAlt: "Innoncence",
+      },
+    ],
+  },
+  {
+    type: "multiple-choice",
+    question: "What would you like to try?",
+    description: "You can choose all that excite you",
+    options: [
+      {
+        label: "Threesome",
+        id: "quiz_try_radio_threesome",
+        name: "try-preference",
+        value: "threesome",
+      },
+      {
+        label: "Backdoor Action",
+        id: "quiz_try_radio_backdoor-action",
+        name: "try-preference",
+        value: "backdoor_action",
+      },
+      {
+        label: "BDSM",
+        id: "quiz_try_radio_bds",
+        name: "try-preference",
+        value: "bds",
+      },
+      {
+        label: "Roleplay",
+        id: "quiz_try_radio_roleplay",
+        name: "try-preference",
+        value: "roleplay",
+      },
+      {
+        label: "Age Gap",
+        id: "quiz_try_radio_age-gap",
+        name: "try-preference",
+        value: "age_gap",
+      },
+    ],
+  },
+  {
+    type: "multiple-choice",
+    question: "When watching adult content, which scenarios do you find most appealing?",
+    description: "You can choose all that excite you",
+    options: [
+      {
+        label: "Lesbian",
+        id: "quiz_scenarios_radio_lesbian",
+        name: "scenarios-preference",
+        value: "lesbian",
+      },
+      {
+        label: "MILF",
+        id: "quiz_scenarios_radio_milf",
+        name: "scenarios-preference",
+        value: "milf",
+      },
+      {
+        label: "Hentai",
+        id: "quiz_scenarios_radio_hentai",
+        name: "scenarios-preference",
+        value: "hentai",
+      },
+      {
+        label: "Step Mom",
+        id: "quiz_scenarios_radio_step-mom",
+        name: "scenarios-preference",
+        value: "step_mom",
+      },
+      {
+        label: "BBW",
+        id: "quiz_scenarios_radio_bbw",
+        name: "scenarios-preference",
+        value: "bbw",
+      },
+      {
+        label: "Pregnant",
+        id: "quiz_scenarios_radio_pregnant",
+        name: "scenarios-preference",
+        value: "pregnant",
+      },
+      {
+        label: "Face Sitting",
+        id: "quiz_scenarios_radio_face-sitting",
+        name: "scenarios-preference",
+        value: "face_sitting",
+      },
+      {
+        label: "DP",
+        id: "quiz_scenarios_radio_dp",
+        name: "scenarios-preference",
+        value: "dp",
+      },
+    ],
+  },
+  {
+    type: "image-options",
+    question: "When watching adult content, which scenarios do you find most appealing?",
+    description: "You can choose all that excite you",
+    options: [
+      {
+        label: "Doctor & Patient",
+        id: "quiz_scenarios_radio_doctor-patient",
+        name: "scenarios-preference",
+        value: "doctor_patient",
+        imageSrc: "/assets/images/doctor-C0WctURg.webp", // To be added later
+        imageAlt: "Doctor & Patient",
+      },
+      {
+        label: "Teacher & Student",
+        id: "quiz_scenarios_radio_teacher-student",
+        name: "scenarios-preference",
+        value: "teacher_student",
+        imageSrc: "/assets/images/student.webp", // To be added later
+        imageAlt: "Teacher & Student",
+      },
+      {
+        label: "Boss & Employee",
+        id: "quiz_scenarios_radio_boss-employee",
+        name: "scenarios-preference",
+        value: "boss_employee",
+        imageSrc: "/assets/images/boss_employee.webp", // To be added later
+        imageAlt: "Boss & Employee",
+      },
+      {
+        label: "Police Officer & Criminal",
+        id: "quiz_scenarios_radio_police-criminal",
+        name: "scenarios-preference",
+        value: "police_criminal",
+        imageSrc: "/assets/images/police.webp", // To be added later
+        imageAlt: "Police Officer & Criminal",
+      },
+      {
+        label: "Royalty & Commoner",
+        id: "quiz_scenarios_radio_royalty-commoner",
+        name: "scenarios-preference",
+        value: "royalty_commoner",
+        imageSrc: "/assets/images/royalty.webp", // To be added later
+        imageAlt: "Royalty & Commoner",
+      },
+      {
+        label: "Repairman & House Owner",
+        id: "quiz_scenarios_radio_repairman-house-owner",
+        name: "scenarios-preference",
+        value: "repairman_house_owner",
+        imageSrc: "/assets/images/repairman.webp", // To be added later
+        imageAlt: "Repairman & House Owner",
+      },
+    ],
+  },
+];
+
+export default quizQuestions;

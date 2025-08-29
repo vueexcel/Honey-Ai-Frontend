@@ -156,3 +156,25 @@ export async function generateVideo(referenceImage: string, character_id: string
     body: JSON.stringify({ referenceImage, socketId: socket.id, character_id }),
   });
 }
+
+export async function generateCharacter(name: string, attributes: any, age: number, isAnime: boolean) {
+  const socket = getSocket();
+  console.log(socket, "socket");
+  if (!socket?.id) {
+    throw new Error("Socket not connected");
+  }
+  return apiFetch("character/info-generation", {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      attributes,
+      age,
+      isAnime,
+      socketId: socket.id,
+    }),
+  });
+}
+
+export async function getMyAICharacter() {
+  return apiFetch("character/me");
+}
