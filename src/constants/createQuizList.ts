@@ -2,6 +2,7 @@ import { QuizQuestion } from "@/types/quiz";
 
 const quizQuestions: QuizQuestion[] = [
   {
+    key: "characterAgePreference",
     type: "image-options",
     question: "Select the age that feels right for your AI match",
     description: "",
@@ -41,6 +42,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
   },
   {
+    key: "userAge",
     type: "number-input",
     question: "Choose your age",
     description: "This site contains adult content and is only for users 18 and older",
@@ -49,6 +51,7 @@ const quizQuestions: QuizQuestion[] = [
     max: 100,
   },
   {
+    key: "characterBodyType",
     type: "image-options",
     question: "What kind of figure do you prefer in women?",
     description: "",
@@ -58,7 +61,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "figure-preference",
         label: "Extra skinny",
         value: "extra_skinny",
-        imageSrc: "/assets/images/extra-skinny.webp", // To be added later
+        imageSrc: "/assets/images/extra-skinny.webp",
         imageAlt: "Extra skinny figure",
       },
       {
@@ -66,7 +69,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "figure-preference",
         label: "Curvy",
         value: "curvy",
-        imageSrc: "/assets/images/curv.webp", // To be added later
+        imageSrc: "/assets/images/curv.webp",
         imageAlt: "Curvy figure",
       },
       {
@@ -74,7 +77,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "figure-preference",
         label: "Skinny",
         value: "skinny",
-        imageSrc: "/assets/images/skinny.webp", // To be added later
+        imageSrc: "/assets/images/skinny.webp",
         imageAlt: "Skinny figure",
       },
       {
@@ -82,7 +85,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "figure-preference",
         label: "Thick",
         value: "thick",
-        imageSrc: "/assets/images/thick.webp", // To be added later
+        imageSrc: "/assets/images/thick.webp",
         imageAlt: "Thick figure",
       },
       {
@@ -90,7 +93,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "figure-preference",
         label: "Athletic",
         value: "athletic",
-        imageSrc: "/assets/images/athletic.webp", // To be added later
+        imageSrc: "/assets/images/athletic.webp",
         imageAlt: "Athletic figure",
       },
       {
@@ -98,12 +101,13 @@ const quizQuestions: QuizQuestion[] = [
         name: "figure-preference",
         label: "Extra thick",
         value: "extra_thick",
-        imageSrc: "/assets/images/extra_thick.webp", // To be added later
+        imageSrc: "/assets/images/extra_thick.webp",
         imageAlt: "Extra thick figure",
       },
     ],
   },
   {
+    key: "characterEthnicity",
     type: "image-options",
     question: "Do you have any ethnic preferences?",
     description: "",
@@ -113,7 +117,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "ethnicity-preference",
         label: "Caucasian",
         value: "caucasian",
-        imageSrc: "/assets/images/caucasian.webp", // To be added later
+        imageSrc: "/assets/images/caucasian.webp",
         imageAlt: "Caucasian model",
       },
       {
@@ -121,7 +125,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "ethnicity-preference",
         label: "Asian",
         value: "asian",
-        imageSrc: "/assets/images/asian.webp", // To be added later
+        imageSrc: "/assets/images/asian.webp",
         imageAlt: "Asian model",
       },
       {
@@ -129,7 +133,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "ethnicity-preference",
         label: "Hispanic",
         value: "hispanic",
-        imageSrc: "/assets/images/hispanic.webp", // To be added later
+        imageSrc: "/assets/images/hispanic.webp",
         imageAlt: "Hispanic model",
       },
       {
@@ -137,7 +141,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "ethnicity-preference",
         label: "Black",
         value: "black",
-        imageSrc: "/assets/images/black.webp", // To be added later
+        imageSrc: "/assets/images/black.webp",
         imageAlt: "Black model",
       },
       {
@@ -145,12 +149,13 @@ const quizQuestions: QuizQuestion[] = [
         name: "ethnicity-preference",
         label: "Middle Eastern",
         value: "middle_eastern",
-        imageSrc: "/assets/images/middle_eastern.webp", // To be added later
+        imageSrc: "/assets/images/middle_eastern.webp",
         imageAlt: "Middle Eastern model",
       },
     ],
   },
   {
+    key: "characterHairColor",
     type: "image-options",
     question: "What's your favourite hair color?",
     description: "",
@@ -160,7 +165,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "hair-preference",
         label: "Blonde",
         value: "blonde",
-        imageSrc: "/assets/images/blonde.webp", // To be added later
+        imageSrc: "/assets/images/blonde.webp",
         imageAlt: "Blonde hair",
       },
       {
@@ -168,7 +173,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "hair-preference",
         label: "Dark",
         value: "dark",
-        imageSrc: "/assets/images/dark.webp", // To be added later
+        imageSrc: "/assets/images/dark.webp",
         imageAlt: "Dark hair",
       },
       {
@@ -176,7 +181,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "hair-preference",
         label: "I'm open to anything",
         value: "open",
-        imageSrc: "/assets/images/anythink.webp", // To be added later
+        imageSrc: "/assets/images/anythink.webp",
         imageAlt: "Various hair colors",
       },
       {
@@ -184,7 +189,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "hair-preference",
         label: "Ginger",
         value: "ginger",
-        imageSrc: "/assets/images/ginger.webp", // To be added later
+        imageSrc: "/assets/images/ginger.webp",
         imageAlt: "Ginger hair",
       },
       {
@@ -192,12 +197,13 @@ const quizQuestions: QuizQuestion[] = [
         name: "hair-preference",
         label: "Colorful",
         value: "colorful",
-        imageSrc: "/assets/images/colorful.webp", // To be added later
+        imageSrc: "/assets/images/colorful.webp",
         imageAlt: "Colorful hair",
       },
     ],
   },
   {
+    key: "characterEyeColor",
     type: "image-options",
     question: "What's your favourite eye color?",
     description: "",
@@ -207,7 +213,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "eyes-preference",
         label: "Blue",
         value: "blue",
-        imageSrc: "/assets/images/blue.webp", // To be added later
+        imageSrc: "/assets/images/blue.webp",
         imageAlt: "Blue eyes",
       },
       {
@@ -215,7 +221,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "eyes-preference",
         label: "Green",
         value: "green",
-        imageSrc: "/assets/images/green.webp", // To be added later
+        imageSrc: "/assets/images/green.webp",
         imageAlt: "Green eyes",
       },
       {
@@ -223,7 +229,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "eyes-preference",
         label: "Brown",
         value: "brown",
-        imageSrc: "/assets/images/brown.webp", // To be added later
+        imageSrc: "/assets/images/brown.webp",
         imageAlt: "Brown eyes",
       },
       {
@@ -231,7 +237,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "eyes-preference",
         label: "Special",
         value: "special",
-        imageSrc: "/assets/images/special.webp", // To be added later
+        imageSrc: "/assets/images/special.webp",
         imageAlt: "Special eyes",
       },
       {
@@ -239,12 +245,13 @@ const quizQuestions: QuizQuestion[] = [
         name: "eyes-preference",
         label: "Any color",
         value: "any",
-        imageSrc: "/assets/images/any_color.webp", // To be added later
+        imageSrc: "/assets/images/any_color.webp",
         imageAlt: "Various eye colors",
       },
     ],
   },
   {
+    key: "characterSpecificFeatures",
     type: "image-options",
     question: "Any specific preferences?",
     description: "",
@@ -254,7 +261,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "features-preference",
         label: "Tattoos",
         value: "tattoos",
-        imageSrc: "/assets/images/tattoos.webp", // To be added later
+        imageSrc: "/assets/images/tattoos.webp",
         imageAlt: "Model with tattoos",
       },
       {
@@ -262,7 +269,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "features-preference",
         label: "Freckles",
         value: "freckles",
-        imageSrc: "/assets/images/freckles.webp", // To be added later
+        imageSrc: "/assets/images/freckles.webp",
         imageAlt: "Model with freckles",
       },
       {
@@ -270,7 +277,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "features-preference",
         label: "Tooth gap",
         value: "tooth_gap",
-        imageSrc: "/assets/images/tooth_gap.webp", // To be added later
+        imageSrc: "/assets/images/tooth_gap.webp",
         imageAlt: "Model with tooth gap",
       },
       {
@@ -278,7 +285,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "features-preference",
         label: "Makeup",
         value: "makeup",
-        imageSrc: "/assets/images/makeup.webp", // To be added later
+        imageSrc: "/assets/images/makeup.webp",
         imageAlt: "Model with makeup",
       },
       {
@@ -286,7 +293,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "features-preference",
         label: "Body hair",
         value: "body_hair",
-        imageSrc: "/assets/images/body_hair.webp", // To be added later
+        imageSrc: "/assets/images/body_hair.webp",
         imageAlt: "Model with body hair",
       },
       {
@@ -294,12 +301,13 @@ const quizQuestions: QuizQuestion[] = [
         name: "features-preference",
         label: "No makeup",
         value: "no_makeup",
-        imageSrc: "/assets/images/no_makeup.webp", // To be added later
+        imageSrc: "/assets/images/no_makeup.webp",
         imageAlt: "Model without makeup",
       },
     ],
   },
   {
+    key: "characterPersonalityTraits",
     question: "What character traits should your ideal woman have?",
     type: "slider-group",
     sliders: [
@@ -369,6 +377,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
   },
   {
+    key: "userTurnOns",
     type: "image-options",
     question: "What turns you on most in women?",
     description: "You can choose all that excite you",
@@ -378,7 +387,7 @@ const quizQuestions: QuizQuestion[] = [
         name: "turnon-preference",
         label: "Lipstick",
         value: "lipstick",
-        imageSrc: "/assets/images/lipstick.webp", // To be added later
+        imageSrc: "/assets/images/lipstick.webp",
         imageAlt: "Lipstick",
       },
       {
@@ -386,7 +395,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_turnon_radio_toys",
         name: "turnon-preference",
         value: "toys",
-        imageSrc: "/assets/images/toys.webp", // To be added later
+        imageSrc: "/assets/images/toys.webp",
         imageAlt: "Toys",
       },
       {
@@ -394,7 +403,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_turnon_radio_high-heels",
         name: "turnon-preference",
         value: "high_heels",
-        imageSrc: "/assets/images/high_heels.webp", // To be added later
+        imageSrc: "/assets/images/high_heels.webp",
         imageAlt: "High heels",
       },
       {
@@ -402,7 +411,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_turnon_radio_stockings",
         name: "turnon-preference",
         value: "stockings",
-        imageSrc: "/assets/images/stockings.webp", // To be added later
+        imageSrc: "/assets/images/stockings.webp",
         imageAlt: "Stockings",
       },
       {
@@ -410,7 +419,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_turnon_radio_dirty-talk",
         name: "turnon-preference",
         value: "dirty_talk",
-        imageSrc: "/assets/images/dirty_talk.webp", // To be added later
+        imageSrc: "/assets/images/dirty_talk.webp",
         imageAlt: "Dirty talk",
       },
       {
@@ -418,12 +427,13 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_turnon_radio_innoncence",
         name: "turnon-preference",
         value: "innoncence",
-        imageSrc: "/assets/images/innocence.webp", // To be added later
+        imageSrc: "/assets/images/innocence.webp",
         imageAlt: "Innoncence",
       },
     ],
   },
   {
+    key: "userDesiredActivities",
     type: "multiple-choice",
     question: "What would you like to try?",
     description: "You can choose all that excite you",
@@ -461,6 +471,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
   },
   {
+    key: "userPreferredScenariosText",
     type: "multiple-choice",
     question: "When watching adult content, which scenarios do you find most appealing?",
     description: "You can choose all that excite you",
@@ -516,6 +527,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
   },
   {
+    key: "userPreferredScenariosImages",
     type: "image-options",
     question: "When watching adult content, which scenarios do you find most appealing?",
     description: "You can choose all that excite you",
@@ -525,7 +537,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_scenarios_radio_doctor-patient",
         name: "scenarios-preference",
         value: "doctor_patient",
-        imageSrc: "/assets/images/doctor-C0WctURg.webp", // To be added later
+        imageSrc: "/assets/images/doctor-C0WctURg.webp",
         imageAlt: "Doctor & Patient",
       },
       {
@@ -533,7 +545,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_scenarios_radio_teacher-student",
         name: "scenarios-preference",
         value: "teacher_student",
-        imageSrc: "/assets/images/student.webp", // To be added later
+        imageSrc: "/assets/images/student.webp",
         imageAlt: "Teacher & Student",
       },
       {
@@ -541,7 +553,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_scenarios_radio_boss-employee",
         name: "scenarios-preference",
         value: "boss_employee",
-        imageSrc: "/assets/images/boss_employee.webp", // To be added later
+        imageSrc: "/assets/images/boss_employee.webp",
         imageAlt: "Boss & Employee",
       },
       {
@@ -549,7 +561,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_scenarios_radio_police-criminal",
         name: "scenarios-preference",
         value: "police_criminal",
-        imageSrc: "/assets/images/police.webp", // To be added later
+        imageSrc: "/assets/images/police.webp",
         imageAlt: "Police Officer & Criminal",
       },
       {
@@ -557,7 +569,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_scenarios_radio_royalty-commoner",
         name: "scenarios-preference",
         value: "royalty_commoner",
-        imageSrc: "/assets/images/royalty.webp", // To be added later
+        imageSrc: "/assets/images/royalty.webp",
         imageAlt: "Royalty & Commoner",
       },
       {
@@ -565,7 +577,7 @@ const quizQuestions: QuizQuestion[] = [
         id: "quiz_scenarios_radio_repairman-house-owner",
         name: "scenarios-preference",
         value: "repairman_house_owner",
-        imageSrc: "/assets/images/repairman.webp", // To be added later
+        imageSrc: "/assets/images/repairman.webp",
         imageAlt: "Repairman & House Owner",
       },
     ],

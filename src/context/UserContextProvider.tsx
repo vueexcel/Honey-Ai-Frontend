@@ -22,6 +22,7 @@ type UserContextType = {
   setIsBulkImageGenerating: (s: boolean) => void;
   newCharacterImage: string | null;
   generateNewCharacter: (name: string, attributes: any, age: number, isAnime: boolean) => Promise<void>;
+  newCharacter: Character | null;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -36,6 +37,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
   const [imagesGenerated, setImagesGenerated] = useState<any[]>([]);
   const [bulkImagesToGenerate, setBulkImagesToGenerate] = useState<number>(0);
   const [newCharacterImage, setNewCharacterImage] = useState<string | null>(null);
+  const [newCharacter, setNewCharacter] = useState<Character | null>(null);
 
   const socketRef = useRef<any>(null);
   const curBulkRequestIdRef = useRef<string>(curBulkRequestId);
@@ -99,6 +101,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     try {
       const data = await generateCharacter(name, attributes, age, isAnime);
       console.log(data?.character, "character");
+      setNewCharacter(data?.character);
       return data?.character;
     } catch (err: any) {
       console.log(err, "err");
@@ -171,6 +174,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         setIsBulkImageGenerating,
         imagesGenerated,
         generateNewCharacter,
+        newCharacter,
       }}
     >
       {children}

@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { MyAICharacter } from "@/types/my-ai/character";
 import Button from "./ui/Button";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContextProvider";
+import { useChatStreaming } from "@/context/ChatStreamingContext";
 
 export default function MyAiCharacterCard({
   id,
@@ -17,13 +19,29 @@ export default function MyAiCharacterCard({
   isLocked,
 }: Partial<MyAICharacter>) {
   const router = useRouter();
+  const { characters, refreshCharacters } = useUser();
+  const { sendMessage } = useChatStreaming();
+  const handleNavigation = async () => {
+    const currentCharacter = characters.find((c) => c.id == id);
+    try {
+      if (!currentCharacter?.last_message) {
+        const success = await sendMessage("How are you?", id, false);
+        await refreshCharacters();
+        if (success) {
+          router.push(`/chat/${id}`);
+        }
+      } else {
+        router.push(`/chat/${id}`);
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <motion.div
       whileTap={{ scale: 0.98 }}
       className="relative bg-white/70 dark:bg-gray-800/50 rounded-[21px] overflow-hidden transition-all duration-300 cursor-pointer group shadow-md"
-      onClick={() => {
-        router.push(`/chat/${id}`);
-      }}
+      onClick={() => handleNavigation()}
     >
       <div className="relative h-[300px] xl:h-[440px] bg-gradient-to-br from-purple-400/20 to-pink-400/20 dark:from-purple-400/10 dark:to-pink-400/10">
         {isLocked ? (

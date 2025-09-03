@@ -21,6 +21,7 @@ export interface SliderOptions {
 }
 
 export interface BaseQuestion {
+  key: string; // Added key property
   question: string;
   type: string;
 }

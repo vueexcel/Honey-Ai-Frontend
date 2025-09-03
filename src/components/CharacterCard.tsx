@@ -44,8 +44,9 @@ export default function CharacterCard({
   };
 
   const handleNavigation = async () => {
+    const currentCharacter = characters.find((c) => c.id == id);
     try {
-      if (!characters?.last_message) {
+      if (!currentCharacter?.last_message) {
         const success = await sendMessage("How are you?", id, false);
         await refreshCharacters();
         if (success) {

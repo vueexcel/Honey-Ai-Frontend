@@ -23,6 +23,102 @@ import ProgressWithModal from "@/components/quiz-vip/ProgressWithModal";
 import Payment from "@/components/quiz-vip/Payment";
 import SpecialScreen from "@/components/quiz-vip/SpecialScreen";
 import Steppers from "@/components/quiz-vip/Stepper";
+import "../../../public/styles/Payment.css";
+import "../../../public/styles/PaymentCompletion.css";
+import "../../../public/styles/PaymentModal.css";
+
+const formatAttributeValue = (str: string): string => {
+  if (!str) return str;
+  return str
+    .replace(/_/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
+function getRandomAgeFromValue(value: string): number {
+  const rangeMatch = /^(\d+)\s*-\s*(\d+)$/.exec(value);
+  if (rangeMatch) {
+    const min = parseInt(rangeMatch[1], 10);
+    const max = parseInt(rangeMatch[2], 10);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  const num = parseInt(value, 10);
+  if (!isNaN(num)) return num;
+  if (value === "40+") return Math.floor(Math.random() * (60 - 40 + 1)) + 40;
+
+  return Math.floor(Math.random() * (35 - 18 + 1)) + 18;
+}
+
+type QuizMappingRule = {
+  sourceKey: string;
+  targetAttribute: string;
+  processor?: (value: any) => any;
+};
+
+const quizAttributeMappings: QuizMappingRule[] = [
+  {
+    sourceKey: "characterAgePreference",
+    targetAttribute: "Age",
+    processor: (value: string) => String(getRandomAgeFromValue(value)),
+  },
+  {
+    sourceKey: "characterBodyType",
+    targetAttribute: "Body_Type",
+    processor: formatAttributeValue,
+  },
+  {
+    sourceKey: "characterEthnicity",
+    targetAttribute: "Ethnicity",
+    processor: (value: string | string[]) =>
+      Array.isArray(value) ? value.map(formatAttributeValue) : [formatAttributeValue(value)],
+  },
+  {
+    sourceKey: "characterHairColor",
+    targetAttribute: "Hair_Color",
+    processor: formatAttributeValue,
+  },
+  {
+    sourceKey: "characterEyeColor",
+    targetAttribute: "Eye_Color",
+    processor: formatAttributeValue,
+  },
+  {
+    sourceKey: "characterSpecificFeatures",
+    targetAttribute: "Facial_Features",
+    processor: (value: string | string[]) =>
+      Array.isArray(value) ? value.map(formatAttributeValue) : [formatAttributeValue(value)],
+  },
+  {
+    sourceKey: "characterPersonalityTraits",
+    targetAttribute: "Personality",
+    processor: (value: any[]) => value,
+  },
+  {
+    sourceKey: "userTurnOns",
+    targetAttribute: "Turn_Ons",
+    processor: (value: string | string[]) =>
+      Array.isArray(value) ? value.map(formatAttributeValue) : [formatAttributeValue(value)],
+  },
+  {
+    sourceKey: "userDesiredActivities",
+    targetAttribute: "Desired_Activities",
+    processor: (value: string | string[]) =>
+      Array.isArray(value) ? value.map(formatAttributeValue) : [formatAttributeValue(value)],
+  },
+  {
+    sourceKey: "userPreferredScenariosText",
+    targetAttribute: "Scenarios",
+    processor: (value: string | string[]) =>
+      Array.isArray(value) ? value.map(formatAttributeValue) : [formatAttributeValue(value)],
+  },
+  {
+    sourceKey: "userPreferredScenariosImages",
+    targetAttribute: "Scenarios_Image_Based",
+    processor: (value: string | string[]) =>
+      Array.isArray(value) ? value.map(formatAttributeValue) : [formatAttributeValue(value)],
+  },
+];
 
 export default function Home() {
   const [answers, setAnswers] = useState<SelectedOption[]>([]);
@@ -31,16 +127,15 @@ export default function Home() {
   const [ageValue, setAgeValue] = useState("18");
   const { sliderValues } = useSliders();
   const [quizStartTime] = useState<number>(Date.now());
+  const [finalCharacterAttributes, setFinalCharacterAttributes] = useState<Record<string, any> | null>(null);
 
   const searchParams = useSearchParams();
   const pixel = searchParams.get("p");
 
-  // Persist pixel param if present
   useEffect(() => {
     if (pixel) localStorage.setItem("pixel", pixel);
   }, [pixel]);
 
-  // Track abandonment
   useEffect(() => {
     const handleBeforeUnload = () => {
       if (currentStep < quizQuestions.length && currentStep > 0) {
@@ -52,27 +147,56 @@ export default function Home() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [currentStep, quizStartTime]);
 
-  const updateAnswer = useCallback((question: string, value: any) => {
-    setAnswers((prev) => [...prev.filter((a) => a.question !== question), { question, value }]);
+  const updateAnswer = useCallback((questionKey: string, value: any) => {
+    setAnswers((prev) => [...prev.filter((a) => Object.keys(a)[0] !== questionKey), { [questionKey]: value }]);
   }, []);
+
+  const generateFinalCharacterAttributes = useCallback(() => {
+    const flattenedAnswers: Record<string, any> = answers.reduce((acc, current) => {
+      const key = Object.keys(current)[0];
+      acc[key] = current[key];
+      return acc;
+    }, {});
+
+    const characterData: Record<string, any> = {};
+
+    quizAttributeMappings.forEach(({ sourceKey, targetAttribute, processor }) => {
+      if (flattenedAnswers.hasOwnProperty(sourceKey)) {
+        const value = flattenedAnswers[sourceKey];
+        characterData[targetAttribute] = processor ? processor(value) : value;
+      }
+    });
+
+    characterData["isAnime"] = false;
+
+    return characterData;
+  }, [answers]);
 
   const handleNext = () => {
     const q = quizQuestions[currentStep];
 
-    // Save step-specific values
-    if (currentStep === 1 && q) updateAnswer(q.question, ageValue);
-    if (currentStep === 7 && q) updateAnswer(q.question, sliderValues);
+    if (q) {
+      if (q.key === "userAge") updateAnswer(q.key, ageValue);
+      if (q.key === "characterPersonalityTraits") updateAnswer(q.key, sliderValues);
+    }
 
-    // Move forward
     const next = currentStep + 1;
+
+    if (next >= quizQuestions.length) {
+      const finalAttrs = generateFinalCharacterAttributes();
+      console.log(finalAttrs, "attrs");
+      setFinalCharacterAttributes(finalAttrs);
+      console.log("Final Character Attributes:", finalAttrs);
+    }
+
     setCurrentStep(next);
 
-    // Analytics: use next step's question if it exists; otherwise a fallback
     if (next <= 13) {
       const nextQ = quizQuestions[next];
-      const label = nextQ?.question ?? (next === 12 ? "Progress" : "Unknown");
+      const label = nextQ?.key ?? nextQ?.question ?? (next === 12 ? "Progress" : "Unknown");
       analytics.trackQuizStep(next, label);
     }
+    console.log(answers, "answer");
   };
 
   const handleBack = () => {
@@ -84,7 +208,6 @@ export default function Home() {
   };
 
   const renderStep = () => {
-    // Hardcoded special step 12 (NOT in quizQuestions)
     if (currentStep === 12) {
       return (
         <ProgressWithModal
@@ -108,49 +231,52 @@ export default function Home() {
       );
     }
 
-    // All other steps rely on quizQuestions
     const q = quizQuestions[currentStep];
     if (!q) return null;
-
-    const currentValue = answers.find((a) => a.question === q.question)?.value;
+    const currentAnswerEntry = answers.find((a) => Object.keys(a)[0] === q.key);
+    const currentValue = currentAnswerEntry ? currentAnswerEntry[q.key] : undefined;
 
     switch (q.type) {
       case "image-options": {
-        const Components: Record<number, any> = {
-          0: Welcome,
-          2: BodyType,
-          3: Ethnicity,
-          4: HairColor,
-          5: EyeColor,
-          6: SpecificPrefrences,
-          8: SpecificPrefrences,
+        const ComponentsByKey: Record<string, React.ComponentType<any>> = {
+          characterAgePreference: Welcome,
+          characterBodyType: BodyType,
+          characterEthnicity: Ethnicity,
+          characterHairColor: HairColor,
+          characterEyeColor: EyeColor,
+          characterSpecificFeatures: SpecificPrefrences,
+          userTurnOns: SpecificPrefrences,
+          userPreferredScenariosImages: PreferredScenarios,
         };
 
-        // Step 11 is PreferredScenarios (multi-select but still "image-options" in data)
-        if (currentStep === 11) {
+        const Comp = ComponentsByKey[q.key];
+
+        if (!Comp) {
+          console.warn(`No component mapped for image-options step with key: ${q.key}`);
+          return <div className="text-white">Image options component not found for {q.question}</div>;
+        }
+
+        if (q.key === "userPreferredScenariosImages") {
           return (
             <PreferredScenarios
               options={q.options}
               selectedOptions={Array.isArray(currentValue) ? currentValue : []}
-              setSelectedOptions={(values: string[]) => updateAnswer(q.question, values)}
+              setSelectedOptions={(values: string[]) => updateAnswer(q.key, values)}
               handleNext={handleNext}
             />
           );
         }
 
-        const Comp = Components[currentStep];
-        if (!Comp) return null;
-
         return (
           <Comp
             selectedOption={currentValue || ""}
             setSelectedOption={(value: any) => {
-              updateAnswer(q.question, value);
-              // Auto-advance except for the multi-select screens (6 and 8)
-              if (![6, 8].includes(currentStep)) handleNext();
+              updateAnswer(q.key, value);
+              const isMultiSelect = ["characterSpecificFeatures", "userTurnOns"].includes(q.key);
+              if (!isMultiSelect) handleNext();
             }}
             onNext={handleNext}
-            mutiSelect={currentStep === 6}
+            mutiSelect={["characterSpecificFeatures", "userTurnOns"].includes(q.key)}
             options={q.options}
           />
         );
@@ -165,7 +291,7 @@ export default function Home() {
             sliders={q.sliders}
             selectedOption={currentValue}
             updateSelectedOption={(val: any) => {
-              updateAnswer(q.question, val);
+              updateAnswer(q.key, val);
               setSpecialScreen(true);
               handleNext();
             }}
@@ -178,7 +304,7 @@ export default function Home() {
             handleNext={handleNext}
             options={q.options}
             selectedOptions={Array.isArray(currentValue) ? currentValue : []}
-            setSelectedOptions={(values: string[]) => updateAnswer(q.question, values)}
+            setSelectedOptions={(values: string[]) => updateAnswer(q.key, values)}
           />
         );
 
@@ -187,7 +313,6 @@ export default function Home() {
     }
   };
 
-  // Overlay screen (between 7 -> 8)
   if (specialScreen) {
     return (
       <SpecialScreen
@@ -200,8 +325,9 @@ export default function Home() {
     );
   }
 
-  // Payment when quiz is done
-  if (currentStep >= 13) return <Payment />;
+  if (currentStep >= quizQuestions.length + 1) {
+    return <Payment finalCharacterAttributes={finalCharacterAttributes} />;
+  }
 
   const q = currentStep === 12 ? null : quizQuestions[currentStep];
 
@@ -215,7 +341,6 @@ export default function Home() {
         />
         <meta name="keywords" content="AI Girlfriend, Quiz, Preferences" />
 
-        {/* Facebook Pixel (restored) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -245,7 +370,6 @@ export default function Home() {
       </Head>
 
       <div className="_container_1h4cn_1">
-        {/* Header hidden for first screen (0), progress screen (12), special overlay, and after 12 */}
         {currentStep > 0 && currentStep < 12 && (
           <div className="_header_1h4cn_22">
             <Steppers currentStep={currentStep} totalSteps={4} />

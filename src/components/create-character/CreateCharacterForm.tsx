@@ -50,24 +50,24 @@ export default function CreateCharacterForm() {
     return Math.floor(Math.random() * (45 - 18 + 1)) + 18;
   }
 
-  const handleNext = async () => {
+  const handleNext = async (nextAnswers?: AnswerMap) => {
     if (!mode) return;
     const steps = createCharacterSteps[mode];
+    console.log(steps, currentStepIndex, "56");
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
-      console.log(answers, "answers");
-      const answer = mapAnswersToAttributes(answers, mode);
+      const finalAnswers = nextAnswers || answers;
+      const answer = mapAnswersToAttributes(finalAnswers, mode);
       setMappedAnswer(answer);
 
       try {
         const age = getRandomAgeFromValue(answer?.Age || null);
         const fullName = (answer.Name || "") as string;
-        const data = await generateNewCharacter(fullName, answer, age, mode === "anime");
+        generateNewCharacter(fullName, answer, age, mode === "anime");
       } catch (err) {
-        console.error("❌ Failed to create character:", err);
+        console.error("❌ Failed to create ch aracter:", err);
       }
-
       setFinished(true);
     }
   };
@@ -113,8 +113,14 @@ export default function CreateCharacterForm() {
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
   const handleNameSelect = (key: string, value: string) => {
-    setAnswers((prev) => ({ ...prev, [key]: value }));
+    console.log(key, typeof value, value, "key value");
+    const newAnswers = { ...answers, [key]: value };
+    setAnswers((prev) => {
+      const newAnswers = { ...prev, [key]: value };
+      return newAnswers;
+    });
     setName(value);
+    handleNext(newAnswers);
   };
 
   const animeMappings: MappingRule[] = [
@@ -142,7 +148,14 @@ export default function CreateCharacterForm() {
     { source: "realisticCharacterName", target: "Name" },
   ];
 
-  const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  const formatAttributeValue = (str: string): string => {
+    if (!str) return str;
+    return str
+      .replace(/_/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
 
   const applyMappings = (answers: AnswerMap, mappings: MappingRule[]): Record<string, string | string[]> => {
     const result: Record<string, string | string[]> = {};
@@ -151,12 +164,12 @@ export default function CreateCharacterForm() {
       if (val === undefined || val === null) continue;
       if (Array.isArray(val)) {
         if (val.length === 0) continue;
-        result[target] = val.map((v) => capitalize(String(v)));
+        result[target] = val.map((v) => formatAttributeValue(String(v)));
       } else {
         if (forceArray) {
-          result[target] = [capitalize(String(val))];
+          result[target] = [formatAttributeValue(String(val))];
         } else {
-          result[target] = capitalize(String(val));
+          result[target] = formatAttributeValue(String(val));
         }
       }
     }
@@ -248,7 +261,6 @@ export default function CreateCharacterForm() {
           <NameSelector
             handleNext={(value) => {
               handleNameSelect(currentStep.key, value);
-              handleNext();
             }}
           />
         );

@@ -79,7 +79,7 @@ export default function CharacterCarousel() {
                 name={character.first_name}
                 age={character.age}
                 description={character.description}
-                imageUrl={character.resized_images[0].default_url}
+                imageUrl={character.resized_images[0]?.default_url}
                 videoUrl={character.video_desktop}
                 isPremium={character.is_premium}
                 isOnline={true}

@@ -16,7 +16,6 @@ export default function MyAISection() {
     async function fetchData() {
       try {
         const data = await getMyAICharacter();
-        console.log(data, "data");
         setCharacters(data);
       } catch (err: any) {
         console.log(err, "err");

@@ -10,6 +10,8 @@ import EthnicityIcon from "../icons/EthnicityIcon";
 import SlimBodyIcon from "../icons/SlimBodyIcon";
 import { useUser } from "@/context/UserContextProvider";
 import { useState } from "react";
+import { useChatStreaming } from "@/context/ChatStreamingContext";
+import { useRouter } from "next/navigation";
 
 const attributeMap = {
   Personality: { icon: PersonalityIcon, title: "Personality" },
@@ -39,8 +41,29 @@ interface CharacterSummaryProps {
 }
 
 export default function CharacterSummary({ attributes, name }: CharacterSummaryProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const { newCharacterImage } = useUser();
+  const { newCharacterImage, characters, refreshCharacters, newCharacter } = useUser();
+  const { sendMessage } = useChatStreaming();
+  const handleNavigation = async () => {
+    const characterId = newCharacter?.id;
+    const currentCharacter = characters.find((c) => c.id == characterId);
+    try {
+      if (!currentCharacter?.last_message) {
+        if (characterId) {
+          const success = await sendMessage("How are you?", characterId, false);
+          await refreshCharacters();
+          if (success) {
+            router.push(`/chat/${characterId}`);
+          }
+        }
+      } else {
+        router.push(`/chat/${characterId}`);
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
   const personalityAttributes = ["Personality", "Occupation", "Hobbies", "Relationship"]
     .filter((key) => attributes[key])
     .map((key) => ({
@@ -79,12 +102,18 @@ export default function CharacterSummary({ attributes, name }: CharacterSummaryP
         <div className="flex flex-col gap-12">
           <h1 className="text-2xl font-bold">{name}</h1>
           <div className="flex gap-2 flex-col">
-            <Button variant="pink" className="xl:w-88 h-12">
+            <Button
+              variant="pink"
+              className="xl:w-88 h-12"
+              onClick={() => handleNavigation()}
+              disabled={!newCharacterImage}
+            >
               <span>Start Chatting</span>
             </Button>
             <Button
               variant="ghost"
               className="text-gray-900 dark:text-white border border-transparent text-sm font-semibold px-6 py-3 bg-[#181818] hover:bg-[#24162c] hover:shadow-sm hover:border-[#ae52e7] hover:text-[#ae52e7]"
+              disabled={!newCharacterImage}
             >
               Create New
             </Button>
