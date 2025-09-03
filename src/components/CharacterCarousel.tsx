@@ -7,20 +7,25 @@ import CharacterCard from "./CharacterCard";
 import CharacterFilter from "./CharacterFilter";
 import Banner from "./Banner";
 import type { Character } from "@/types/character";
+import Spinner from "./ui/Spinner";
 type FilterType = "realistic" | "anime" | "premium";
 
 export default function CharacterCarousel() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterType>("anime");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const data = await getCharacters();
         setCharacters(data);
       } catch (err: any) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     }
     fetchData();
@@ -61,32 +66,38 @@ export default function CharacterCarousel() {
             <CharacterFilter activeFilter={activeFilter} onFilterChange={setActiveFilter} />
           </motion.div>
         </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-6"
-        >
-          {filteredCharacters.map((character, index) => (
-            <motion.div
-              key={character.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 * index }}
-            >
-              <CharacterCard
-                id={character.id}
-                name={character.first_name}
-                age={character.age}
-                description={character.description}
-                imageUrl={character.resized_images[0]?.default_url}
-                videoUrl={character.video_desktop}
-                isPremium={character.is_premium}
-                isOnline={true}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+        {loading ? (
+          <div className="w-full h-full flex justify-center items-center">
+            <Spinner size={6} />
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-6"
+          >
+            {filteredCharacters.map((character, index) => (
+              <motion.div
+                key={character.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * index }}
+              >
+                <CharacterCard
+                  id={character.id}
+                  name={character.first_name}
+                  age={character.age}
+                  description={character.description}
+                  imageUrl={character.resized_images[0]?.default_url}
+                  videoUrl={character.video_desktop}
+                  isPremium={character.is_premium}
+                  isOnline={true}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
         <Banner />
       </div>
     </section>
