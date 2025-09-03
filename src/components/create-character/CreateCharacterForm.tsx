@@ -10,6 +10,7 @@ import VoiceSelector from "./VoiceSelector";
 import NameSelector from "./NameSelector";
 import CharacterSummary from "./CharacterSummary";
 import { useUser } from "@/context/UserContextProvider";
+import { useAuth } from "@/context/AuthContextProvider";
 
 type AnswerMap = Record<string, string | string[]>;
 type Mode = "realistic" | "anime";
@@ -26,6 +27,7 @@ export default function CreateCharacterForm() {
   const [mode, setMode] = useState<Mode | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const { generateNewCharacter } = useUser();
+  const { isLoggedIn } = useAuth();
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [finished, setFinished] = useState(false);
   const [mappedAnswer, setMappedAnswer] = useState<Record<string, string | string[]> | {}>([]);
@@ -57,6 +59,10 @@ export default function CreateCharacterForm() {
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
+      if (!isLoggedIn) {
+        alert("Login to create Character");
+        return;
+      }
       const finalAnswers = nextAnswers || answers;
       const answer = mapAnswersToAttributes(finalAnswers, mode);
       setMappedAnswer(answer);
