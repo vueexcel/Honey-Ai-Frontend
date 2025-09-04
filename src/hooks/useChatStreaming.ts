@@ -174,7 +174,6 @@ export default function useChatStreaming(characterId?: string) {
         const curCharacter = characters.find((char) => char.id === charId);
         const characterRef = curCharacter?.resized_images[0]?.default_url;
         const isAnime = curCharacter?.is_anime as boolean;
-        await startPhotoGeneration(prompt, charId, characterRef, isAnime);
         setImageProgress(0);
         if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
         progressIntervalRef.current = setInterval(() => {
@@ -183,7 +182,8 @@ export default function useChatStreaming(characterId?: string) {
             if (prev >= 95) return prev;
             return prev + 1;
           });
-        }, 800);
+        }, 250);
+        await startPhotoGeneration(prompt, charId, characterRef, isAnime);
       } else {
         await startChatStreaming(prompt, charId);
       }
@@ -241,7 +241,7 @@ export default function useChatStreaming(characterId?: string) {
             if (prev >= 95) return prev;
             return prev + 1;
           });
-        }, 1000);
+        }, 500);
         return true;
       } catch (err: any) {
         setError("Failed to generate audio");
