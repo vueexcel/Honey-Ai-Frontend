@@ -206,12 +206,16 @@ export default function useChatStreaming(characterId?: string) {
   );
 
   const requestVideo = useCallback(
-    async (imageUrl: string, charId: string) => {
-      function createTempMessage(sender: "user" | "character", content: string): Message {
+    async (imageUrl: string, charId: string, prompt?: string) => {
+      function createTempMessage(
+        sender: "user" | "character",
+        messageType: "text" | "image" | "video",
+        content: string
+      ): Message {
         return {
           id: `temp-${sender}-msg-${Date.now()}`,
           sender_type: sender,
-          message_type: "video",
+          message_type: messageType,
           character_id: charId,
           content,
           created_at: new Date().toISOString(),
@@ -228,11 +232,17 @@ export default function useChatStreaming(characterId?: string) {
           alert("Credits Not Sufficient");
           return false;
         }
-        const charPlaceholder = createTempMessage("character", "");
-        setMessages((prev) => [...prev, charPlaceholder]);
+        if (prompt) {
+          const userMsg = createTempMessage("user", "text", prompt);
+          const charPlaceholder = createTempMessage("character", "video", "");
+          setMessages((prev) => [...prev, userMsg, charPlaceholder]);
+        } else {
+          const charPlaceholder = createTempMessage("character", "video", "");
+          setMessages((prev) => [...prev, charPlaceholder]);
+        }
         setError(null);
         setIsStreaming(true);
-        await generateVideo(imageUrl, charId);
+        await generateVideo(imageUrl, charId, prompt);
         setImageProgress(0);
         if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
         progressIntervalRef.current = setInterval(() => {

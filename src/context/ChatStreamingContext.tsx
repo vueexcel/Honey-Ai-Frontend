@@ -12,7 +12,7 @@ interface ChatStreamingContextValue {
   isLoadingHistory: boolean;
   imageProgress: number;
   requestAudio: (messageId: string) => Promise<void>;
-  requestVideo: (imageUrl: string, charId: string) => Promise<void>;
+  requestVideo: (imageUrl: string, charId: string, prompt?: string) => Promise<void>;
 }
 
 const ChatStreamingContext = createContext<ChatStreamingContextValue | null>(null);

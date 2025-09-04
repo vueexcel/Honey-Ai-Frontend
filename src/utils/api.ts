@@ -145,15 +145,20 @@ export async function generateTTS(messageId: string) {
   });
 }
 
-export async function generateVideo(referenceImage: string, character_id: string) {
+export async function generateVideo(referenceImage: string, character_id: string, prompt?: string) {
   const socket = getSocket();
   if (!socket?.id) {
     throw new Error("Socket not connected");
   }
-
+  let payload = {
+    referenceImage,
+    socketId: socket.id,
+    character_id,
+    prompt,
+  };
   return apiFetch("chat/generate-video", {
     method: "POST",
-    body: JSON.stringify({ referenceImage, socketId: socket.id, character_id }),
+    body: JSON.stringify(payload),
   });
 }
 
