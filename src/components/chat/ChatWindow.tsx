@@ -97,8 +97,10 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
   const handleSendMessage = () => {
     if (prompt.trim()) {
       const lower = prompt.toLowerCase();
-      const isPhoto = lower.startsWith("send me a photo") || lower.startsWith("send me photo");
-      const isVideo = lower.startsWith("send me a video");
+      const isPhoto =
+        lower.startsWith("send me a photo") || lower.startsWith("send me photo") || lower.startsWith("send photo");
+      const isVideo =
+        lower.startsWith("send me a video") || lower.startsWith("send me video") || lower.startsWith("send video");
       if (isVideo) {
         requestVideo(activeCharacter?.resized_images[0].desktop_image, activeCharacter.id, prompt);
         setPrompt("");

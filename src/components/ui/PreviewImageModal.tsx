@@ -12,7 +12,6 @@ type PreviewImageModalProps = {
 };
 
 export default function PreviewImageModal({ src, alt = "Preview image", isOpen, onClose }: PreviewImageModalProps) {
-  // Close on ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
