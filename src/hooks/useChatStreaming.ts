@@ -242,7 +242,6 @@ export default function useChatStreaming(characterId?: string) {
         }
         setError(null);
         setIsStreaming(true);
-        await generateVideo(imageUrl, charId, prompt);
         setImageProgress(0);
         if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
         progressIntervalRef.current = setInterval(() => {
@@ -251,7 +250,8 @@ export default function useChatStreaming(characterId?: string) {
             if (prev >= 95) return prev;
             return prev + 1;
           });
-        }, 500);
+        }, 1000);
+        await generateVideo(imageUrl, charId, prompt);
         return true;
       } catch (err: any) {
         setError("Failed to generate audio");

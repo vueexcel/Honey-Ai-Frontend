@@ -87,12 +87,10 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     async (prompt: string, charId: string, count: number, curCharacter: Character) => {
       const characterRef = curCharacter?.resized_images[0]?.default_url;
       const isAnime = curCharacter?.is_anime as boolean;
-      const { bulkRequestId } = await startBulkImageGeneration(prompt, charId, characterRef, isAnime, count);
-
-      setBulkImagesToGenerate(count);
-      setCurBulkRequestId(bulkRequestId);
       setIsBulkImageGenerating(true);
-      setImagesGenerated([]);
+      const { imageUrls } = await startBulkImageGeneration(prompt, charId, characterRef, isAnime, count);
+      setIsBulkImageGenerating(false);
+      setImagesGenerated(imageUrls);
     },
     []
   );
@@ -117,17 +115,18 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     }
     socketRef.current = socket;
 
-    const handleBulkImages = ({ bulkRequestId, imageUrls }: any) => {
-      if (curBulkRequestIdRef.current === bulkRequestId) {
-        setImagesGenerated((prev) => {
-          const updated = [...prev, ...imageUrls];
-          if (updated.length >= bulkImagesToGenerateRef.current) {
-            setIsBulkImageGenerating(false);
-          }
-          return updated;
-        });
-      }
-    };
+    // const handleBulkImages = ({ bulkRequestId, imageUrls }: any) => {
+    //   console.log(curBulkRequestId, "bulkRequestId listening", imageUrls);
+    //   if (curBulkRequestIdRef.current === bulkRequestId) {
+    //     setImagesGenerated((prev) => {
+    //       const updated = [...prev, ...imageUrls];
+    //       if (updated.length >= bulkImagesToGenerateRef.current) {
+    //         setIsBulkImageGenerating(false);
+    //       }
+    //       return updated;
+    //     });
+    //   }
+    // };
 
     const handleBalance = (newBalance: number) => {
       setBalance(newBalance);
@@ -139,12 +138,12 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     };
 
     socket.on("newCharacterImageGenerated", handleNewCharacterImage);
-    socket.on("bulkImagesGenerated", handleBulkImages);
+    // socket.on("bulkImagesGenerated", handleBulkImages);
     socket.on("balance", handleBalance);
 
     return () => {
       socket.off("newCharacterImageGenerated", handleNewCharacterImage);
-      socket.off("bulkImagesGenerated", handleBulkImages);
+      // socket.off("bulkImagesGenerated", handleBulkImages);
       socket.off("balance", handleBalance);
     };
   }, [isLoggedIn]);

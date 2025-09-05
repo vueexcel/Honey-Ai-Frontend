@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContextProvider";
 import { Sidebar } from "@/components";
 import { SliderProvider } from "@/context/SliderContext";
 import { UserContextProvider } from "@/context/UserContextProvider";
+import { PreviewImageProvider } from "@/context/PreviewImageContext";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -43,10 +44,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SliderProvider>
             <ThemeProvider>
               <UserContextProvider>
-                <SidebarProvider>
-                  <Sidebar />
-                  <div className="flex-1 flex flex-col">{children}</div>
-                </SidebarProvider>
+                <PreviewImageProvider>
+                  <SidebarProvider>
+                    <Sidebar />
+                    <div className="flex-1 flex flex-col">{children}</div>
+                  </SidebarProvider>
+                </PreviewImageProvider>
               </UserContextProvider>
             </ThemeProvider>
           </SliderProvider>

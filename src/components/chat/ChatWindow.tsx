@@ -15,6 +15,7 @@ import UserIcon from "../icons/UserIcon";
 import ProgressSpinner from "../ui/ProgressSpinner";
 import Button from "../ui/Button";
 import TokenIcon from "../icons/TokenIcon";
+import { usePreviewImage } from "@/context/PreviewImageContext";
 
 interface ChatWindowProps {
   characterId: string;
@@ -27,6 +28,7 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
   const { messages, isStreaming, error, sendMessage, imageProgress, requestAudio, requestVideo } = useChatStreaming();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [activeDate, setActiveDate] = useState("");
+  const { openPreview } = usePreviewImage();
   const prevLength = useRef(0);
   const isDisabled = !prompt.trim() || isStreaming;
   const options = [
@@ -218,8 +220,9 @@ export default function ChatWindow({ characterId, activeCharacter, toggleProfile
                         ) : msg?.message_type === "image" ? (
                           <img
                             src={msg?.media_url}
-                            className="rounded-xl max-w-[340px] w-full aspect-[4/5] object-cover opacity-0 transition-opacity duration-500"
+                            className="rounded-xl max-w-[340px] w-full aspect-[4/5] object-cover opacity-0 transition-opacity duration-500 cursor-pointer"
                             onLoad={(e) => (e.currentTarget.style.opacity = "1")}
+                            onClick={() => openPreview(msg?.media_url || "")}
                           />
                         ) : msg?.message_type === "video" ? (
                           <video

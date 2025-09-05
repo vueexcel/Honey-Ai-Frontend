@@ -6,6 +6,7 @@ import ImageIcon from "../icons/ImageIcon";
 import TokenIcon from "../icons/TokenIcon";
 import { useUser } from "@/context/UserContextProvider";
 import Spinner from "../ui/Spinner";
+import { usePreviewImage } from "@/context/PreviewImageContext";
 
 type GenerationSettingsProps = {
   generateBulkImage: (num: number) => void;
@@ -17,6 +18,7 @@ const GenerationSettings = ({ generateBulkImage }: GenerationSettingsProps) => {
   const [selected, setSelected] = useState<number>(4);
   const [isGeneratingImage, setIsGenerationImage] = useState(false);
   const { isBulkImageGenerating, imagesGenerated } = useUser();
+  const { openPreview } = usePreviewImage();
   const totalCost = selected * COST_PER_IMAGE;
 
   return (
@@ -70,7 +72,8 @@ const GenerationSettings = ({ generateBulkImage }: GenerationSettingsProps) => {
                   key={index}
                   src={url}
                   alt={`Generated ${index + 1}`}
-                  className="w-64 h-64 object-cover rounded-lg shadow"
+                  className="w-64 h-64 object-cover rounded-lg shadow cursor-pointer"
+                  onClick={() => openPreview(url || "")}
                 />
               ))}
             </div>
